@@ -45,7 +45,7 @@ EXEC_TARGET fptype device_OffsetPolynomialCuts (fptype* evt, fptype* p, unsigned
         ret += p[indices[i]] * POW(x, lowestDegree + i - 2);
     }
     
-    return ret;
+    return (ret>=0)? ret : 0.0;
 }
 
 EXEC_TARGET fptype device_MultiPolynomial (fptype* evt, fptype* p, unsigned int* indices) {
