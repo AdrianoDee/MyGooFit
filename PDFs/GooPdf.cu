@@ -524,7 +524,7 @@ __host__ fptype GooPdf::normalise () const {
   if (isnan(sum)) {
     abortWithCudaPrintFlush(__FILE__, __LINE__, getName() + " NaN in normalisation", this);
   }
-  else if (0 >= sum) {
+  else if (0 > sum) {
     abortWithCudaPrintFlush(__FILE__, __LINE__, "Non-positive normalisation", this);
   }
 
@@ -582,7 +582,7 @@ __host__ fptype GooPdf::normaliseInt () const {
   if (isnan(sum)) {
     abortWithCudaPrintFlush(__FILE__, __LINE__, getName() + " NaN in normalisation", this);
   }
-  else if (0 >= sum) {
+  else if (0 > sum) {
     abortWithCudaPrintFlush(__FILE__, __LINE__, "Non-positive normalisation", this);
   }
 
