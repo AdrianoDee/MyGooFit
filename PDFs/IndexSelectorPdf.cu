@@ -10,12 +10,13 @@ __device__ fptype device_IndexSelector (fptype* evt, fptype* p, unsigned int* in
   {
     if(index_int < p[indices[2 + i]])
     {
+      printf("Index returning %u based on %u\n considerign threshold: %f", ret, index_int),p[indices[2 + i]];
       ret = i;
       break;
     }
   }
 
-  //printf("Staircase returning %u based on %u\n", ret, x_int);
+  printf("Index returning %u based on %u\n", ret, index_int);
   return ret;
 }
 
