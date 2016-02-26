@@ -23,11 +23,11 @@ __device__ device_function_ptr ptr_to_Index = device_IndexSelector;
 device_function_ptr ptr_to_Index = device_IndexSelector;
 
 __host__ IndexSelectorPdf::IndexSelectorPdf(std::string n, Variable* _index, const std::vector<Variable*> &fIndexList)
-  : GooPdf(_x, n)
+  : GooPdf(_index, n)
 {
   std::vector<unsigned int> pindices;
   pindices.push_back(fIndexList.size());
-  for(std::vector<Variable*>::const_iterator index0 = fIndexList.begin(); index0 != fIndexList.end(); x0++)
+  for(std::vector<Variable*>::const_iterator index0 = fIndexList.begin(); index0 != fIndexList.end(); index0++)
     pindices.push_back(registerParameter(*index0));
 
   GET_FUNCTION_ADDR(ptr_to_Index);
