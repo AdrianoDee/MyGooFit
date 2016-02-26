@@ -19,8 +19,7 @@ __device__ fptype device_IndexSelector (fptype* evt, fptype* p, unsigned int* in
   return ret;
 }
 
-__device__ device_function_ptr ptr_to_IndexSelector = device_IndexSelector;
-device_function_ptr ptr_to_IndexSelector = device_IndexSelector;
+MEM_DEVICE device_function_ptr ptr_to_IndexSelector = device_IndexSelector;
 
 __host__ IndexSelectorPdf::IndexSelectorPdf(std::string n, Variable* _index, const std::vector<Variable*> &fIndexList)
   : GooPdf(_index, n)
