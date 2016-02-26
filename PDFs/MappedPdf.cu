@@ -17,7 +17,7 @@ EXEC_TARGET fptype device_Mapped (fptype* evt, fptype* p, unsigned int* indices)
   ret *= normalisationFactors[indices[targetFunction + 1]];
   //if (gpuDebug & 1)
   //if ((gpuDebug & 1) && (0 == BLOCKIDX) && (0 == THREADIDX))
-  printf("[%i, %i] Mapped: %i (%f %f %f %f) %f\n", BLOCKIDX, THREADIDX, targetFunction, evt[0], evt[1], evt[2], evt[3], ret); 
+  //printf("[%i, %i] Mapped: %i (%f %f %f %f) %f\n", BLOCKIDX, THREADIDX, targetFunction, evt[0], evt[1], evt[2], evt[3], ret); 
   return ret;
 }
 

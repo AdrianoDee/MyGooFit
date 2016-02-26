@@ -10,14 +10,14 @@ __device__ fptype device_IndexSelector (fptype* evt, fptype* p, unsigned int* in
   {
     if(index_int < p[indices[2 + i]])
     {
-      printf("===== ===== ===== ===== ===== ===== INSIDE ===== ===== ===== ===== ===== ===== =====");
-      printf("Index returning %u based on %u\n (%.3f floor)considerign threshold: %f", ret, index_int,x,p[indices[2 + i]]);
+      //printf("===== ===== ===== ===== ===== ===== INSIDE ===== ===== ===== ===== ===== ===== =====");
+      //printf("Index returning %u based on %u\n (%.3f floor)considerign threshold: %f", ret, index_int,x,p[indices[2 + i]]);
       ret = i;
       break;
     }
   }
 
-  printf("Index returning %u based on %u\n (%.3f floor)", ret, index_int,x);
+  //printf("Index returning %u based on %u\n (%.3f floor)", ret, index_int,x);
   return ret;
 }
 
