@@ -1,4 +1,4 @@
-#include "IndexSelector.hh"
+#include "IndexSelectorPdf.hh"
 
 __device__ fptype device_IndexSelector (fptype* evt, fptype* p, unsigned int* indices)
 {
@@ -22,7 +22,7 @@ __device__ fptype device_IndexSelector (fptype* evt, fptype* p, unsigned int* in
 __device__ device_function_ptr ptr_to_Index = device_IndexSelector;
 device_function_ptr ptr_to_Index = device_IndexSelector;
 
-__host__ StaircasePdf::StaircasePdf(std::string n, Variable* _index, const std::vector<Variable*> &fIndexList)
+__host__ IndexSelectorPdf::IndexSelectorPdf(std::string n, Variable* _index, const std::vector<Variable*> &fIndexList)
   : GooPdf(_x, n)
 {
   std::vector<unsigned int> pindices;
