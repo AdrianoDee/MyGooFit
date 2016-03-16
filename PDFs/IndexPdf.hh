@@ -1,5 +1,5 @@
 #ifndef INDEX_PDF_HH
-#ifndef INDEX_PDF_HH
+#define INDEX_PDF_HH
 
 #include "GooPdf.hh" 
 
