@@ -16,8 +16,7 @@ __device__ fptype device_IndexSelector (fptype* evt, fptype* p, unsigned int* in
       return ret;
     }
   }
-  printf("===== OUTSIDE \n");
-  printf("Index returning %u ", ret);
+  printf("\n ===== ===== ===== ===== ===== ===== OUTSIDE ===== ===== ===== ===== ===== ===== ===== \n Input : x = %.3f (int = %u ) \n ===== INSIDE \n Threshold : %.2f \n Index returning %u \n",x,index_int,p[indices[2 + i]],ret);
   return ret;
 }
 
