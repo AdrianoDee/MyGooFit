@@ -24,6 +24,7 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
 
   //fptype ret = (*(reinterpret_cast<device_function_ptr>(device_function_table[indices[targetFunction]])))(evt, p, paramIndices + indices[targetFunction + 1]);
   fptype ret = callFunction(evt+compareIndex, indices[targetFunction], indices[targetFunction + 1]);
+  printf("x = %.2f compareIndex = %u indices[0] = %.2f targetFunction = %d pdfX = %.2f \n",x,compareIndex,indices[0],targetFunction,evt[indices[2 + indices[targetFunction]]+compareIndex+targetFunction]);
   ret *= normalisationFactors[indices[targetFunction + 1]];
   //if (gpuDebug & 1)
   //if ((gpuDebug & 1) && (0 == BLOCKIDX) && (0 == THREADIDX))
