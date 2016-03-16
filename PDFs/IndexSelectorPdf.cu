@@ -17,7 +17,7 @@ __device__ fptype device_IndexSelector (fptype* evt, fptype* p, unsigned int* in
     }
   }
 
-  //printf("Index returning %u based on %u\n (%.3f floor)", ret, index_int,x);
+  printf("Index returning %u based on %u\n (%.3f floor)", ret, index_int,x);
   return ret;
 }
 
