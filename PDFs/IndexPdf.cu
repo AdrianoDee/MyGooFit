@@ -20,7 +20,7 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   int targetFunction = compareIndex;
 
   targetFunction *= 2; // Because there are two pieces of information about each function
-  targetFunction += indeces[0]; // Because first function information begins at index 3
+  targetFunction += indices[0]; // Because first function information begins at index 3
 
   //fptype ret = (*(reinterpret_cast<device_function_ptr>(device_function_table[indices[targetFunction]])))(evt, p, paramIndices + indices[targetFunction + 1]);
   fptype ret = callFunction(evt+compareIndex, indices[targetFunction], indices[targetFunction + 1]);
