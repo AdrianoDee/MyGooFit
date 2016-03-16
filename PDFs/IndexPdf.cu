@@ -10,10 +10,10 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   printf("here %d \n",debug);debug++;
   for (size_t i = 1; i <= indices[0]/3; i++) {
     /* code */
-    printf("here %d \n",debug);debug++;
+    printf("x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
     if(p[indices[i]] == x){
       compareIndex = i;
-      printf("here %d \n",debug);debug++;
+      printf("Inside -> x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
       break;
     }
   }
