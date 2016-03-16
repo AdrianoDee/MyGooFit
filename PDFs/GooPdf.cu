@@ -128,7 +128,7 @@ EXEC_TARGET fptype calculateBinInt (fptype rawPdf, fptype* evtVal, unsigned int 
     fptype expEvents = functorConstants[0]*rawPdf;
     fptype nfactor =1;
     //int nbin =(int)(evtVal[0]+0.5);
-    for(int i = 1; i<= evtVal[0];i++) nfactor *= i; 
+    for(int i = 1; i<= evtVal[0];i++) nfactor *= i;
     //printf("Bin Center : %.2f --- Normalization : %.2f --- RawPdf : %.2f --- Expected : %.2f --- Data : %.2f --- Return : %.2f \n",evtVal[2],normalisationFactors[par],rawPdf,expEvents,evtVal[0],-2*(expEvents-evtVal[0]*log(expEvents)));
     //printf("%.3f \n",-2*(expEvents-evtVal[0]*log(expEvents)));
     //printf("\n %.2f --- %.2f ---- %.2f",expEvents,-evtVal[0],-evtVal[0]*log(expEvents));
@@ -148,7 +148,7 @@ EXEC_TARGET fptype calculateBinInt (fptype rawPdf, fptype* evtVal, unsigned int 
     fptype expEvents = functorConstants[0]*rawPdf;
     fptype nfactor =1;
     //int nbin =(int)(evtVal[0]+0.5);
-    //for(int i = 1; i<= evtVal[0];i++) nfactor *= i; 
+    //for(int i = 1; i<= evtVal[0];i++) nfactor *= i;
     return (-evtVal[0]*log(expEvents));
   }
   return 0;
@@ -190,7 +190,7 @@ void* getMetricPointer (std::string name) {
 //   cudaError_t errtype = cudaMemcpyFromSymbol((void**) &host_fcn_ptr, ptr_to_NLL, sizeof(void*));
 //  std::cout<<"Error type :"<<cudaGetErrorString(errtype)<<std::endl;
   #define CHOOSE_PTR(ptrname) if (name == #ptrname) GET_FUNCTION_ADDR(ptrname);
-    
+
   host_fcn_ptr = 0;
   CHOOSE_PTR(ptr_to_Eval);
   CHOOSE_PTR(ptr_to_NLL);
@@ -198,7 +198,7 @@ void* getMetricPointer (std::string name) {
   CHOOSE_PTR(ptr_to_BinAvg);
   CHOOSE_PTR(ptr_to_BinWithError);
   CHOOSE_PTR(ptr_to_Chisq);
-  CHOOSE_PTR(ptr_to_BinInt); 
+  CHOOSE_PTR(ptr_to_BinInt);
 
   assert(host_fcn_ptr);
 
@@ -318,10 +318,12 @@ __host__ double GooPdf::calculateNLL () const {
 
   int numVars = observables.size();
   if (fitControl->binnedFit()) {
+      printf("BinnedFit");
     numVars += 2;
     numVars *= -1;
   }
 
+  printf("NumVars = %d",numVars);
   fptype ret = sumOfNll(numVars);
   if (0 == ret) abortWithCudaPrintFlush(__FILE__, __LINE__, getName() + " zero NLL", this);
   //if (cpuDebug & 1) std::cout << "Full NLL " << host_callnumber << " : " << 2*ret << std::endl;
