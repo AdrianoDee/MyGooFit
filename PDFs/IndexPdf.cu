@@ -7,9 +7,9 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   fptype x = evt[indices[2 + indices[0]]];
   unsigned int compareIndex;
 
-  for (size_t i = 1; i <= indeces[0]/3; i++) {
+  for (size_t i = 1; i <= indices[0]/3; i++) {
     /* code */
-    if(p[indeces[i]] == x){
+    if(p[indices[i]] == x){
       compareIndex = i;
       break;
     }
