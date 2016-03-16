@@ -44,7 +44,7 @@ __host__ IndexPdf::IndexPdf (std::string n,vector<Variable*>& b, vector<GooPdf*>
 
   for (vector<Variable*>::iterator v = b.begin(); v != b.end(); ++v) {
     //components.push_back(*f);
-    pindices.push_back(registerParameter(v));
+    pindices.push_back(registerParameter(*v));
   }
 
   std::set<int> functionIndicesUsed;
