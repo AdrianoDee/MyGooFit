@@ -10,9 +10,9 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   fptype x = evt[indices[2 + indices[0]]];
   unsigned int compareIndex = 1;
   int debug = 0;
-  for (size_t i = 0; i < 30; i++) {
-    printf("p[%d]] = %.2e",i,p[i]);
-  }
+
+  printf(" %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e \n",i,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11],p[12],p[13],p[14],p[15],p[16],p[17],p[18],p[19]);
+
   printf("here %d \n",debug);debug++;
   for (size_t i = 1; i <= indices[0]; i++) {
     /* code */
