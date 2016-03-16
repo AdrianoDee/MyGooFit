@@ -64,7 +64,7 @@ __host__ IndexPdf::IndexPdf (std::string n,vector<Variable*>& vars,vector<Variab
 	      << " constructor. This may slow execution by causing sequential evaluations.\n";
   }
 
-  getObservables(observables);
+  //getObservables(observables);
   GET_FUNCTION_ADDR(ptr_to_Index);
   initialise(pindices);
 }
