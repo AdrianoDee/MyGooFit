@@ -9,28 +9,28 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   fptype x = evt[indices[2 + indices[0]]];
   unsigned int compareIndex;
   int debug = 0;
-  printf("here %d \n",debug);debug++;
+  //printf("here %d \n",debug);debug++;
   for (size_t i = 1; i <= indices[0]/3; i++) {
     /* code */
-    printf("x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
+    //printf("x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
     if(p[indices[i]] == x){
       compareIndex = i;
-      printf("Inside -> x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
+      //printf("Inside -> x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
       break;
     }
   }
-  printf("here %d \n",debug);debug++;
+  //printf("here %d \n",debug);debug++;
   //unsigned int mapFunction = (int) FLOOR(0.5 + x
     // This is an index into the IndexPdf's list of functions
   //int targetFunction = (int) FLOOR(0.5 + (*(reinterpret_cast<device_function_ptr>(device_function_table[mapFunction])))(evt, p, paramIndices + indices[2]));
   int targetFunction = compareIndex;
-  printf("here %d \n",debug);debug++;
+  //printf("here %d \n",debug);debug++;
   targetFunction *= 2; // Because there are two pieces of information about each function
   targetFunction += indices[0]; // Because first function information begins at index 3
-  printf("here %d \n",debug);debug++;
+  //printf("here %d \n",debug);debug++;
   //fptype ret = (*(reinterpret_cast<device_function_ptr>(device_function_table[indices[targetFunction]])))(evt, p, paramIndices + indices[targetFunction + 1]);
   fptype ret = callFunction(evt+compareIndex, indices[targetFunction], indices[targetFunction + 1]);
-  printf("x = %.2f compareIndex = %u indices[0] = %.2f targetFunction = %d pdfX = %.2f \n",x,compareIndex,indices[0],targetFunction,evt[indices[2 + indices[targetFunction]]+compareIndex+targetFunction]);
+  //printf("x = %.2f compareIndex = %u indices[0] = %.2f targetFunction = %d pdfX = %.2f \n",x,compareIndex,indices[0],targetFunction,evt[indices[2 + indices[targetFunction]]+compareIndex+targetFunction]);
   ret *= normalisationFactors[indices[targetFunction + 1]];
   //if (gpuDebug & 1)
   //if ((gpuDebug & 1) && (0 == BLOCKIDX) && (0 == THREADIDX))
