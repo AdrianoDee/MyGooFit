@@ -31,7 +31,7 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   return ret;
 }
 
-MEM_DEVICE device_function_ptr ptr_to_Mapped = device_Mapped;
+MEM_DEVICE device_function_ptr ptr_to_Index = device_Index;
 
 __host__ IndexPdf::IndexPdf (std::string n,vector<Variable*>& b, vector<GooPdf*>& t)
   : GooPdf(0, n)
@@ -47,7 +47,6 @@ __host__ IndexPdf::IndexPdf (std::string n,vector<Variable*>& b, vector<GooPdf*>
     pindices.push_back(registerParameter(v));
   }
 
-  pindices.push_back(registerParameter(mean))
   std::set<int> functionIndicesUsed;
   for (vector<GooPdf*>::iterator f = t.begin(); f != t.end(); ++f) {
     components.push_back(*f);
@@ -62,7 +61,7 @@ __host__ IndexPdf::IndexPdf (std::string n,vector<Variable*>& b, vector<GooPdf*>
   }
 
   getObservables(observables);
-  GET_FUNCTION_ADDR(ptr_to_Mapped);
+  GET_FUNCTION_ADDR(ptr_to_Index);
   initialise(pindices);
 }
 
