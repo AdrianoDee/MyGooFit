@@ -6,16 +6,13 @@ __device__ fptype device_IndexSelector (fptype* evt, fptype* p, unsigned int* in
   unsigned int index_int = FLOOR(0.5 + x);
   unsigned int ret = indices[1];
   // indices[1] should be the number of step points we have
-  printf("\n ===== ===== ===== ===== ===== ===== RUNTIME ===== ===== ===== ===== ===== ===== ===== \n");
-  printf("Input : x = %.3f (int = %u ) ",x,index_int);
+
   for(unsigned int i = 0; i < indices[1]; i++)
   {
     if(index_int < p[indices[2 + i]])
     {
       ret = i;
-      printf("===== INSIDE \n");
-      printf("Threshold : %.2f \n", p[indices[2 + i]]);
-      printf("Index returning %u \n", ret);
+      printf("\n ===== ===== ===== ===== ===== ===== RUNTIME ===== ===== ===== ===== ===== ===== ===== \n Input : x = %.3f (int = %u ) \n ===== INSIDE \n Threshold : %.2f \n Index returning %u \n",x,index_int,p[indices[2 + i]],ret);
       return ret;
     }
   }
