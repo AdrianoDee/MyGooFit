@@ -3,7 +3,10 @@
 EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) {
   // Structure : nP index 1 inde 2 ... index n functionIndex1 parameterIndex1 ....  functionIndex1 parameterIndex1
   // nP = 3*no.of.indeces
-  // Find mapping between event variables and function to evaluate
+  // Find mapping between event variables and function to
+  for (size_t i = 0; i < 20; i++) {
+    printf("indices[%d] = %.3f \n",i,indices[i]);
+  }
   fptype x = evt[indices[2 + indices[0]]];
   unsigned int compareIndex;
   int debug = 0;
