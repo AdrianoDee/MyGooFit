@@ -4,14 +4,14 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   // Structure : nP index 1 inde 2 ... index n functionIndex1 parameterIndex1 ....  functionIndex1 parameterIndex1
   // nP = 3*no.of.indeces
   // Find mapping between event variables and function to
-  printf("indices[0] = %.3f indices[1] = %.3f indices[2] = %.3f indices[2] = %.3f indices[3] = %.3f indices[4] = %.3f indices[5] = %.3f indices[6] = %.3f indices[7] = %.3f indices[8] = %.3f\n",indices[0],indices[1],indices[2],indices[3],indices[4],indices[5],indices[6],indices[7],indices[8]);
-  printf("p[0] = %.3f p[1] = %.3f p[2] = %.3f p[2] = %.3f p[3] = %.3f p[4] = %.3f p[5] = %.3f p[6] = %.3f p[7] = %.3f p[8] = %.3f\n",p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8]);
+  //printf("indices[0] = %.3f indices[1] = %.3f indices[2] = %.3f indices[2] = %.3f indices[3] = %.3f indices[4] = %.3f indices[5] = %.3f indices[6] = %.3f indices[7] = %.3f indices[8] = %.3f\n",indices[0],indices[1],indices[2],indices[3],indices[4],indices[5],indices[6],indices[7],indices[8]);
+  //printf("p[0] = %.3f p[1] = %.3f p[2] = %.3f p[2] = %.3f p[3] = %.3f p[4] = %.3f p[5] = %.3f p[6] = %.3f p[7] = %.3f p[8] = %.3f\n",p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8]);
 
   fptype x = evt[indices[2 + indices[0]]];
-  unsigned int compareIndex;
+  unsigned int compareIndex = 1;
   int debug = 0;
   //printf("here %d \n",debug);debug++;
-  for (size_t i = 1; i <= indices[0]/3; i++) {
+  for (size_t i = 1; i <= indices[0]; i++) {
     /* code */
     //printf("x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
     if(p[indices[i]] == x){
