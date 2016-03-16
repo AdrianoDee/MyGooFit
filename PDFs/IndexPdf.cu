@@ -34,9 +34,12 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
 
 MEM_DEVICE device_function_ptr ptr_to_Index = device_Index;
 
-__host__ IndexPdf::IndexPdf (std::string n,vector<Variable*>& b, vector<GooPdf*>& t)
+__host__ IndexPdf::IndexPdf (std::string n,vector<Variable*>& vars,vector<Variable*>& b, vector<GooPdf*>& t)
   : GooPdf(0, n)
 {
+  for (unsigned int i = 0; i < vars.size(); ++i) {
+    registerObservable(vars[i]);
+  }
   //components.push_back(m);
   std::vector<unsigned int> pindices;
   //pindices.push_back(m->getFunctionIndex());
