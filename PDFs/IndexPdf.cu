@@ -18,7 +18,7 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
 
   for (int i = 1; i <= numIndex; i++) {
     /* code */
-    printf("x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
+    //printf("x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
     if(p[indices[i]] == index){
       compareIndex = i;
       //printf("Inside -> x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
@@ -26,18 +26,18 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   }
   //printf("here %d \n",debug);debug++;
   //unsigned int mapFunction = (int) FLOOR(0.5 + x
-    // This is an index into the IndexPdf's list of functions
+  //This is an index into the IndexPdf's list of functions
   //int targetFunction = (int) FLOOR(0.5 + (*(reinterpret_cast<device_function_ptr>(device_function_table[mapFunction])))(evt, p, paramIndices + indices[2]));
   functionIndex = numIndex+2*(compareIndex-1)+1;
   //printf("here %d \n",debug);debug++;
- // Because there are two pieces of information about each function
- // Because first function information begins at index 3
+  //Because there are two pieces of information about each function
+  //Because first function information begins at index 3
   //printf("here %d \n",debug);debug++;
-  //fptype ret = (*(reinterpret_cast<device_function_ptr>(device_function_table[indices[targetFunction]])))(evt, p, paramIndices + indices[targetFunction + 1]);
+  fptype ret = (*(reinterpret_cast<device_function_ptr>(device_function_table[indices[targetFunction]])))(evt, p, paramIndices + indices[targetFunction + 1]);
   //fptype ret = callFunction(evt+compareIndex, indices[targetFunction], indices[targetFunction + 1]);
   fptype ret = 1.0;
   //printf("x = %.2f compareIndex = %u indices[0] = %.2f targetFunction = %d pdfX = %.2f \n",x,compareIndex,indices[0],targetFunction,evt[indices[2 + indices[targetFunction]]+compareIndex+targetFunction]);
-  ret *= normalisationFactors[indices[targetFunction + 1]];
+  //ret *= normalisationFactors[indices[targetFunction + 1]];
   //if (gpuDebug & 1)
   //if ((gpuDebug & 1) && (0 == BLOCKIDX) && (0 == THREADIDX))
   //printf("[%i, %i] Mapped: %i (%f %f %f %f) %f\n", BLOCKIDX, THREADIDX, targetFunction, evt[0], evt[1], evt[2], evt[3], ret);
