@@ -14,7 +14,7 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   //printf(" %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e = %.2e \n",p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11],p[12],p[13],p[14],p[15],p[16],p[17],p[18],p[19]);
   printf(" %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u = %u \n",indices[0],indices[1],indices[2],indices[3],indices[4],indices[5],indices[6],indices[7],indices[8],indices[9],indices[10],indices[11],indices[12],indices[13],indices[14],indices[15],indices[16],indices[17],indices[18],indices[19]);
 
-  printf("here %d \n",debug);debug++;
+  //printf("here %d \n",debug);debug++;
   for (size_t i = 1; i <= indices[0]; i++) {
     /* code */
     //printf("x = %.2f Parameter %d =  %.2f \n",x,i,p[indices[i]]);debug++;
