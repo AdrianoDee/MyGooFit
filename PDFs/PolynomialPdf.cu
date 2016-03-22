@@ -1,5 +1,21 @@
 #include "PolynomialPdf.hh"
 
+EXEC_TARGET fptype device_Polynomial_Point (fptype* point, fptype* p, unsigned int* indices) {
+  // Structure is nP lowestdegree c1 c2 c3 nO o1
+
+  int numParams = indices[0]+1;
+  int lowestDegree = indices[1];
+
+  fptype x = point[0];
+  printf("Poly x = %.3f",x);
+  fptype ret = 0;
+  for (int i = 2; i < numParams; ++i) {
+    ret += p[indices[i]] * POW(x, lowestDegree + i - 2);
+  }
+
+  return ret;
+}
+
 EXEC_TARGET fptype device_Polynomial (fptype* evt, fptype* p, unsigned int* indices) {
   // Structure is nP lowestdegree c1 c2 c3 nO o1
 
@@ -52,7 +68,7 @@ EXEC_TARGET fptype device_MultiPolynomial (fptype* evt, fptype* p, unsigned int*
   // Structure is nP, maxDegree, offset1, offset2, ..., coeff1, coeff2, ..., nO, o1, o2, ...
 
   int numObservables = indices[indices[0] + 1];
-  int maxDegree = indices[1] + 1; 
+  int maxDegree = indices[1] + 1;
   // Only appears in construction (maxDegree + 1) or (x > maxDegree), so
   // may as well add the one and use >= instead.
 
@@ -108,6 +124,7 @@ EXEC_TARGET fptype device_MultiPolynomial (fptype* evt, fptype* p, unsigned int*
 
 
 MEM_DEVICE device_function_ptr ptr_to_Polynomial = device_Polynomial;
+MEM_DEVICE device_function_ptr ptr_to_Polynomial_Point = device_Polynomial_Point;
 MEM_DEVICE device_function_ptr ptr_to_OffsetPolynomial = device_OffsetPolynomial;
 MEM_DEVICE device_function_ptr ptr_to_OffsetPolynomialCuts = device_OffsetPolynomialCuts;
 MEM_DEVICE device_function_ptr ptr_to_MultiPolynomial = device_MultiPolynomial;
@@ -130,6 +147,7 @@ __host__ PolynomialPdf::PolynomialPdf (string n, Variable* _x, vector<Variable*>
   else {
     GET_FUNCTION_ADDR(ptr_to_Polynomial);
   }
+  GET_ATPOINTS_ADDR(device_Polynomial_Point);
   initialise(pindices);
 }
 
@@ -209,6 +227,7 @@ __host__ PolynomialPdf::PolynomialPdf (string n, vector<Variable*> obses, vector
   }
 
   GET_FUNCTION_ADDR(ptr_to_MultiPolynomial);
+  GET_ATPOINTS_ADDR(ptr_to_AddPdfsExt_Bin_Mid);
   initialise(pindices);
 }
 
