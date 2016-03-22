@@ -25,6 +25,7 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
     }
   }
 
+  if (compareIndex == 0) return 0.0;
   //printf("here %d \n",debug);debug++;
   //unsigned int mapFunction = (int) FLOOR(0.5 + x
   //This is an index into the IndexPdf's list of functions
