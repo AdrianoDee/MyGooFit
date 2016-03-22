@@ -30,7 +30,7 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   //This is an index into the IndexPdf's list of functions
   //int targetFunction = (int) FLOOR(0.5 + (*(reinterpret_cast<device_function_ptr>(device_function_table[mapFunction])))(evt, p, paramIndices + indices[2]));
   functionIndex = numIndex+3*(compareIndex-1)+2;
-  printf("indices[0] = %d - numObservables = %u - numIndex = %u index = %.2f z = %.2f x = %.2f y = %.2f compareIndex = %u functionIndex = %u\n",indices[0],numObservables,numIndex,index,evt[indices[2 + indices[0]]+1],evt[indices[2 + indices[0]]+2],evt[indices[2 + indices[0]]+3],compareIndex,functionIndex);
+  printf("p1 = %.2f p2 = %.2f indices[0] = %d - numObservables = %u - numIndex = %u index = %.2f z = %.2f x = %.2f y = %.2f compareIndex = %u functionIndex = %u\n",p[indices[1]],p[indices[2]],indices[0],numObservables,numIndex,index,evt[indices[2 + indices[0]]+1],evt[indices[2 + indices[0]]+2],evt[indices[2 + indices[0]]+3],compareIndex,functionIndex);
   //printf("here %d \n",debug);debug++;
   //Because there are two pieces of information about each function
   //Because first function information begins at index 3
