@@ -1,7 +1,7 @@
 #include "IndexPdf.hh"
 
 EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) {
-  // Structure : nP index 1 inde 2 ... index n functionIndex1 parameterIndex1 ....  functionIndex1 parameterIndex1
+  // Structure : nP index 1 inde 2 ... index n functionIndex1 functionPointIndex1 parameterIndex1 ....  functionIndexn functionPointIndexn parameterIndexn
   // nP = 3*no.of.indeces
   // Find mapping between event variables and function to
   //printf("indices[0] = %.3f indices[1] = %.3f indices[2] = %.3f indices[2] = %.3f indices[3] = %.3f indices[4] = %.3f indices[5] = %.3f indices[6] = %.3f indices[7] = %.3f indices[8] = %.3f\n",indices[0],indices[1],indices[2],indices[3],indices[4],indices[5],indices[6],indices[7],indices[8]);
@@ -29,17 +29,17 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   //unsigned int mapFunction = (int) FLOOR(0.5 + x
   //This is an index into the IndexPdf's list of functions
   //int targetFunction = (int) FLOOR(0.5 + (*(reinterpret_cast<device_function_ptr>(device_function_table[mapFunction])))(evt, p, paramIndices + indices[2]));
-  functionIndex = numIndex+2*(compareIndex-1)+1;
+  functionIndex = numIndex+3*(compareIndex-1)+2;
   printf("indices[0] = %d - numObservables = %u - numIndex = %u index = %.2f z = %.2f x = %.2f y = %.2f compareIndex = %u functionIndex = %u\n",indices[0],numObservables,numIndex,index,evt[indices[2 + indices[0]]+1],evt[indices[2 + indices[0]]+2],evt[indices[2 + indices[0]]+3],compareIndex,functionIndex);
   //printf("here %d \n",debug);debug++;
   //Because there are two pieces of information about each function
   //Because first function information begins at index 3
   //printf("here %d \n",debug);debug++;
   //fptype ret = (*(reinterpret_cast<device_function_ptr>(device_function_table[indices[targetFunction]])))(evt, p, paramIndices + indices[targetFunction + 1]);
-  //fptype ret = callFunction(evt+compareIndex, indices[targetFunction], indices[targetFunction + 1]);
-  fptype ret = 1.0;
+  fptype ret = callFunction(evt+compareIndex, indices[targetFunction], indices[targetFunction + 1]);
+  //fptype ret = 1.0;
   //printf("x = %.2f compareIndex = %u indices[0] = %.2f targetFunction = %d pdfX = %.2f \n",x,compareIndex,indices[0],targetFunction,evt[indices[2 + indices[targetFunction]]+compareIndex+targetFunction]);
-  //ret *= normalisationFactors[indices[targetFunction + 1]];
+  ret *= normalisationFactors[indices[functionIndex]];
   //if (gpuDebug & 1)
   //if ((gpuDebug & 1) && (0 == BLOCKIDX) && (0 == THREADIDX))
   //printf("[%i, %i] Mapped: %i (%f %f %f %f) %f\n", BLOCKIDX, THREADIDX, targetFunction, evt[0], evt[1], evt[2], evt[3], ret);
@@ -70,6 +70,7 @@ __host__ IndexPdf::IndexPdf (std::string n,vector<Variable*>& vars,vector<Variab
   for (vector<GooPdf*>::iterator f = t.begin(); f != t.end(); ++f) {
     components.push_back(*f);
     pindices.push_back((*f)->getFunctionIndex());
+    pindices.push_back((*f)->getFunctionPntIndex());
     pindices.push_back((*f)->getParameterIndex());
     functionIndicesUsed.insert((*f)->getFunctionIndex());
   }
