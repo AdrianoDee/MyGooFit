@@ -36,7 +36,7 @@ EXEC_TARGET fptype device_Index (fptype* evt, fptype* p, unsigned int* indices) 
   //Because first function information begins at index 3
   //printf("here %d \n",debug);debug++;
   //fptype ret = (*(reinterpret_cast<device_function_ptr>(device_function_table[indices[targetFunction]])))(evt, p, paramIndices + indices[targetFunction + 1]);
-  fptype ret = callFunction(evt[indices[2 + indices[0]]+compareIndex], indices[targetFunction], indices[targetFunction + 1]);
+  fptype ret = callFunction((evt+compareIndex), indices[functionIndex], indices[functionIndex + 1]);
   //fptype ret = 1.0;
   //printf("x = %.2f compareIndex = %u indices[0] = %.2f targetFunction = %d pdfX = %.2f \n",x,compareIndex,indices[0],targetFunction,evt[indices[2 + indices[targetFunction]]+compareIndex+targetFunction]);
   ret *= normalisationFactors[indices[functionIndex]];
