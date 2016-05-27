@@ -318,12 +318,12 @@ __host__ double GooPdf::calculateNLL () const {
 
   int numVars = observables.size();
   if (fitControl->binnedFit()) {
-      printf("BinnedFit");
+      //printf("BinnedFit");
     numVars += 2;
     numVars *= -1;
   }
 
-  printf("NumVars = %d",numVars);
+  //printf("NumVars = %d",numVars);
   fptype ret = sumOfNll(numVars);
   if (0 == ret) abortWithCudaPrintFlush(__FILE__, __LINE__, getName() + " zero NLL", this);
   //if (cpuDebug & 1) std::cout << "Full NLL " << host_callnumber << " : " << 2*ret << std::endl;
