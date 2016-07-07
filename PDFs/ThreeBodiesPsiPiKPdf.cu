@@ -140,10 +140,10 @@ __host__ fptype ThreeBodiesPsiPiK::integrate (fptype lo, fptype hi) const {
 
   return AREA[255-hiind]-AREA[loind];
 }
-
+/*
 __global__ void fillHisto (TH1F* histo,unsigned int nevents,fptype fmax){
 
-/*
+
     fptype roll,func,x;
     fptype xmin = histo->GetBinLowEdge(1);
     fptype xmax = histo->GetBinLowEdge(histo->GetNbinsX()+1);
@@ -171,5 +171,6 @@ __global__ void fillHisto (TH1F* histo,unsigned int nevents,fptype fmax){
 
   		}
 
-*/
+
 }
+*/
