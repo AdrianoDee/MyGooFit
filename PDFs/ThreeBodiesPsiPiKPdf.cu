@@ -86,7 +86,7 @@ MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK = device_Three;
 MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK_Point = device_ThreeBodiesPsiPiK_Point;
 
 
-__host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _x)
+__host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _x,Variable* _mp,Variable* _m1,Variable* _m2,Variable* _m3)
   : GooPdf(_x, n)
 {
   std::vector<unsigned int> pindices;
@@ -94,7 +94,7 @@ __host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _x)
   GET_FUNCTION_ADDR(ptr_to_ThreeBodiesPsiPiK);
   //GET_INTEGRAL_ADDR(ptr_to_Three_Bin);
   GET_ATPOINTS_ADDR(ptr_to_ThreeBodiesPsiPiK_Point);
-  initialiseInt(pindices);
+  initialise(pindices);
 }
 
 __host__ fptype ThreeBodiesPsiPiK::integrate (fptype lo, fptype hi) const {
