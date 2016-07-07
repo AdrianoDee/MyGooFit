@@ -1,4 +1,4 @@
-#include "ThreeBodiesPsiPiK.hh"
+#include "ThreeBodiesPsiPiKPdf.hh"
 #include "TRandom.h"
 
 #define
