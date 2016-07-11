@@ -81,7 +81,7 @@ return integralF;
 }
 */
 
-MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK = device_Three;
+MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK = device_ThreeBodiesPsiPiK;
 //MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK_Bin = device_Three_Bin;
 MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK_Point = device_ThreeBodiesPsiPiK_Point;
 
