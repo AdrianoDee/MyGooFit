@@ -91,6 +91,11 @@ __host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _x,Varia
 {
   std::vector<unsigned int> pindices;
 
+  pindices.push_back(registerParameter(_mp));
+  pindices.push_back(registerParameter(_m1));
+  pindices.push_back(registerParameter(_m2));
+  pindices.push_back(registerParameter(_m3));
+
   GET_FUNCTION_ADDR(ptr_to_ThreeBodiesPsiPiK);
   //GET_INTEGRAL_ADDR(ptr_to_Three_Bin);
   GET_ATPOINTS_ADDR(ptr_to_ThreeBodiesPsiPiK_Point);
