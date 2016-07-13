@@ -6,11 +6,6 @@
  * A simple AA PDF class by Ivan Heredia de la Cruz on 4/25/16.              *
  *****************************************************************************/
 
-#include "Riostream.h"
-
-#include "myPDF.h"
-#include "RooAbsReal.h"
-#include "RooAbsCategory.h"
 #include <math.h>
 #include "TMath.h"
 
