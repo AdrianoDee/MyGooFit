@@ -12,7 +12,7 @@
 
 #include "MatrixPdf.hh"
 
-
+/*
 EXEC_TARGET devcomplex<fptype> WignerD_J(int helJ,int helDmu, fptype angle) const
 {
 
@@ -87,7 +87,8 @@ EXEC_TARGET devcomplex<fptype> ME( std::string helDmu ) const
     // + ...
     ;
   // any other K* should be added above
-  */
+
+
   devcomplex<fptype> matrixElement(0.,0.);
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
   for (Int_t iKstar_S=0; iKstar_S<(Int_t)Kstar_spin.size(); ++iKstar_S) {
@@ -125,3 +126,5 @@ EXEC_TARGET fptype PDF() const
   return ME2() * PhiPHSP(mKP); // missing * efficiency(from reconstructed PHSP MC)
 
 }
+
+*/
