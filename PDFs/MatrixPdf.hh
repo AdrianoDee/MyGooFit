@@ -72,8 +72,8 @@ MEM_CONSTANT fptype TwoMKaon2pTwoMPion2 = 2.*(MKaon2 + MPion2);*/
 // K*
 const fptype M892 = 0.89581 ; const fptype G892 = 0.0474; // From PDG charged only K*(892)
 const fptype M1410 = 1.414; const fptype G1410 = 0.232; // K*1410
-const fptype M1430 = 1.425; const fptype G1430 = 0.270; // K*1430
 const fptype M800 = 0.931; const fptype G800 = 0.578; // K*800
+const fptype M1430_0 = 1.425; const fptype G1430_0 = 0.270; // K*1430_0
 const fptype M1430_2 = 1.4324; const fptype G1430_2 = 0.109; // K*1430_2
 
 const fptype K892_1 = 892.1;
