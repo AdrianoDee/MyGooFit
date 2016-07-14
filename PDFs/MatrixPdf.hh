@@ -77,7 +77,10 @@ const fptype M800 = 0.931; const fptype G800 = 0.578; // K*800
 const fptype M1430_2 = 1.4324; const fptype G1430_2 = 0.109; // K*1430_2
 
 const fptype K892_1 = 892.1;
-
+const fptype K800_0 = 800.0;
+const fptype K1410_1 = 1410.1;
+const fptype K1430_0 = 1430.0;
+const fptype K1430_2 = 1430.2;
 
 class MatrixPdf : public GooPdf {
 public:
