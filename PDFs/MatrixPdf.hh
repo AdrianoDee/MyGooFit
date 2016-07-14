@@ -38,6 +38,7 @@ MEM_CONSTANT fptype MProton = 0.938272046;
 MEM_CONSTANT fptype MKaon = 0.493677;
 MEM_CONSTANT fptype MPion = 0.13957018;
 
+/*
 MEM_CONSTANT fptype MLb2 = MLb*MLb;
 MEM_CONSTANT fptype MLb4 = MLb2*MLb2;
 MEM_CONSTANT fptype MBd2 = MBd*MBd;
@@ -64,7 +65,7 @@ MEM_CONSTANT fptype MPion4 = MPion2*MPion2;
 MEM_CONSTANT fptype MKaon4mTwoMKaon2MProton2pMProton4 = MKaon4 - 2.*MKaon2*MProton2 + MProton4;
 MEM_CONSTANT fptype MKaon4mTwoMKaon2MPion2pMPion4 = MKaon4 - 2.*MKaon2*MPion2 + MPion4;
 MEM_CONSTANT fptype TwoMKaon2pTwoMProton2 = 2.*(MKaon2 + MProton2);
-MEM_CONSTANT fptype TwoMKaon2pTwoMPion2 = 2.*(MKaon2 + MPion2);
+MEM_CONSTANT fptype TwoMKaon2pTwoMPion2 = 2.*(MKaon2 + MPion2);*/
 
 
 // K*
@@ -74,6 +75,7 @@ MEM_CONSTANT fptype M1430 = 1.425; MEM_CONSTANT fptype G1430 = 0.270; // K*1430
 MEM_CONSTANT fptype M800 = 0.931; MEM_CONSTANT fptype G800 = 0.578; // K*800
 MEM_CONSTANT fptype M1430_2 = 1.4324; MEM_CONSTANT fptype G1430_2 = 0.109; // K*1430_2
 
+MEM_CONSTANT fptype K892_1 = 892.1;
 
 
 class MatrixPdf : public GooPdf {
