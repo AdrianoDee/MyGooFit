@@ -84,12 +84,28 @@ const fptype K1430_2 = 1430.2;
 
 class MatrixPdf : public GooPdf {
 public:
-  MatrixPdf (std::string n, Variable* _x);
+  MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+    const std::vector< std::vector<fptype> >& _KstarDotSpin,
+  	const vector<std::string>& _varNames,
+  	const std::vector<Variable*>& _amplitudeGooVars,
+  	const std::string& _psi_nS,
+  	const fptype& _dRadB0, const fptype& _dRadKs);
+
   __host__ fptype integrate (fptype lo, fptype hi) const;
   __host__ virtual bool hasAnalyticIntegral () const {return true;}
 
 
 private:
+  //HOST SIDE
+  std::vector< std::vector<fptype> > KstarDotSpin;
+  vector< std::string > varNames;
+  std::vector<Variable*> amplitudeGooVars;
+  //map< TString,RooRealProxy* > amplitudeVarProxy_map;
+  //std::map<std::string,Variable*> amplitudeVars_map;
+  std::string psi_nS;
+  fptype dRadB0, dRadKs;
+  //DEVICE SIDE
+  thrust::device_vector<thrust::device_vector<fptype>> d_KstarDotSpin;
 
 };
 

@@ -12,6 +12,37 @@
 
 #include "MatrixPdf.hh"
 
+__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x,
+  Variable* _cJ, Variable* _cKs, Variable* _phi,
+  const std::vector< std::vector<fptype>> _KstarDotSpin,
+  const vector<std::string> _varNames,
+  const std::vector<Variable*> _amplitudeGooVars,
+  const std::string _psi_nS,
+  const fptype& _dRadB0, const fptype& _dRadKs)
+  : GooPdf(_x, n),KstarDotSpin(_KstarDotSpin),
+  varNames(_varNames),amplitudeGooVars(_amplitudeGooVars),
+  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
+{
+  std::vector<unsigned int> pindices;
+  pindices.push_back(registerParameter(_cJ));
+  pindices.push_back(registerParameter(_cKs));
+  pindices.push_back(registerParameter(_phi));
+
+  for (vector<Variable*>::iterator  = _amplitudeGooVars.begin(); v != _amplitudeGooVars.end(); ++v) {
+    pindices.push_back(registerParameter(*v));
+  }
+
+  GET_FUNCTION_ADDR(ptr_to_Matrix);
+  GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
+  GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
+  initialiseInt(pindices);
+}
+
+MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
+MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
+MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
+
+
 /*
 EXEC_TARGET devcomplex<fptype> WignerD_J(int helJ,int helDmu, fptype angle) const
 {
@@ -128,3 +159,21 @@ EXEC_TARGET fptype PDF() const
 }
 
 */
+
+EXEC_TARGET fptype device_Matrix (fptype* point, fptype* p, unsigned int* indices) {
+
+  return 0;
+
+}
+
+EXEC_TARGET fptype device_Matrix_Point (fptype* point, fptype* p, unsigned int* indices) {
+
+  return 0;
+
+}
+
+EXEC_TARGET fptype device_Matrix_Bin (fptype* point, fptype* p, unsigned int* indices) {
+
+  return 0;
+
+}
