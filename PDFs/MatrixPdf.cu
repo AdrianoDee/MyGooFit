@@ -11,6 +11,7 @@
 #include "TMath.h"
 
 #include "MatrixPdf.hh"
+#include "devcomplex.hh"
 
 EXEC_TARGET devcomplex<fptype> matrixElement(string helDmu) const
 {
@@ -26,7 +27,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(string helDmu) const
   */
   devcomplex<fptype> matrixElement (0.0,0.0);
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
-  for (int Kstar_S=0; iKstar_S<(Int_t)Kstar_spin.size(); ++iKstar_S) {
+  for (int iKstar_S=0; iKstar_S<(int)Kstar_spin.size(); ++iKstar_S) {
     TString R = Kstar_spin[iKstar_S].first ;
     TString spin = R(Kstar_spin[iKstar_S].first.Length() -1) ;
     TString mass = R(0, Kstar_spin[iKstar_S].first.Length() -2) ;

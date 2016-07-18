@@ -6,6 +6,8 @@
 
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
+#include "devcomplex.hh"
+
 /*
 #define ZERO 0
 #define M1 1
