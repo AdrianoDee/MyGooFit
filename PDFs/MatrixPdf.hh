@@ -108,7 +108,7 @@ private:
   std::string psi_nS;
   fptype dRadB0, dRadKs;
   //DEVICE SIDE
-  thrust::device_vector<thrust::device_vector<fptype>> d_KstarDotSpin;
+  thrust::device_vector<thrust::device_vector<fptype> > d_KstarDotSpin;
 
 };
 
