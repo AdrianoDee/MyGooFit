@@ -12,6 +12,41 @@
 
 #include "MatrixPdf.hh"
 
+EXEC_TARGET devcomplex<fptype> matrixElement(string helDmu) const
+{
+  /*
+  // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
+  return
+    RFunction(M892, G892, MBd, 0, 1, dRad) * ( AngularTerm("K*(892)", "1", "m1", helDmu) +
+						      AngularTerm("K*(892)", "1", "0", helDmu) +
+						      AngularTerm("K*(892)", "1", "p1", helDmu) )
+    // + ...
+    ;
+  // any other K* should be added above
+  */
+  devcomplex<fptype> matrixElement (0.0,0.0);
+  // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
+  for (int Kstar_S=0; iKstar_S<(Int_t)Kstar_spin.size(); ++iKstar_S) {
+    TString R = Kstar_spin[iKstar_S].first ;
+    TString spin = R(Kstar_spin[iKstar_S].first.Length() -1) ;
+    TString mass = R(0, Kstar_spin[iKstar_S].first.Length() -2) ;
+    TComplex matrixElement_R = 0.;
+    if (spin.EqualTo("0")) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
+      matrixElement_R = RFunction(Kstar_spin[iKstar_S].second.first, Kstar_spin[iKstar_S].second.second, MBd, spin.Atoi()+1, spin.Atoi(), dRadB0, dRadKs) *
+	               AngularTerm(R, spin, "0", helDmu) ;
+    } else { // for non-0 spin K*, third last argument = spin(K*) - spin(psi_nS) = spin.Atoi() - 1
+      matrixElement_R = RFunction(Kstar_spin[iKstar_S].second.first, Kstar_spin[iKstar_S].second.second, MBd, spin.Atoi()-1, spin.Atoi(), dRadB0, dRadKs) *
+	               ( AngularTerm(R, spin, "m1", helDmu) + AngularTerm(R, spin, "0", helDmu) + AngularTerm(R, spin, "p1", helDmu) ) ;
+    }
+    //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
+    //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
+    matrixElement += matrixElement_R;
+    //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
+  }
+  return matrixElement ;
+
+}
+
 __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x,
   Variable* _cJ, Variable* _cKs, Variable* _phi,
   const std::vector< std::vector<fptype>> _KstarDotSpin,
@@ -160,11 +195,44 @@ EXEC_TARGET fptype PDF() const
 
 */
 
+
 EXEC_TARGET fptype device_Matrix (fptype* point, fptype* p, unsigned int* indices) {
 
+  fptype x = evt[indices[2 + indices[0]]];
+
+  // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
+   fptype MPsi_nS = 0.;
+   if (psi_nS==1)
+     MPsi_nS = 3.096916;
+   else if (psi_nS==2)
+     MPsi_nS = 3.686109;
+   else
+     cout <<"psi_nS = " <<psi_nS <<" not allowed in the \"evaluate\" function at the moment. Keeping MPsi_nS to 0" <<endl;
+
+  if ((mKP < MKaon + MPion) || (mKP > MBd - MPsi_nS))
+    return 0.;
+  else
+    return PDF();
   return 0;
 
 }
+
+Double_t myPDF::ME2() const
+{
+  //cout <<"\nME(\"m1\") + ME(\"p1\") = " <<ME("m1") <<" + " <<ME("p1") <<endl;
+  //cout <<"ME(\"m1\").Rho2() + ME(\"p1\").Rho2() = " <<ME("m1").Rho2() <<" + " <<ME("p1").Rho2() <<endl;
+  return ME("m1").Rho2() + ME("p1").Rho2() ;
+}
+
+//TComplex myPDF::PDF() const
+Double_t myPDF::PDF() const
+{
+  //cout <<"\nME2() = " <<ME2() <<endl;
+  return ME2() * PhiPHSP(mKP); // missing * efficiency(from reconstructed PHSP MC)
+
+}
+
+
 
 EXEC_TARGET fptype device_Matrix_Point (fptype* point, fptype* p, unsigned int* indices) {
 

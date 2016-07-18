@@ -3,6 +3,9 @@
 
 #include "TComplex.h"
 #include "TMath.h"
+
+#include <thrust/device_vector.h>
+#include <thrust/host_vector.h>
 /*
 #define ZERO 0
 #define M1 1
