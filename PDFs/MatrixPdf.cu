@@ -13,7 +13,7 @@
 #include "MatrixPdf.hh"
 #include "devcomplex.hh"
 
-EXEC_TARGET devcomplex<fptype> matrixElement(string helDmu) const
+EXEC_TARGET devcomplex<fptype> matrixElement(fptype helDmu)
 {
   /*
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
