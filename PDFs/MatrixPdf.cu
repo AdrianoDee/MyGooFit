@@ -66,7 +66,7 @@ EXEC_TARGET devcomplex<fptype> BW(fptype mkp,fptype RMass, fptype RGamma, int Lm
 {
 
     fptype num1term = RMass*RMass - mkp*mkp ;
-    fptype num2term = RMass * BWGamma(RMass, RGamma, Lmin, D) ;
+    fptype num2term = RMass * BWGamma(mkp,RMass, RGamma, Lmin, D) ;
     fptype denoterm = num1term*num1term + num2term*num2term ;
 
     devcomplex<fptype> bw (num1term / denoterm, num2term / denoterm);
@@ -93,7 +93,7 @@ EXEC_TARGET devcomplex<fptype> H(fptype R, fptype helJ)
     cout <<"helJ = \"" <<helJ <<"\" not allowed for R = \"" <<R <<"\" in the H function at the moment. Returning 0" <<endl;
     return 0.;
   }
-  */
+  *//*
   TString name_helJ = R+"_"+helJ;
   RooRealProxy* a = amplitudeVarProxy_map.find("a"+name_helJ)->second ;
   RooRealProxy* b = amplitudeVarProxy_map.find("b"+name_helJ)->second ;
@@ -107,7 +107,8 @@ EXEC_TARGET devcomplex<fptype> H(fptype R, fptype helJ)
     cout <<"RooRealProxy = \"a"+name_helJ+"\" not found in amplitudeVarProxy_map. Returning 0" <<endl;
     return 0.;
   }
-
+*/
+return 0;
 }
 
 
