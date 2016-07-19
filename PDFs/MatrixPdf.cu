@@ -50,22 +50,22 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
     }
 }
 
-EXEC_TARGET fptype BWGamma(fptype RMass, fptype RGamma, int Lmin, fptype D)
-
-    fptype QmKP = Qmom(mKP);
+EXEC_TARGET fptype BWGamma(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
+{
+    fptype QmKP = Qmom(mkp);
     fptype QRMass = Qmom(RMass);
     int expoterm = 2*Lmin + 1 ;
 
-    fptype BWG = ( RGamma * RMass * POW(QmKP/QRMass,expoterm) * POW(BlattWeisskopf(Lmin, QmKP, QRMass, D),2) ) / mKP;
+    fptype BWG = ( RGamma * RMass * POW(QmKP/QRMass,expoterm) * POW(BlattWeisskopf(Lmin, QmKP, QRMass, D),2) ) / mkp;
     //cout <<"BWGamma for RMass = " <<RMass <<": " <<BWG <<endl;
     return BWG ;
 
 }
 
-EXEC_TARGET devcomplex<fptype> BW(fptype RMass, fptype RGamma, int Lmin, fptype D)
+EXEC_TARGET devcomplex<fptype> BW(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
 {
 
-    fptype num1term = RMass*RMass - mKP*mKP ;
+    fptype num1term = RMass*RMass - mkp*mkp ;
     fptype num2term = RMass * BWGamma(RMass, RGamma, Lmin, D) ;
     fptype denoterm = num1term*num1term + num2term*num2term ;
 
@@ -119,15 +119,15 @@ EXEC_TARGET devcomplex<fptype> AngularTerm(fptype R, fptype spinR, fptype helJ, 
 
 }
 
-EXEC_TARGET devcomplex<fptype> RFunction(fptype RMass, fptype RGamma, fptype MomMass, Int_t LminMom, Int_t LminR, fptype DB0, fptype DKs)
+EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma, fptype MomMass, int LminMom, int LminR, fptype DB0, fptype DKs)
 {
-    fptype PmKP = Pmom(mKP);
+    fptype PmKP = Pmom(mkp);
     fptype PRMass = Pmom(RMass);
-    fptype QmKP = Qmom(mKP);
+    fptype QmKP = Qmom(mkp);
     fptype QRMass = Qmom(RMass);
 
     //TComplex RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, D) * TMath::Power(PmKP/MomMass,LminMom) * BW(RMass, RGamma, LminR, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) * TMath::Power(QmKP/RMass,LminR);
-    devcomplex<fptype> RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, DB0) * POW(PmKP/MomMass,LminMom) * BW(RMass, RGamma, LminR, DKs) * BlattWeisskopf(LminR, QmKP, QRMass, DKs) * POW(QmKP/mKP,LminR);
+    devcomplex<fptype> RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, DB0) * POW(PmKP/MomMass,LminMom) * BW(RMass, RGamma, LminR, DKs) * BlattWeisskopf(LminR, QmKP, QRMass, DKs) * POW(QmKP/mkp,LminR);
     //cout <<"BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
     //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) <<endl;
     //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
@@ -284,7 +284,7 @@ EXEC_TARGET devcomplex<fptype> ME( std::string helDmu ) const
 
   devcomplex<fptype> matrixElement(0.,0.);
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
-  for (Int_t iKstar_S=0; iKstar_S<(Int_t)Kstar_spin.size(); ++iKstar_S) {
+  for (int iKstar_S=0; iKstar_S<(int)Kstar_spin.size(); ++iKstar_S) {
     TString R = Kstar_spin[iKstar_S].first ;
     TString spin = R(Kstar_spin[iKstar_S].first.Length() -1) ;
     TString mass = R(0, Kstar_spin[iKstar_S].first.Length() -2) ;
