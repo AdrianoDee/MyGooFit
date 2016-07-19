@@ -81,6 +81,7 @@ void abortWithCudaPrintFlush (std::string file, int line);
 
 typedef double fptype;
 // Double math functions
+#define ACOS acos
 #define ATAN2 atan2
 #define COS cos
 #define COSH cosh
@@ -104,6 +105,7 @@ typedef float fptype;
 
 
 // Float math functions
+#define ACOS acosf
 #define ATAN2 atan2f
 #define COS cosf
 #define COSH coshf
