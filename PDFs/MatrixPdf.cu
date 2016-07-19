@@ -50,8 +50,7 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
     }
 }
 
-EXEC_TARGET fptype BWGamma(fptype RMass, fptype RGamma, int Lmin, fptype D) const
-{
+EXEC_TARGET fptype BWGamma(fptype RMass, fptype RGamma, int Lmin, fptype D)
 
     fptype QmKP = Qmom(mKP);
     fptype QRMass = Qmom(RMass);
@@ -76,7 +75,7 @@ EXEC_TARGET devcomplex<fptype> BW(fptype RMass, fptype RGamma, int Lmin, fptype 
 
 }
 
-EXEC_TARGET devcomplex<fptype> H(fptype R, fptype helJ) const
+EXEC_TARGET devcomplex<fptype> H(fptype R, fptype helJ)
 {
   /*
   if ( R=="K*(892)" ) {
@@ -347,7 +346,7 @@ EXEC_TARGET fptype device_Matrix (fptype* point, fptype* p, unsigned int* indice
 
 }
 
-EXEC_TARGET fptype ME2() const
+EXEC_TARGET fptype ME2()
 {
   //cout <<"\nME(\"m1\") + ME(\"p1\") = " <<ME("m1") <<" + " <<ME("p1") <<endl;
   //cout <<"ME(\"m1\").Rho2() + ME(\"p1\").Rho2() = " <<ME("m1").Rho2() <<" + " <<ME("p1").Rho2() <<endl;
