@@ -13,6 +13,131 @@
 #include "MatrixPdf.hh"
 #include "devcomplex.hh"
 
+#define M1ME 123
+#define P1ME 234
+#define ONE 1000
+#define TWO 2000
+#define ZERO 0101
+
+EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
+{
+    fptype Dq = D*q;
+    fptype Dq0 = D*q0;
+    fptype Dq2 = Dq*Dq;
+    fptype Dq02 = Dq0*Dq0;
+    fptype Dq4 = Dq2*Dq2;
+    fptype Dq04 = Dq02*Dq02;
+    fptype Dq6 = Dq4*Dq2;
+    fptype Dq06 = Dq04*Dq02;
+    fptype rootterm = -1;
+
+    if (Lmin==0)
+      return 1.;
+    else if (Lmin==1)
+      rootterm =                     (1. + Dq02) / (1. + Dq2) ;
+    else if (Lmin==2)
+      rootterm =             (9. + 3*Dq02 +Dq04) / (9. + 3*Dq2 +Dq4) ;
+    else if (Lmin==3)
+      rootterm = (225. + 45*Dq02 + 6*Dq04 + Dq06) / (225. + 45*Dq2 + 6*Dq4 + Dq6) ;
+    else { printf("WARNING! Lmin = %d is not implemented for BlattWeisskopf functions at the moment. Returning 1 -> \"AngularTerm\" = 0\n",Lmin);
+      return 1.;
+    }
+
+    if (rootterm > 0)
+        return SQRT( rootterm );
+    else { printf("WARNING! In \"BlattWeisskopf\" function: rootterm <= 0 -> returning 1\n");
+        return 1.;
+    }
+}
+
+EXEC_TARGET fptype BWGamma(fptype RMass, fptype RGamma, int Lmin, fptype D) const
+{
+
+    fptype QmKP = Qmom(mKP);
+    fptype QRMass = Qmom(RMass);
+    int expoterm = 2*Lmin + 1 ;
+
+    fptype BWG = ( RGamma * RMass * POW(QmKP/QRMass,expoterm) * POW(BlattWeisskopf(Lmin, QmKP, QRMass, D),2) ) / mKP;
+    //cout <<"BWGamma for RMass = " <<RMass <<": " <<BWG <<endl;
+    return BWG ;
+
+}
+
+EXEC_TARGET devcomplex<fptype> BW(fptype RMass, fptype RGamma, int Lmin, fptype D)
+{
+
+    fptype num1term = RMass*RMass - mKP*mKP ;
+    fptype num2term = RMass * BWGamma(RMass, RGamma, Lmin, D) ;
+    fptype denoterm = num1term*num1term + num2term*num2term ;
+
+    devcomplex<fptype> bw (num1term / denoterm, num2term / denoterm);
+    //cout <<"BW for RMass = " <<RMass <<": " <<bw <<endl;
+    return bw ;
+
+}
+
+EXEC_TARGET devcomplex<fptype> H(fptype R, fptype helJ) const
+{
+  /*
+  if ( R=="K*(892)" ) {
+    if ( helJ=="m1")
+        return a892m1 + TComplex::I()*b892m1 ;
+    else if ( helJ=="0" )
+      return a892z + TComplex::I()*b892z ;
+    else if ( helJ=="p1" )
+      return a892p1 + TComplex::I()*b892p1 ;
+    else {
+      cout <<"helJ = \"" <<helJ <<"\" not allowed for R = \"" <<R <<"\" in the H function at the moment. Returning 0" <<endl;
+      return 0.;
+    }
+  else {
+    cout <<"helJ = \"" <<helJ <<"\" not allowed for R = \"" <<R <<"\" in the H function at the moment. Returning 0" <<endl;
+    return 0.;
+  }
+  */
+  TString name_helJ = R+"_"+helJ;
+  RooRealProxy* a = amplitudeVarProxy_map.find("a"+name_helJ)->second ;
+  RooRealProxy* b = amplitudeVarProxy_map.find("b"+name_helJ)->second ;
+  if ( a ) {
+    if ( b )
+      return (RooRealProxy)(*a) * TComplex::Exp(TComplex::I()*(RooRealProxy)(*b)) ;
+    else {
+      cout <<"RooRealProxy = \"b"+name_helJ+"\" not found in amplitudeVarProxy_map. Returning 0" <<endl;
+      return 0.; }
+  } else {
+    cout <<"RooRealProxy = \"a"+name_helJ+"\" not found in amplitudeVarProxy_map. Returning 0" <<endl;
+    return 0.;
+  }
+
+}
+
+
+EXEC_TARGET devcomplex<fptype> AngularTerm(fptype R, fptype spinR, fptype helJ, fptype helDmu)
+{
+  //cout <<"\nAngularTerm for K* " <<R <<" and helDmu = " <<helDmu <<" and helJ = " <<helJ <<" is made of Wignerd_R(spinR, helJ) * cWignerD_J(helJ, helDmu, phi) = " <<Wignerd_R(spinR, helJ) <<" * " <<cWignerD_J( WignerD_J(helJ, helDmu, phi) ) <<endl;
+  //cout <<"It is multiplied by H(R,helJ) = H(" <<R <<"," <<helJ <<") = " <<H(R,helJ) <<endl;
+  return H(R,helJ) * Wignerd_R(spinR, helJ) * cWignerD_J( WignerD_J(helJ, helDmu, phi) ) ;
+
+}
+
+EXEC_TARGET devcomplex<fptype> RFunction(fptype RMass, fptype RGamma, fptype MomMass, Int_t LminMom, Int_t LminR, fptype DB0, fptype DKs)
+{
+    fptype PmKP = Pmom(mKP);
+    fptype PRMass = Pmom(RMass);
+    fptype QmKP = Qmom(mKP);
+    fptype QRMass = Qmom(RMass);
+
+    //TComplex RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, D) * TMath::Power(PmKP/MomMass,LminMom) * BW(RMass, RGamma, LminR, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) * TMath::Power(QmKP/RMass,LminR);
+    devcomplex<fptype> RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, DB0) * POW(PmKP/MomMass,LminMom) * BW(RMass, RGamma, LminR, DKs) * BlattWeisskopf(LminR, QmKP, QRMass, DKs) * POW(QmKP/mKP,LminR);
+    //cout <<"BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
+    //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) <<endl;
+    //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
+    //cout <<"TMath::Power(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<TMath::Power(QmKP/mKP,LminR) <<endl;
+    //cout <<"TMath::Power(PmKP/MomMass,LminMom) * TMath::Power(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<(TMath::Power(PmKP/MomMass,LminMom) * TMath::Power(QmKP/RMass,LminR)) <<endl;
+    //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
+    return RFunc ;
+}
+
 EXEC_TARGET devcomplex<fptype> matrixElement(fptype helDmu)
 {
   /*
@@ -28,16 +153,16 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype helDmu)
   devcomplex<fptype> matrixElement (0.0,0.0);
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
   for (int iKstar_S=0; iKstar_S<(int)Kstar_spin.size(); ++iKstar_S) {
-    TString R = Kstar_spin[iKstar_S].first ;
-    TString spin = R(Kstar_spin[iKstar_S].first.Length() -1) ;
-    TString mass = R(0, Kstar_spin[iKstar_S].first.Length() -2) ;
-    TComplex matrixElement_R = 0.;
-    if (spin.EqualTo("0")) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
-      matrixElement_R = RFunction(Kstar_spin[iKstar_S].second.first, Kstar_spin[iKstar_S].second.second, MBd, spin.Atoi()+1, spin.Atoi(), dRadB0, dRadKs) *
-	               AngularTerm(R, spin, "0", helDmu) ;
+    fptype R = d_KstarDotSpin[iKstar_S*3];
+    fptype spin = FLOOR((R - FLOOR(R))*10.+.1);
+    fptype mass = FLOOR(R);
+    devcomplex<fptype> matrixElement_R(0.0,0.0);
+    if (spin==0)) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
+      matrixElement_R = RFunction(Kstar_spin[iKstar_S*3+1], Kstar_spin[iKstar_S*3+2], MBd, spin+1, spin, dRadB0, dRadKs) *
+	               AngularTerm(R, spin, ZERO, helDmu) ;
     } else { // for non-0 spin K*, third last argument = spin(K*) - spin(psi_nS) = spin.Atoi() - 1
       matrixElement_R = RFunction(Kstar_spin[iKstar_S].second.first, Kstar_spin[iKstar_S].second.second, MBd, spin.Atoi()-1, spin.Atoi(), dRadB0, dRadKs) *
-	               ( AngularTerm(R, spin, "m1", helDmu) + AngularTerm(R, spin, "0", helDmu) + AngularTerm(R, spin, "p1", helDmu) ) ;
+	               ( AngularTerm(R, spin, M1ME, helDmu) + AngularTerm(R, spin, "0", helDmu) + AngularTerm(R, spin, "p1", helDmu) ) ;
     }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
     //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
@@ -53,7 +178,7 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x,
   const std::vector< std::vector<fptype>> _KstarDotSpin,
   const vector<std::string> _varNames,
   const std::vector<Variable*> _amplitudeGooVars,
-  const std::string _psi_nS,
+  fptype _psi_nS,
   const fptype& _dRadB0, const fptype& _dRadKs)
   : GooPdf(_x, n),KstarDotSpin(_KstarDotSpin),
   varNames(_varNames),amplitudeGooVars(_amplitudeGooVars),
@@ -67,6 +192,8 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x,
   for (vector<Variable*>::iterator  = _amplitudeGooVars.begin(); v != _amplitudeGooVars.end(); ++v) {
     pindices.push_back(registerParameter(*v));
   }
+
+  d_KstarDotSpin = _KstarDotSpin;
 
   GET_FUNCTION_ADDR(ptr_to_Matrix);
   GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
@@ -199,39 +326,83 @@ EXEC_TARGET fptype PDF() const
 
 EXEC_TARGET fptype device_Matrix (fptype* point, fptype* p, unsigned int* indices) {
 
-  fptype x = evt[indices[2 + indices[0]]];
+  fptype mkp = evt[indices[2 + indices[0]]];
+  fptype mean = p[indices[1]];
+  fptype sigma = p[indices[2]];
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
    fptype MPsi_nS = 0.;
-   if (psi_nS==1)
+   if (psi_nS==ONE)
      MPsi_nS = 3.096916;
-   else if (psi_nS==2)
+   else if (psi_nS==TWO)
      MPsi_nS = 3.686109;
    else
      cout <<"psi_nS = " <<psi_nS <<" not allowed in the \"evaluate\" function at the moment. Keeping MPsi_nS to 0" <<endl;
 
-  if ((mKP < MKaon + MPion) || (mKP > MBd - MPsi_nS))
+  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS))
     return 0.;
   else
-    return PDF();
-  return 0;
+  return ME2() * PhiPHSP(mkp);
+
 
 }
 
-Double_t myPDF::ME2() const
+EXEC_TARGET fptype ME2() const
 {
   //cout <<"\nME(\"m1\") + ME(\"p1\") = " <<ME("m1") <<" + " <<ME("p1") <<endl;
   //cout <<"ME(\"m1\").Rho2() + ME(\"p1\").Rho2() = " <<ME("m1").Rho2() <<" + " <<ME("p1").Rho2() <<endl;
-  return ME("m1").Rho2() + ME("p1").Rho2() ;
+  return matrixElement(M1ME).abs2() + matrixElement(P1ME).abs2() ;
 }
 
 //TComplex myPDF::PDF() const
-Double_t myPDF::PDF() const
+
+EXEC_TARGET fptype PhiPHSP(fptype mkp)
 {
-  //cout <<"\nME2() = " <<ME2() <<endl;
-  return ME2() * PhiPHSP(mKP); // missing * efficiency(from reconstructed PHSP MC)
+    return Pmom(mkp) * Qmom(mkp) ;
+}
+
+EXEC_TARGET fptype Pmom(fptype mkp)
+{
+
+    fptype mkp2 = mkp*mkp;
+    fptype rootterm = 0;
+
+    if (psi_nS==ONE)
+      rootterm = MJpsi4mTwoMJpsi2MBd2pMBd4 + mkp2*(mkp2 - TwoMJpsi2pTwoMBd2);
+    else if (psi_nS==TWO)
+      rootterm = MPsi2S4mTwoMPsi2S2MBd2pMBd4 + mkp2*(mkp2 - TwoMPsi2S2pTwoMBd2);
+    else
+      //cout <<"psi_nS = " <<psi_nS <<" not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0" <<endl;
+      printf("psi_nS = %.2f not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0\n",psi_nS);
+
+    //cout <<"\nrootterm for psi_nS = " <<psi_nS <<" and mkp = " <<mkp <<": " <<rootterm <<endl;
+    if (rootterm > 0)
+        return InvTwoMBd * SQRT(rootterm);
+    else { //cout <<"WARNING! In \"Pmom\" function: rootterm (" <<rootterm <<") <= 0 for mkp = " <<mkp <<" and psi_nS = " <<psi_nS <<" -> returning 0" <<endl;
+           printf("WARNING! In \"Pmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f and psi_nS = %.2f  -> returning 0 \n",rootterm,mkp,psi_nS);
+           return 0.;
+    }
 
 }
+
+EXEC_TARGET fptype Qmom(fptype mkp)
+{
+
+    fptype mkp2 = mkp*mkp;
+    /*
+    fptype rootterm = MKaon4mTwoMKaon2MProton2pMProton4 + mkp2*(mkp2 - TwoMKaon2pTwoMProton2) ;
+    */
+    fptype rootterm = MKaon4mTwoMKaon2MPion2pMPion4 + mkp2*(mkp2 - TwoMKaon2pTwoMPion2) ;
+    if (rootterm > 0)
+        return 0.5*SQRT(rootterm)/mkp;
+    else { //cout <<"WARNING! In \"Qmom\" function: rootterm <= 0 for mkp = " <<mkp <<" -> returning 0" <<endl;
+            printf("WARNING! In \"Qmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f  -> returning 0 \n",rootterm,mkp);
+
+        return 0.;
+    }
+
+}
+
 
 
 

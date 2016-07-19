@@ -35,16 +35,16 @@
 #define H1430_2_p1 143020
 #define H1430_2_m1 143020*/
 
-/*
+
 MEM_CONSTANT fptype MLb = 5.61951;
 MEM_CONSTANT fptype MBd = 5.27961;
 MEM_CONSTANT fptype MPsi2S = 3.686109;
 MEM_CONSTANT fptype MJpsi = 3.096916;
 MEM_CONSTANT fptype MProton = 0.938272046;
 MEM_CONSTANT fptype MKaon = 0.493677;
-MEM_CONSTANT fptype MPion = 0.13957018;*/
+MEM_CONSTANT fptype MPion = 0.13957018;
 
-/*
+
 MEM_CONSTANT fptype MLb2 = MLb*MLb;
 MEM_CONSTANT fptype MLb4 = MLb2*MLb2;
 MEM_CONSTANT fptype MBd2 = MBd*MBd;
@@ -71,7 +71,7 @@ MEM_CONSTANT fptype MPion4 = MPion2*MPion2;
 MEM_CONSTANT fptype MKaon4mTwoMKaon2MProton2pMProton4 = MKaon4 - 2.*MKaon2*MProton2 + MProton4;
 MEM_CONSTANT fptype MKaon4mTwoMKaon2MPion2pMPion4 = MKaon4 - 2.*MKaon2*MPion2 + MPion4;
 MEM_CONSTANT fptype TwoMKaon2pTwoMProton2 = 2.*(MKaon2 + MProton2);
-MEM_CONSTANT fptype TwoMKaon2pTwoMPion2 = 2.*(MKaon2 + MPion2);*/
+MEM_CONSTANT fptype TwoMKaon2pTwoMPion2 = 2.*(MKaon2 + MPion2);
 
 
 // K*
@@ -93,7 +93,7 @@ public:
     const std::vector< std::vector<fptype> >& _KstarDotSpin,
   	const vector<std::string>& _varNames,
   	const std::vector<Variable*>& _amplitudeGooVars,
-  	const std::string& _psi_nS,
+  	const fptype& _psi_nS,
   	const fptype& _dRadB0, const fptype& _dRadKs);
 
   __host__ fptype integrate (fptype lo, fptype hi) const;
@@ -107,7 +107,7 @@ private:
   std::vector<Variable*> amplitudeGooVars;
   //map< TString,RooRealProxy* > amplitudeVarProxy_map;
   //std::map<std::string,Variable*> amplitudeVars_map;
-  std::string psi_nS;
+  fptype psi_nS;
   fptype dRadB0, dRadKs;
   //DEVICE SIDE
   thrust::device_vector<thrust::device_vector<fptype> > d_KstarDotSpin;
