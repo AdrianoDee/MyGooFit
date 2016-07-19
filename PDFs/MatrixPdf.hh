@@ -98,6 +98,7 @@ public:
 
   __host__ fptype integrate (fptype lo, fptype hi) const;
   __host__ virtual bool hasAnalyticIntegral () const {return true;}
+  EXEC_TARGET devcomplex<fptype> matrixElement(fptype helDmu);
 
 
 private:

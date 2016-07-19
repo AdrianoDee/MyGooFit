@@ -84,7 +84,7 @@ EXEC_TARGET devcomplex<fptype> BW(fptype mkp,fptype RMass, fptype RGamma, int Lm
 EXEC_TARGET devcomplex<fptype> H(fptype R, fptype helJ)
 {
 
-  devcomplex<fptype> nullo(0.0,0.0)
+  devcomplex<fptype> nullo(0.0,0.0);
   /*
   if ( R=="K*(892)" ) {
     if ( helJ=="m1")
@@ -136,7 +136,7 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     fptype QRMass = Qmom(RMass);
 
     //TComplex RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, D) * TMath::Power(PmKP/MomMass,LminMom) * BW(RMass, RGamma, LminR, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) * TMath::Power(QmKP/RMass,LminR);
-    devcomplex<fptype> RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, DB0) * POW(PmKP/MomMass,LminMom) * BW(fptype mkp,RMass, RGamma, LminR, DKs) * BlattWeisskopf(LminR, QmKP, QRMass, DKs) * POW(QmKP/mkp,LminR);
+    devcomplex<fptype> RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, DB0) * POW(PmKP/MomMass,LminMom) * BW(mkp,RMass, RGamma, LminR, DKs) * BlattWeisskopf(LminR, QmKP, QRMass, DKs) * POW(QmKP/mkp,LminR);
     //cout <<"BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
     //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) <<endl;
     //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
@@ -146,7 +146,7 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     return RFunc ;
 }
 
-EXEC_TARGET devcomplex<fptype> matrixElement(fptype helDmu)
+EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype helDmu)
 {
   /*
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
