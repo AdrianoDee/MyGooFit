@@ -83,45 +83,27 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::BW(fptype mkp,fptype RMass, fptype RGa
 
 }
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::H(fptype R, fptype helJ)
+EXEC_TARGET devcomplex<fptype> MatrixPdf::H(fptype* p,unsigned int* indices, fptype helJ,int iKStar)
 {
 
-  devcomplex<fptype> nullo(0.0,0.0);
-  /*
-  if ( R=="K*(892)" ) {
-    if ( helJ=="m1")
-        return a892m1 + TComplex::I()*b892m1 ;
-    else if ( helJ=="0" )
-      return a892z + TComplex::I()*b892z ;
-    else if ( helJ=="p1" )
-      return a892p1 + TComplex::I()*b892p1 ;
-    else {
-      cout <<"helJ = \"" <<helJ <<"\" not allowed for R = \"" <<R <<"\" in the H function at the moment. Returning 0" <<endl;
-      return 0.;
-    }
-  else {
-    cout <<"helJ = \"" <<helJ <<"\" not allowed for R = \"" <<R <<"\" in the H function at the moment. Returning 0" <<endl;
-    return 0.;
-  }
-  *//*
-  TString name_helJ = R+"_"+helJ;
-  RooRealProxy* a = amplitudeVarProxy_map.find("a"+name_helJ)->second ;
-  RooRealProxy* b = amplitudeVarProxy_map.find("b"+name_helJ)->second ;
-  if ( a ) {
-    if ( b )
-      return (RooRealProxy)(*a) * TComplex::Exp(TComplex::I()*(RooRealProxy)(*b)) ;
-    else {
-      cout <<"RooRealProxy = \"b"+name_helJ+"\" not found in amplitudeVarProxy_map. Returning 0" <<endl;
-      return 0.; }
-  } else {
-    cout <<"RooRealProxy = \"a"+name_helJ+"\" not found in amplitudeVarProxy_map. Returning 0" <<endl;
-    return 0.;
-  }
-*/
-return nullo;
+  devcomplex<fptype> result(0.0,0.0);
+  devcomplex<fptype> imUnit(0.0,1.0);
+
+  int whichOfThree = 0;
+
+  if(helJ==P1HEL) whichOfThree = 1;
+  if(helJ==M1HEL) whichOfThree = 2;
+
+  fptype a = p[indices[4+iKStar+whichOfThree*2];//1 nP 2 cJ 3 cKs 4 phi 5 a1 6 b1 .....
+  fptype b = p[indices[4+iKStar+whichOfThree*2+1];
+
+  result = exp(imUnit*b);
+
+  return a * result ;
+
 }
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::Wignerd_R(fptype spinR, fptype helJ)
+EXEC_TARGET devcomplex<fptype> MatrixPdf::Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
 {
   if (spinR==ZEROSPIN)
     return 1. ;
@@ -168,7 +150,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::Wignerd_R(fptype spinR, fptype helJ)
   }
 }
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::WignerD_J(fptype helJ, fptype helDmu, fptype angle)
+EXEC_TARGET devcomplex<fptype> MatrixPdf::WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ)
 {
   devcomplex<fptype> imUnit(0.0,1.0);
 
@@ -208,11 +190,16 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::WignerD_J(fptype helJ, fptype helDmu, 
 }
 
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::AngularTerm(fptype phi,fptype R, fptype spinR, fptype helJ, fptype helDmu)
+EXEC_TARGET devcomplex<fptype> MatrixPdf::AngularTerm(fptype* p,unsigned int* indices, fptype spinR, fptype helJ, fptype helDmu,int iKStar)
 {
+
+  fptype cJ = p[indices[1]];
+  fptype cKs = p[indices[2]];
+  fptype phi = p[indices[3]];
+
   //cout <<"\nAngularTerm for K* " <<R <<" and helDmu = " <<helDmu <<" and helJ = " <<helJ <<" is made of Wignerd_R(spinR, helJ) * cWignerD_J(helJ, helDmu, phi) = " <<Wignerd_R(spinR, helJ) <<" * " <<cWignerD_J( WignerD_J(helJ, helDmu, phi) ) <<endl;
   //cout <<"It is multiplied by H(R,helJ) = H(" <<R <<"," <<helJ <<") = " <<H(R,helJ) <<endl;
-  return H(R,helJ) * Wignerd_R(spinR, helJ) * conj( WignerD_J(helJ, helDmu, phi) ) ;
+  return H(p,indices,helJ,iKStar) * Wignerd_R(spinR, helJ) * conj( WignerD_J(helJ, helDmu, phi) ) ;
 
 }
 
@@ -234,7 +221,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::RFunction(fptype mkp,fptype RMass, fpt
     return RFunc ;
 }
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype helDmu)
+EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu)
 {
   /*
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
@@ -248,36 +235,35 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype helDmu)
   */
   devcomplex<fptype> matrixElement (0.0,0.0);
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
-  for (int iKstar_S=0; iKstar_S<(int)d_KstarDotSpin.size(); ++iKstar_S) {
-    fptype R = d_KstarDotSpin[iKstar_S*3];
-    fptype spin = FLOOR((R - FLOOR(R))*10.+.1);
-    fptype mass = FLOOR(R);
+  for (int iKStar=0; iKStar<numberOfKStar; iKStar += 3) {
+    fptype Mass = d_KStarVecto[iKStar*KSTARSIZE];
+    fptype Spin = d_KStarVecto[iKStar*KSTARSIZE+1];
+    fptype massGev = d_KStarVecto[iKStar*KSTARSIZE+2];
+    fptype gammaGev = d_KStarVecto[iKStar*KSTARSIZE+3];
+
+
+
     devcomplex<fptype> matrixElement_R(0.0,0.0);
-    if (spin==0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
-      matrixElement_R = RFunction(d_KstarDotSpin[iKstar_S*3+1], d_KstarDotSpin[iKstar_S*3+2], MBd, spin+1, spin, dRadB0, dRadKs) *
-	               AngularTerm(R, spin, ZEROHEL, helDmu) ;
-    } else { // for non-0 spin K*, third last argument = spin(K*) - spin(psi_nS) = spin.Atoi() - 1
-      matrixElement_R = RFunction(Kstar_spin[iKstar_S].second.first, Kstar_spin[iKstar_S].second.second, MBd, spin.Atoi()-1, spin.Atoi(), dRadB0, dRadKs) *
-	               ( AngularTerm(R, spin, M1HEL, helDmu) + AngularTerm(R, spin, ZEROHEL, helDmu) + AngularTerm(R, spin, P1HEL, helDmu) ) ;
+    if (spin==0 && Mass!=SKIP && Spin!=SKIP && massGev != SKIP && gammaGev != SKIP) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
+      matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin+1, Spin, dRadB0, dRadKs) *
+	               AngularTerm(p,indices,Spin, ZEROHEL, helDmu,iKStar) ;
+    } else if(Mass!=SKIP && Spin!=SKIP && massGev != SKIP && gammaGev != SKIP){ // for non-0 spin K*, third last argument = spin(K*) - spin(psi_nS) = spin.Atoi() - 1
+      matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin-1, Spin, dRadB0, dRadKs) *
+	               ( AngularTerm(p,indices,spin, M1HEL, helDmu,iKStar) + AngularTerm(p,indices, spin, ZEROHEL, helDmu,iKStar) + AngularTerm(p,indices,spin, P1HEL, helDmu,iKStar) ) ;
     }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
     //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
     matrixElement += matrixElement_R;
     //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
   }
-  return matrixElement ;
+  return matrixElement;
 
 }
 
-__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x,
-  Variable* _cJ, Variable* _cKs, Variable* _phi,
-  const std::vector<fptype> _KstarDotSpin,
-  const vector<std::string> _varNames,
-  const std::vector<Variable*> _amplitudeGooVars,
-  fptype _psi_nS,
-  const fptype& _dRadB0, const fptype& _dRadKs)
-  : GooPdf(_x, n),KstarDotSpin(_KstarDotSpin),
-  varNames(_varNames),amplitudeGooVars(_amplitudeGooVars),
+__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+  const std::vector<Variable*>& _amplitudeGooVars,const std::vector<fptype>& _KStarVector,
+  const fptype& _psi_nS,const fptype& _dRadB0, const fptype& _dRadKs)
+  : GooPdf(_x, n),KStarVector(_KStarVector),
   psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
 {
   std::vector<unsigned int> pindices;
@@ -289,7 +275,9 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x,
     pindices.push_back(registerParameter(*v));
   }
 
-  d_KstarDotSpin = _KstarDotSpin;
+  d_KStarVector = KStarVector;
+
+  numberOfKStar = ((int)_KStarVector.size())/3);
 
   GET_FUNCTION_ADDR(ptr_to_Matrix);
   GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
@@ -301,11 +289,19 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
 MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
-EXEC_TARGET fptype device_Matrix (fptype* point, fptype* p, unsigned int* indices) {
+EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
   fptype mkp = evt[indices[2 + indices[0]]];
-  fptype mean = p[indices[1]];
-  fptype sigma = p[indices[2]];
+  fptype cJ = p[indices[1]];
+  fptype cKs = p[indices[2]];
+  fptype phi = p[indices[3]];
+  thrust::device_vector<fptype> amplitudesA;
+  thrust::device_vector<fptype> amplitudesB;
+
+  for (int i = 4; i < numParams; i+=2) {
+    amplitudesA.push_back(p[indices[i]]);
+    amplitudesB.push_back(p[indices[i+1]]);
+  }
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
    fptype MPsi_nS = 0.;
@@ -320,16 +316,16 @@ EXEC_TARGET fptype device_Matrix (fptype* point, fptype* p, unsigned int* indice
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS))
     return 0.;
   else
-  return ME2() * PhiPHSP(mkp);
+  return ME2(mkp,p,indices) * PhiPHSP(mkp);
 
 
 }
 
-EXEC_TARGET fptype MatrixPdf::ME2()
+EXEC_TARGET fptype MatrixPdf::ME2(fptype mkp, fptype* p,unsigned int* indices)
 {
   //cout <<"\nME(\"m1\") + ME(\"p1\") = " <<ME("m1") <<" + " <<ME("p1") <<endl;
   //cout <<"ME(\"m1\").Rho2() + ME(\"p1\").Rho2() = " <<ME("m1").Rho2() <<" + " <<ME("p1").Rho2() <<endl;
-  return matrixElement(M1HEL).abs2() + matrixElement(P1HEL).abs2() ;
+  return matrixElement(mkp,p,indices,M1HEL).abs2() + matrixElement(mkp,p,indices,P1HEL).abs2() ;
 }
 
 //TComplex myPDF::PDF() const
@@ -339,7 +335,7 @@ EXEC_TARGET fptype MatrixPdf::PhiPHSP(fptype mkp)
     return Pmom(mkp) * Qmom(mkp) ;
 }
 
-EXEC_TARGET fptype Pmom(fptype mkp)
+EXEC_TARGET fptype MatrixPdf::Pmom(fptype mkp)
 {
 
     fptype mkp2 = mkp*mkp;
@@ -363,7 +359,7 @@ EXEC_TARGET fptype Pmom(fptype mkp)
 
 }
 
-EXEC_TARGET fptype Qmom(fptype mkp)
+EXEC_TARGET fptype MatrixPdf::Qmom(fptype mkp)
 {
 
     fptype mkp2 = mkp*mkp;
