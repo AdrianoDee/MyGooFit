@@ -4,8 +4,13 @@
 #include "TComplex.h"
 #include "TMath.h"
 
-#include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
+#include <thrust/device_vector.h>
+#include <thrust/copy.h>
+#include <thrust/fill.h>
+#include <thrust/sequence.h>
+#include <iostream>
+
 #include "devcomplex.hh"
 
 #define KSTARSIZE 7
