@@ -88,9 +88,9 @@ EXEC_TARGET fptype Pmom(fptype mkp)
     fptype mkp2 = mkp*mkp;
     fptype rootterm = 0;
 
-    if (psi_nS==PSIONE)
+    if (d_psi_nS[0]==1.0)
       rootterm = MJpsi4mTwoMJpsi2MBd2pMBd4 + mkp2*(mkp2 - TwoMJpsi2pTwoMBd2);
-    else if (psi_nS==PSITWO)
+    else if (pd_psi_nS[0]==2.0)
       rootterm = MPsi2S4mTwoMPsi2S2MBd2pMBd4 + mkp2*(mkp2 - TwoMPsi2S2pTwoMBd2);
     else
       //cout <<"psi_nS = " <<psi_nS <<" not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0" <<endl;
