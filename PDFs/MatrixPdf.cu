@@ -251,10 +251,10 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype mkp, fptype* p,un
 
     devcomplex<fptype> matrixElement_R(0.0,0.0);
     if (Spin==0.0 && Mass!=SKIP && Spin!=SKIP && massGev != SKIP && gammaGev != SKIP) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
-      matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin+1, Spin, dRadB0, dRadKs) *
+      matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin+1, Spin, &d_dRadB0, &d_dRadKs) *
 	               AngularTerm(p,indices,Spin, ZEROHEL, helDmu,iKStar) ;
     } else if(Mass!=SKIP && Spin!=SKIP && massGev != SKIP && gammaGev != SKIP){ // for non-0 spin K*, third last argument = spin(K*) - spin(psi_nS) = spin.Atoi() - 1
-      matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin-1, Spin, dRadB0, dRadKs) *
+      matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin-1, Spin, &d_dRadB0, &d_dRadKs) *
 	               ( AngularTerm(p,indices,Spin, M1HEL, helDmu,iKStar) + AngularTerm(p,indices, Spin, ZEROHEL, helDmu,iKStar) + AngularTerm(p,indices,Spin, P1HEL, helDmu,iKStar) ) ;
     }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
@@ -285,9 +285,9 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
    fptype MPsi_nS = 0.;
-   if (psi_nS==PSIONE)
+   if (&d_psi_nS==1.0)
      MPsi_nS = 3.096916;
-   else if (psi_nS==PSITWO)
+   else if (&d_psi_nS==2.0)
      MPsi_nS = 3.686109;
    else
       printf("PRINFT TO BE CONFIGURED = 0\n");
