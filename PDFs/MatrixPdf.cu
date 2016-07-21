@@ -263,30 +263,6 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype mkp, fptype* p,un
 
 }
 
-__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
-  const std::vector<Variable*>& _amplitudeGooVars,const std::vector<fptype>& _KStarVector,
-  const fptype& _psi_nS,const fptype& _dRadB0, const fptype& _dRadKs)
-  : GooPdf(_x, n),KStarVector(_KStarVector),
-  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
-{
-  std::vector<unsigned int> pindices;
-  pindices.push_back(registerParameter(_cJ));
-  pindices.push_back(registerParameter(_cKs));
-  pindices.push_back(registerParameter(_phi));
-
-  for (std::vector<Variable*>::iterator v = _amplitudeGooVars.begin(); v != _amplitudeGooVars.end(); ++v) {
-    pindices.push_back(registerParameter(*v));
-  }
-
-  d_KStarVector = KStarVector;
-
-  numberOfKStar = ((int)_KStarVector.size())/3);
-
-  GET_FUNCTION_ADDR(ptr_to_Matrix);
-  GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
-  GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
-  initialiseInt(pindices);
-}
 
 MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
@@ -393,4 +369,29 @@ EXEC_TARGET fptype device_Matrix_Bin (fptype* point, fptype* p, unsigned int* in
 
   return 0;
 
+}
+
+__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+  const std::vector<Variable*>& _amplitudeGooVars,const std::vector<fptype>& _KStarVector,
+  const fptype& _psi_nS,const fptype& _dRadB0, const fptype& _dRadKs)
+  : GooPdf(_x, n),KStarVector(_KStarVector),
+  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
+{
+  std::vector<unsigned int> pindices;
+  pindices.push_back(registerParameter(_cJ));
+  pindices.push_back(registerParameter(_cKs));
+  pindices.push_back(registerParameter(_phi));
+
+  for (std::vector<Variable*>::iterator v = _amplitudeGooVars.begin(); v != _amplitudeGooVars.end(); ++v) {
+    pindices.push_back(registerParameter(*v));
+  }
+
+  d_KStarVector = KStarVector;
+
+  numberOfKStar = ((int)_KStarVector.size())/3;
+
+  GET_FUNCTION_ADDR(ptr_to_Matrix);
+  GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
+  GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
+  initialiseInt(pindices);
 }
