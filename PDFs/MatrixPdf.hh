@@ -125,7 +125,8 @@ private:
   //map< TString,RooRealProxy* > amplitudeVarProxy_map;
   //std::map<std::string,Variable*> amplitudeVars_map;
   fptype* psi_nS;
-  fptype* dRadB0, dRadKs;
+  fptype* dRadB0;
+  fptype* dRadKs;
   int numberOfKStar;
 
 };
