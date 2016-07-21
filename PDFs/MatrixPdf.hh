@@ -126,8 +126,6 @@ private:
   //std::map<std::string,Variable*> amplitudeVars_map;
   fptype* psi_nS;
   fptype* dRadB0, dRadKs;
-  //DEVICE SIDE
-  thrust::device_vector<fptype> d_KStarVector;
   int numberOfKStar;
 
 };

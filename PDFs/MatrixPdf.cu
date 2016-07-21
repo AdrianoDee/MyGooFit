@@ -29,6 +29,10 @@ MEM_DEVICE fptype* d_psi_nS;
 MEM_DEVICE fptype* d_dRadB0;
 MEM_DEVICE fptype* d_dRadKs;
 
+MEM_DEVICE int* d_numberOfKStar;
+
+thrust::device_vector<fptype> d_KStarVector;
+
 /*
 EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu);
 
@@ -416,6 +420,9 @@ __host__ MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, 
   MEMCPY(d_dRadKs,dRadKs,sizeof(fptype),cudaMemcpyHostToDevice);
 
   numberOfKStar = ((int)_KStarVector.size())/3;
+
+  MEMCPY(d_numberOfKStar,&numberOfKStar,sizeof(int),cudaMemcpyHostToDevice);
+
 
   GET_FUNCTION_ADDR(ptr_to_Matrix);
   GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
