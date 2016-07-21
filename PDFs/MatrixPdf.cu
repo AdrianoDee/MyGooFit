@@ -25,11 +25,11 @@
 #define PSIONE 1000
 #define PSITWO 2000
 
-MEM_CONSTANT fptype* d_psi_nS;
-MEM_CONSTANT fptype* d_dRadB0;
-MEM_CONSTANT fptype* d_dRadKs;
+MEM_DEVICE fptype* d_psi_nS;
+MEM_DEVICE fptype* d_dRadB0;
+MEM_DEVICE fptype* d_dRadKs;
 
-MEM_CONSTANT int* d_numberOfKStar;
+MEM_DEVICE int* d_numberOfKStar;
 
 DEVICE_VECTOR<fptype> d_KStarVector;
 
@@ -396,7 +396,7 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
 __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
   const std::vector<Variable*>& _amplitudeGooVars,const thrust::host_vector<fptype>& _KStarVector,
-  const fptype& _psi_nS,const fptype& _dRadB0, const fptype& _dRadKs)
+  fptype& _psi_nS, fptype& _dRadB0, fptype& _dRadKs)
   : GooPdf(_x, n),KStarVector(_KStarVector),
   psi_nS(&_psi_nS),dRadB0(&_dRadB0),dRadKs(&_dRadKs)
 {
