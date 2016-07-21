@@ -405,8 +405,8 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Varia
   pindices.push_back(registerParameter(_cKs));
   pindices.push_back(registerParameter(_phi));
 
-  for (std::vector<Variable*>::iterator v = _amplitudeGooVars.begin(); v != _amplitudeGooVars.end(); ++v) {
-    pindices.push_back(registerParameter(*v));
+  for (int j = 0 ; j < (int)_amplitudeGooVars.size(); j++) {
+    pindices.push_back(registerParameter(_amplitudeGooVars[j]));
   }
 
   d_KStarVector = KStarVector;
