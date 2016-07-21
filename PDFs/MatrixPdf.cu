@@ -29,6 +29,7 @@ MEM_DEVICE fptype* d_psi_nS;
 MEM_DEVICE fptype* d_dRadB0;
 MEM_DEVICE fptype* d_dRadKs;
 
+/*
 EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu);
 
 EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma, fptype MomMass, int LminMom, int LminR, fptype DB0, fptype DKs);
@@ -43,7 +44,7 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp);
 EXEC_TARGET fptype ME2();
 
 EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs);
-EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ);
+EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ);*/
 
 
 EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
