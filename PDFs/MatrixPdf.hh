@@ -101,6 +101,7 @@ public:
   __host__ fptype integrate (fptype lo, fptype hi) const;
   __host__ virtual bool hasAnalyticIntegral () const {return true;}
 
+  /*
   EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu);
 
   EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma, fptype MomMass, int LminMom, int LminR, fptype DB0, fptype DKs);
@@ -115,7 +116,7 @@ public:
   EXEC_TARGET fptype ME2();
 
   EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs);
-  EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ);
+  EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ);*/
 
 
 private:

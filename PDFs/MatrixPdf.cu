@@ -29,8 +29,24 @@ MEM_DEVICE fptype* d_psi_nS;
 MEM_DEVICE fptype* d_dRadB0;
 MEM_DEVICE fptype* d_dRadKs;
 
+EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu);
 
-EXEC_TARGET fptype MatrixPdf::BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
+EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma, fptype MomMass, int LminMom, int LminR, fptype DB0, fptype DKs);
+EXEC_TARGET devcomplex<fptype> AngularTerm(fptype* p,unsigned int* indices, fptype spinR, fptype helJ, fptype helDmu,int iKStar);
+EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D);
+EXEC_TARGET fptype BWGamma(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D);
+EXEC_TARGET devcomplex<fptype> BW(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D);
+EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,int iKStar);
+EXEC_TARGET fptype Pmom(fptype mkp);
+EXEC_TARGET fptype Qmom(fptype mkp);
+EXEC_TARGET fptype PhiPHSP(fptype mkp);
+EXEC_TARGET fptype ME2();
+
+EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs);
+EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ);
+
+
+EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
 {
     fptype Dq = D*q;
     fptype Dq0 = D*q0;
@@ -61,7 +77,7 @@ EXEC_TARGET fptype MatrixPdf::BlattWeisskopf(int Lmin, fptype q, fptype q0, fpty
     }
 }
 
-EXEC_TARGET fptype MatrixPdf::BWGamma(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
+EXEC_TARGET fptype BWGamma(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
 {
     fptype QmKP = Qmom(mkp);
     fptype QRMass = Qmom(RMass);
@@ -73,7 +89,7 @@ EXEC_TARGET fptype MatrixPdf::BWGamma(fptype mkp,fptype RMass, fptype RGamma, in
 
 }
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::BW(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
+EXEC_TARGET devcomplex<fptype> BW(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
 {
 
     fptype num1term = RMass*RMass - mkp*mkp ;
@@ -86,7 +102,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::BW(fptype mkp,fptype RMass, fptype RGa
 
 }
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::H(fptype* p,unsigned int* indices, fptype helJ,int iKStar)
+EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,int iKStar)
 {
 
   devcomplex<fptype> result(0.0,0.0);
@@ -106,7 +122,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::H(fptype* p,unsigned int* indices, fpt
 
 }
 
-EXEC_TARGET fptype MatrixPdf::Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
+EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
 {
 
   if (spinR==ZEROSPIN)
@@ -154,7 +170,7 @@ EXEC_TARGET fptype MatrixPdf::Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
   }
 }
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ)
+EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ)
 {
 
   devcomplex<fptype> imUnit(0.0,1.0);
@@ -196,7 +212,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::WignerD_J(fptype helJ, fptype helDmu, 
 }
 
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::AngularTerm(fptype* p,unsigned int* indices, fptype spinR, fptype helJ, fptype helDmu,int iKStar)
+EXEC_TARGET devcomplex<fptype> AngularTerm(fptype* p,unsigned int* indices, fptype spinR, fptype helJ, fptype helDmu,int iKStar)
 {
 
   fptype cJ = p[indices[1]];
@@ -209,7 +225,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::AngularTerm(fptype* p,unsigned int* in
 
 }
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::RFunction(fptype mkp,fptype RMass, fptype RGamma, fptype MomMass, int LminMom, int LminR, fptype DB0, fptype DKs)
+EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma, fptype MomMass, int LminMom, int LminR, fptype DB0, fptype DKs)
 {
     fptype PmKP = Pmom(mkp);
     fptype PRMass = Pmom(RMass);
@@ -227,7 +243,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::RFunction(fptype mkp,fptype RMass, fpt
     return RFunc ;
 }
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu)
+EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu)
 {
   /*
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
@@ -296,12 +312,12 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS))
     return 0.;
   else
-  return MatrixPdf::ME2(mkp,p,indices) * PhiPHSP(mkp);
+  return ME2(mkp,p,indices) * PhiPHSP(mkp);
 
 
 }
 
-EXEC_TARGET fptype MatrixPdf::ME2(fptype mkp, fptype* p,unsigned int* indices)
+EXEC_TARGET fptype ME2(fptype mkp, fptype* p,unsigned int* indices)
 {
   //cout <<"\nME(\"m1\") + ME(\"p1\") = " <<ME("m1") <<" + " <<ME("p1") <<endl;
   //cout <<"ME(\"m1\").Rho2() + ME(\"p1\").Rho2() = " <<ME("m1").Rho2() <<" + " <<ME("p1").Rho2() <<endl;
@@ -310,12 +326,12 @@ EXEC_TARGET fptype MatrixPdf::ME2(fptype mkp, fptype* p,unsigned int* indices)
 
 //TComplex myPDF::PDF() const
 
-EXEC_TARGET fptype MatrixPdf::PhiPHSP(fptype mkp)
+EXEC_TARGET fptype PhiPHSP(fptype mkp)
 {
     return Pmom(mkp) * Qmom(mkp) ;
 }
 
-EXEC_TARGET fptype MatrixPdf::Pmom(fptype mkp)
+EXEC_TARGET fptype Pmom(fptype mkp)
 {
 
     fptype mkp2 = mkp*mkp;
@@ -339,7 +355,7 @@ EXEC_TARGET fptype MatrixPdf::Pmom(fptype mkp)
 
 }
 
-EXEC_TARGET fptype MatrixPdf::Qmom(fptype mkp)
+EXEC_TARGET fptype Qmom(fptype mkp)
 {
 
     fptype mkp2 = mkp*mkp;
@@ -377,7 +393,7 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
 MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
-__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+__host__ MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
   const std::vector<Variable*>& _amplitudeGooVars,const std::vector<fptype>& _KStarVector,
   const fptype& _psi_nS,const fptype& _dRadB0, const fptype& _dRadKs)
   : GooPdf(_x, n),KStarVector(_KStarVector),
