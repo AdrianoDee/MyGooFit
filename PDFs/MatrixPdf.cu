@@ -251,10 +251,10 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype mkp, fptype* p,un
 
     devcomplex<fptype> matrixElement_R(0.0,0.0);
     if (Spin==0.0 && Mass!=SKIP && Spin!=SKIP && massGev != SKIP && gammaGev != SKIP) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
-      matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin+1, Spin, &d_dRadB0, &d_dRadKs) *
+      matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin+1, Spin, d_dRadB0[0], d_dRadKs[0]) *
 	               AngularTerm(p,indices,Spin, ZEROHEL, helDmu,iKStar) ;
     } else if(Mass!=SKIP && Spin!=SKIP && massGev != SKIP && gammaGev != SKIP){ // for non-0 spin K*, third last argument = spin(K*) - spin(psi_nS) = spin.Atoi() - 1
-      matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin-1, Spin, &d_dRadB0, &d_dRadKs) *
+      matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin-1, Spin, d_dRadB0[0], d_dRadKs[0]) *
 	               ( AngularTerm(p,indices,Spin, M1HEL, helDmu,iKStar) + AngularTerm(p,indices, Spin, ZEROHEL, helDmu,iKStar) + AngularTerm(p,indices,Spin, P1HEL, helDmu,iKStar) ) ;
     }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
