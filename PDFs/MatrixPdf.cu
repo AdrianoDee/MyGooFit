@@ -31,7 +31,7 @@ MEM_DEVICE fptype* d_dRadKs;
 
 MEM_DEVICE int* d_numberOfKStar;
 
-thrust::device_vector<fptype> d_KStarVector;
+DEVICE_VECTOR<fptype> d_KStarVector;
 
 /*
 EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu);
