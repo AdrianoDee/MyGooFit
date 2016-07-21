@@ -306,7 +306,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int*
   devcomplex<fptype> matrixElement (0.0,0.0);
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
   for (int iKStar=0; iKStar<(*d_numberOfKStar); iKStar += 3) {
-    fptype Mass = d_KStarVector[iKStar*KSTARSIZE];
+    //fptype Mass = d_KStarVector[iKStar*KSTARSIZE];
     fptype Spin = d_KStarVector[iKStar*KSTARSIZE+1];
     //fptype massGev = d_KStarVector[iKStar*KSTARSIZE+2];
     fptype gammaGev = d_KStarVector[iKStar*KSTARSIZE+3];
@@ -314,10 +314,10 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int*
 
 
     devcomplex<fptype> matrixElement_R(0.0,0.0);
-    if (Spin==0.0 && Mass!=SKIP && Spin!=SKIP && massGev != SKIP && gammaGev != SKIP) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
+    if (Spin==0.0 && d_KStarVector[iKStar*KSTARSIZE]!=SKIP && Spin!=SKIP && d_KStarVector[iKStar*KSTARSIZE+2] != SKIP && gammaGev != SKIP) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
       matrixElement_R = RFunction(mkp,d_KStarVector[iKStar*KSTARSIZE+2],gammaGev, MBd, Spin+1, Spin, d_dRadB0[0], d_dRadKs[0]) *
 	               AngularTerm(p,indices,Spin, ZEROHEL, helDmu,iKStar) ;
-    } else if(Mass!=SKIP && Spin!=SKIP && massGev != SKIP && gammaGev != SKIP){ // for non-0 spin K*, third last argument = spin(K*) - spin(psi_nS) = spin.Atoi() - 1
+    } else if(d_KStarVector[iKStar*KSTARSIZE]!=SKIP && Spin!=SKIP && d_KStarVector[iKStar*KSTARSIZE+2] != SKIP && gammaGev != SKIP){ // for non-0 spin K*, third last argument = spin(K*) - spin(psi_nS) = spin.Atoi() - 1
       matrixElement_R = RFunction(mkp,d_KStarVector[iKStar*KSTARSIZE+2],gammaGev, MBd, Spin-1, Spin, d_dRadB0[0], d_dRadKs[0]) *
 	               ( AngularTerm(p,indices,Spin, M1HEL, helDmu,iKStar) + AngularTerm(p,indices, Spin, ZEROHEL, helDmu,iKStar) + AngularTerm(p,indices,Spin, P1HEL, helDmu,iKStar) ) ;
     }
