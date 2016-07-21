@@ -25,11 +25,11 @@
 #define PSIONE 1000
 #define PSITWO 2000
 
-MEM_DEVICE fptype* d_psi_nS;
-MEM_DEVICE fptype* d_dRadB0;
-MEM_DEVICE fptype* d_dRadKs;
+MEM_CONSTANT fptype* d_psi_nS;
+MEM_CONSTANT fptype* d_dRadB0;
+MEM_CONSTANT fptype* d_dRadKs;
 
-MEM_DEVICE int* d_numberOfKStar;
+MEM_CONSTANT int* d_numberOfKStar;
 
 DEVICE_VECTOR<fptype> d_KStarVector;
 

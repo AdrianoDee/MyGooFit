@@ -124,8 +124,8 @@ private:
   thrust::host_vector< fptype > KStarVector;
   //map< TString,RooRealProxy* > amplitudeVarProxy_map;
   //std::map<std::string,Variable*> amplitudeVars_map;
-  fptype* psi_nS;
-  fptype* dRadB0, dRadKs;
+  const fptype* psi_nS;
+  const fptype* dRadB0, dRadKs;
   int numberOfKStar;
 
 };
