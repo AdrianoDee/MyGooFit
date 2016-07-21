@@ -262,7 +262,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int*
   */
   devcomplex<fptype> matrixElement (0.0,0.0);
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
-  for (int iKStar=0; iKStar<numberOfKStar; iKStar += 3) {
+  for (int iKStar=0; iKStar<(*d_numberOfKStar); iKStar += 3) {
     fptype Mass = d_KStarVector[iKStar*KSTARSIZE];
     fptype Spin = d_KStarVector[iKStar*KSTARSIZE+1];
     fptype massGev = d_KStarVector[iKStar*KSTARSIZE+2];
