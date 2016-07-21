@@ -82,6 +82,48 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
     }
 }
 
+EXEC_TARGET fptype Pmom(fptype mkp)
+{
+
+    fptype mkp2 = mkp*mkp;
+    fptype rootterm = 0;
+
+    if (psi_nS==PSIONE)
+      rootterm = MJpsi4mTwoMJpsi2MBd2pMBd4 + mkp2*(mkp2 - TwoMJpsi2pTwoMBd2);
+    else if (psi_nS==PSITWO)
+      rootterm = MPsi2S4mTwoMPsi2S2MBd2pMBd4 + mkp2*(mkp2 - TwoMPsi2S2pTwoMBd2);
+    else
+      //cout <<"psi_nS = " <<psi_nS <<" not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0" <<endl;
+      printf("psi_nS = %.2f not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0\n",psi_nS);
+
+    //cout <<"\nrootterm for psi_nS = " <<psi_nS <<" and mkp = " <<mkp <<": " <<rootterm <<endl;
+    if (rootterm > 0)
+        return InvTwoMBd * SQRT(rootterm);
+    else { //cout <<"WARNING! In \"Pmom\" function: rootterm (" <<rootterm <<") <= 0 for mkp = " <<mkp <<" and psi_nS = " <<psi_nS <<" -> returning 0" <<endl;
+           printf("WARNING! In \"Pmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f and psi_nS = %.2f  -> returning 0 \n",rootterm,mkp,psi_nS);
+           return 0.;
+    }
+
+}
+
+EXEC_TARGET fptype Qmom(fptype mkp)
+{
+
+    fptype mkp2 = mkp*mkp;
+    /*
+    fptype rootterm = MKaon4mTwoMKaon2MProton2pMProton4 + mkp2*(mkp2 - TwoMKaon2pTwoMProton2) ;
+    */
+    fptype rootterm = MKaon4mTwoMKaon2MPion2pMPion4 + mkp2*(mkp2 - TwoMKaon2pTwoMPion2) ;
+    if (rootterm > 0)
+        return 0.5*SQRT(rootterm)/mkp;
+    else { //cout <<"WARNING! In \"Qmom\" function: rootterm <= 0 for mkp = " <<mkp <<" -> returning 0" <<endl;
+            printf("WARNING! In \"Qmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f  -> returning 0 \n",rootterm,mkp);
+
+        return 0.;
+    }
+
+}
+
 EXEC_TARGET fptype BWGamma(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
 {
     fptype QmKP = Qmom(mkp);
@@ -336,47 +378,7 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp)
     return Pmom(mkp) * Qmom(mkp) ;
 }
 
-EXEC_TARGET fptype Pmom(fptype mkp)
-{
 
-    fptype mkp2 = mkp*mkp;
-    fptype rootterm = 0;
-
-    if (psi_nS==PSIONE)
-      rootterm = MJpsi4mTwoMJpsi2MBd2pMBd4 + mkp2*(mkp2 - TwoMJpsi2pTwoMBd2);
-    else if (psi_nS==PSITWO)
-      rootterm = MPsi2S4mTwoMPsi2S2MBd2pMBd4 + mkp2*(mkp2 - TwoMPsi2S2pTwoMBd2);
-    else
-      //cout <<"psi_nS = " <<psi_nS <<" not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0" <<endl;
-      printf("psi_nS = %.2f not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0\n",psi_nS);
-
-    //cout <<"\nrootterm for psi_nS = " <<psi_nS <<" and mkp = " <<mkp <<": " <<rootterm <<endl;
-    if (rootterm > 0)
-        return InvTwoMBd * SQRT(rootterm);
-    else { //cout <<"WARNING! In \"Pmom\" function: rootterm (" <<rootterm <<") <= 0 for mkp = " <<mkp <<" and psi_nS = " <<psi_nS <<" -> returning 0" <<endl;
-           printf("WARNING! In \"Pmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f and psi_nS = %.2f  -> returning 0 \n",rootterm,mkp,psi_nS);
-           return 0.;
-    }
-
-}
-
-EXEC_TARGET fptype Qmom(fptype mkp)
-{
-
-    fptype mkp2 = mkp*mkp;
-    /*
-    fptype rootterm = MKaon4mTwoMKaon2MProton2pMProton4 + mkp2*(mkp2 - TwoMKaon2pTwoMProton2) ;
-    */
-    fptype rootterm = MKaon4mTwoMKaon2MPion2pMPion4 + mkp2*(mkp2 - TwoMKaon2pTwoMPion2) ;
-    if (rootterm > 0)
-        return 0.5*SQRT(rootterm)/mkp;
-    else { //cout <<"WARNING! In \"Qmom\" function: rootterm <= 0 for mkp = " <<mkp <<" -> returning 0" <<endl;
-            printf("WARNING! In \"Qmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f  -> returning 0 \n",rootterm,mkp);
-
-        return 0.;
-    }
-
-}
 
 
 
