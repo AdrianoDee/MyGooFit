@@ -98,7 +98,7 @@ class MatrixPdf : public GooPdf {
 public:
   MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
   	const std::vector<Variable*>& _amplitudeGooVars,
-    const thrust::host_vector<fptype>& _KStarVector,
+    const std::host_vector<fptype>& _KStarVector,
   	fptype* _psi_nS,
   	fptype* _dRadB0, fptype* _dRadKs);
 
@@ -125,7 +125,7 @@ public:
 
 private:
   //HOST SIDE
-  thrust::host_vector< fptype > KStarVector;
+  std::host_vector< fptype > KStarVector;
   //map< TString,RooRealProxy* > amplitudeVarProxy_map;
   //std::map<std::string,Variable*> amplitudeVars_map;
   fptype* psi_nS;
