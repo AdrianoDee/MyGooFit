@@ -252,7 +252,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype mkp, fptype* p,un
 	               AngularTerm(p,indices,Spin, ZEROHEL, helDmu,iKStar) ;
     } else if(Mass!=SKIP && Spin!=SKIP && massGev != SKIP && gammaGev != SKIP){ // for non-0 spin K*, third last argument = spin(K*) - spin(psi_nS) = spin.Atoi() - 1
       matrixElement_R = RFunction(mkp,massGev,gammaGev, MBd, Spin-1, Spin, dRadB0, dRadKs) *
-	               ( AngularTerm(p,indices,spin, M1HEL, helDmu,iKStar) + AngularTerm(p,indices, spin, ZEROHEL, helDmu,iKStar) + AngularTerm(p,indices,spin, P1HEL, helDmu,iKStar) ) ;
+	               ( AngularTerm(p,indices,Spin, M1HEL, helDmu,iKStar) + AngularTerm(p,indices, Spin, ZEROHEL, helDmu,iKStar) + AngularTerm(p,indices,Spin, P1HEL, helDmu,iKStar) ) ;
     }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
     //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
@@ -274,7 +274,7 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Varia
   pindices.push_back(registerParameter(_cKs));
   pindices.push_back(registerParameter(_phi));
 
-  for (vector<Variable*>::iterator  = _amplitudeGooVars.begin(); v != _amplitudeGooVars.end(); ++v) {
+  for (std::vector<Variable*>::iterator v = _amplitudeGooVars.begin(); v != _amplitudeGooVars.end(); ++v) {
     pindices.push_back(registerParameter(*v));
   }
 
