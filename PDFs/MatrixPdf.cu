@@ -396,7 +396,7 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
 MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
 __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
-  const std::vector<Variable*>& _amplitudeGooVars,const std::host_vector<fptype>& _KStarVector,
+  const std::vector<Variable*>& _amplitudeGooVars,const std::vector<fptype>& _KStarVector,
   fptype* _psi_nS, fptype* _dRadB0, fptype* _dRadKs)
   : GooPdf(_x, n),KStarVector(_KStarVector),
   psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
