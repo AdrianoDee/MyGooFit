@@ -285,9 +285,9 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
    fptype MPsi_nS = 0.;
-   if (&d_psi_nS==1.0)
+   if (d_psi_nS[0]==1.0)
      MPsi_nS = 3.096916;
-   else if (&d_psi_nS==2.0)
+   else if (d_psi_nS[0]==2.0)
      MPsi_nS = 3.686109;
    else
       printf("PRINFT TO BE CONFIGURED = 0\n");
@@ -296,7 +296,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS))
     return 0.;
   else
-  return ME2(mkp,p,indices) * PhiPHSP(mkp);
+  return MatrixPdf::ME2(mkp,p,indices) * PhiPHSP(mkp);
 
 
 }
