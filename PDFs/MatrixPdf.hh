@@ -121,7 +121,7 @@ public:
 
 private:
   //HOST SIDE
-  std::vector< fptype > KStarVector;
+  thrust::host_vector< fptype > KStarVector;
   //map< TString,RooRealProxy* > amplitudeVarProxy_map;
   //std::map<std::string,Variable*> amplitudeVars_map;
   fptype* psi_nS;
