@@ -98,8 +98,8 @@ class MatrixPdf : public GooPdf {
 public:
   MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
   	const std::vector<Variable*>& _amplitudeGooVars,
-    const std::host_vector<fptype>& _KStarVector,
-  	fptype* _psi_nS,
+    const std::vector<fptype>& _KStarVector,
+    fptype* _psi_nS,
   	fptype* _dRadB0, fptype* _dRadKs);
 
   __host__ fptype integrate (fptype lo, fptype hi) const;
