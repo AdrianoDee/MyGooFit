@@ -263,11 +263,6 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype mkp, fptype* p,un
 
 }
 
-
-MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
-MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
-MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
-
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
   fptype mkp = evt[indices[2 + indices[0]]];
@@ -370,6 +365,11 @@ EXEC_TARGET fptype device_Matrix_Bin (fptype* point, fptype* p, unsigned int* in
   return 0;
 
 }
+
+
+MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
+MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
+MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
 __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
   const std::vector<Variable*>& _amplitudeGooVars,const std::vector<fptype>& _KStarVector,
