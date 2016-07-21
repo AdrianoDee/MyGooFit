@@ -94,7 +94,7 @@ class MatrixPdf : public GooPdf {
 public:
   MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
   	const std::vector<Variable*>& _amplitudeGooVars,
-    const std::vector<fptype>& _KStarVector,
+    const thrust::host_vector<fptype>& _KStarVector,
   	const fptype& _psi_nS,
   	const fptype& _dRadB0, const fptype& _dRadKs);
 
