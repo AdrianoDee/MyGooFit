@@ -329,6 +329,18 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int*
 
 }
 
+EXEC_TARGET fptype ME2(fptype mkp, fptype* p,unsigned int* indices)
+{
+  //cout <<"\nME(\"m1\") + ME(\"p1\") = " <<ME("m1") <<" + " <<ME("p1") <<endl;
+  //cout <<"ME(\"m1\").Rho2() + ME(\"p1\").Rho2() = " <<ME("m1").Rho2() <<" + " <<ME("p1").Rho2() <<endl;
+  return matrixElement(mkp,p,indices,M1HEL).abs2() + matrixElement(mkp,p,indices,P1HEL).abs2() ;
+}
+
+EXEC_TARGET fptype PhiPHSP(fptype mkp)
+{
+    return Pmom(mkp) * Qmom(mkp) ;
+}
+
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
   int numParams = indices[0];
@@ -363,24 +375,6 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
 
 }
-
-EXEC_TARGET fptype ME2(fptype mkp, fptype* p,unsigned int* indices)
-{
-  //cout <<"\nME(\"m1\") + ME(\"p1\") = " <<ME("m1") <<" + " <<ME("p1") <<endl;
-  //cout <<"ME(\"m1\").Rho2() + ME(\"p1\").Rho2() = " <<ME("m1").Rho2() <<" + " <<ME("p1").Rho2() <<endl;
-  return matrixElement(mkp,p,indices,M1HEL).abs2() + matrixElement(mkp,p,indices,P1HEL).abs2() ;
-}
-
-//TComplex myPDF::PDF() const
-
-EXEC_TARGET fptype PhiPHSP(fptype mkp)
-{
-    return Pmom(mkp) * Qmom(mkp) ;
-}
-
-
-
-
 
 
 EXEC_TARGET fptype device_Matrix_Point (fptype* point, fptype* p, unsigned int* indices) {
