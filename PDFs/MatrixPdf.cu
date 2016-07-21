@@ -94,8 +94,8 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::H(fptype* p,unsigned int* indices, fpt
   if(helJ==P1HEL) whichOfThree = 1;
   if(helJ==M1HEL) whichOfThree = 2;
 
-  fptype a = p[indices[4+iKStar+whichOfThree*2];//1 nP 2 cJ 3 cKs 4 phi 5 a1 6 b1 .....
-  fptype b = p[indices[4+iKStar+whichOfThree*2+1];
+  fptype a = p[indices[4+iKStar+whichOfThree*2]];//1 nP 2 cJ 3 cKs 4 phi 5 a1 6 b1 .....
+  fptype b = p[indices[4+iKStar+whichOfThree*2+1]];
 
   result = exp(imUnit*b);
 
@@ -103,8 +103,9 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::H(fptype* p,unsigned int* indices, fpt
 
 }
 
-EXEC_TARGET devcomplex<fptype> MatrixPdf::Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
+EXEC_TARGET fptype MatrixPdf::Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
 {
+
   if (spinR==ZEROSPIN)
     return 1. ;
   else if (spinR==ONESPIN)
