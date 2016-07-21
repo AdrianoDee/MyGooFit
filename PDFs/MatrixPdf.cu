@@ -153,9 +153,9 @@ EXEC_TARGET fptype MatrixPdf::Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
 
 EXEC_TARGET devcomplex<fptype> MatrixPdf::WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ)
 {
+
   devcomplex<fptype> imUnit(0.0,1.0);
   devcomplex<fptype> nullo(0.0,0.0);
-
 
   if (helJ==M1HEL) {
     if (helDmu==M1HEL)
@@ -168,9 +168,9 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::WignerD_J(fptype helJ, fptype helDmu, 
       return nullo; }
   } else if (helJ==ZEROHEL) {
     if (helDmu==M1HEL)
-      return (-1.0)*(SQRT(1. - POW(cJ,2))/root2);
+      return devcomplex<fptype>((-1.0)*(SQRT(1. - POW(cJ,2))/root2),0.0);
     else if (helDmu==P1HEL)
-      return (SQRT(1. - POW(cJ,2))/root2);
+      return devcomplex<fptype>((SQRT(1. - POW(cJ,2))/root2),0.0);
     else {
       printf("PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
@@ -202,7 +202,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::AngularTerm(fptype* p,unsigned int* in
 
   //cout <<"\nAngularTerm for K* " <<R <<" and helDmu = " <<helDmu <<" and helJ = " <<helJ <<" is made of Wignerd_R(spinR, helJ) * cWignerD_J(helJ, helDmu, phi) = " <<Wignerd_R(spinR, helJ) <<" * " <<cWignerD_J( WignerD_J(helJ, helDmu, phi) ) <<endl;
   //cout <<"It is multiplied by H(R,helJ) = H(" <<R <<"," <<helJ <<") = " <<H(R,helJ) <<endl;
-  return H(p,indices,helJ,iKStar) * Wignerd_R(spinR, helJ) * conj( WignerD_J(helJ, helDmu, phi) ) ;
+  return H(p,indices,helJ,iKStar) * Wignerd_R(spinR, helJ,cKs) * conj( WignerD_J(helJ, helDmu, phi,cJ) ) ;
 
 }
 

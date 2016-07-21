@@ -115,7 +115,7 @@ public:
   EXEC_TARGET fptype ME2();
 
   EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs);
-  EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ)
+  EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ);
 
 
 private:
