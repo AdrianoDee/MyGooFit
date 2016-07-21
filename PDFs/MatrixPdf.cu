@@ -25,6 +25,9 @@
 #define PSIONE 1000
 #define PSITWO 2000
 
+MEM_DEVICE fptype* d_psi_nS;
+MEM_DEVICE fptype* d_dRadB0;
+MEM_DEVICE fptype* d_dRadKs;
 
 
 EXEC_TARGET fptype MatrixPdf::BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
@@ -265,17 +268,20 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::matrixElement(fptype mkp, fptype* p,un
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
+  int numParams = indices[0];
+
   fptype mkp = evt[indices[2 + indices[0]]];
   fptype cJ = p[indices[1]];
   fptype cKs = p[indices[2]];
   fptype phi = p[indices[3]];
+  /*
   thrust::device_vector<fptype> amplitudesA;
   thrust::device_vector<fptype> amplitudesB;
 
   for (int i = 4; i < numParams; i+=2) {
     amplitudesA.push_back(p[indices[i]]);
     amplitudesB.push_back(p[indices[i+1]]);
-  }
+  }*/
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
    fptype MPsi_nS = 0.;
@@ -375,7 +381,7 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Varia
   const std::vector<Variable*>& _amplitudeGooVars,const std::vector<fptype>& _KStarVector,
   const fptype& _psi_nS,const fptype& _dRadB0, const fptype& _dRadKs)
   : GooPdf(_x, n),KStarVector(_KStarVector),
-  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
+  psi_nS(&_psi_nS),dRadB0(&_dRadB0),dRadKs(&_dRadKs)
 {
   std::vector<unsigned int> pindices;
   pindices.push_back(registerParameter(_cJ));
@@ -387,6 +393,10 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Varia
   }
 
   d_KStarVector = KStarVector;
+
+  MEMCPY(d_psi_nS,psi_nS,sizeof(fptype),cudaMemcpyHostToDevice);
+  MEMCPY(d_dRadB0,dRadB0,sizeof(fptype),cudaMemcpyHostToDevice);
+  MEMCPY(d_dRadKs,dRadKs,sizeof(fptype),cudaMemcpyHostToDevice);
 
   numberOfKStar = ((int)_KStarVector.size())/3;
 
