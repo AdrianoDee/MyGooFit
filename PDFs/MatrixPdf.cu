@@ -398,7 +398,7 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Varia
   const std::vector<Variable*>& _amplitudeGooVars,const thrust::host_vector<fptype>& _KStarVector,
   fptype& _psi_nS, fptype& _dRadB0, fptype& _dRadKs)
   : GooPdf(_x, n),KStarVector(_KStarVector),
-  psi_nS(&_psi_nS),dRadB0(&_dRadB0),dRadKs(&_dRadKs)
+  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
 {
   std::vector<unsigned int> pindices;
   pindices.push_back(registerParameter(_cJ));
