@@ -159,9 +159,9 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::WignerD_J(fptype helJ, fptype helDmu, 
 
   if (helJ==M1HEL) {
     if (helDmu==M1HEL)
-      return +((+1. + cJ)*exp(imUnit*angle))/2.;
+      return ((+1. + cJ)*exp(imUnit*angle))*.5;
     else if (helDmu==P1HEL)
-      return (-1.0)*((-1. + cJ)*exp(imUnit*angle))/2.;
+      return (-1.0)*((-1. + cJ)*exp(imUnit*angle))*.5;
     else {
       printf("PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
@@ -170,7 +170,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::WignerD_J(fptype helJ, fptype helDmu, 
     if (helDmu==M1HEL)
       return (-1.0)*(SQRT(1. - POW(cJ,2))/root2);
     else if (helDmu==P1HEL)
-      return +(SQRT(1. - POW(cJ,2))/root2);
+      return (SQRT(1. - POW(cJ,2))/root2);
     else {
       printf("PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
@@ -179,7 +179,7 @@ EXEC_TARGET devcomplex<fptype> MatrixPdf::WignerD_J(fptype helJ, fptype helDmu, 
     if (helDmu==M1HEL)
       return (-1.0)*(-1. + cJ)/(2.*exp(imUnit*angle));
     else if (helDmu==P1HEL)
-      return +(+1. + cJ)/(2.*exp(imUnit*angle));
+      return (+1. + cJ)/(2.*exp(imUnit*angle));
     else {
       printf("PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
