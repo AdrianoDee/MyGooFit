@@ -32,7 +32,7 @@ MEM_DEVICE fptype* d_dRadKs;
 
 MEM_DEVICE int* d_numberOfKStar;
 
-DEVICE_VECTOR<fptype> d_KStarVector;
+MEM_DEVICE fptype* d_KStarVector;
 
 /*
 EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu);
@@ -412,14 +412,21 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Varia
 
   d_KStarVector = KStarVector;
 
+  gooMalloc((void**) d_psi_nS,sizeof(fptype));
+  gooMalloc((void**) d_dRadB0,sizeof(fptype));
+  gooMalloc((void**) d_dRadKs,sizeof(fptype));
+
   MEMCPY(d_psi_nS,psi_nS,sizeof(fptype),cudaMemcpyHostToDevice);
   MEMCPY(d_dRadB0,dRadB0,sizeof(fptype),cudaMemcpyHostToDevice);
   MEMCPY(d_dRadKs,dRadKs,sizeof(fptype),cudaMemcpyHostToDevice);
 
-  numberOfKStar = ((int)_KStarVector.size())/3;
+  numberOfKStar = ((int)KStarVector.size())/3;
 
+  gooMalloc((void**) d_numberOfKStar,sizeof(int));
   MEMCPY(d_numberOfKStar,&numberOfKStar,sizeof(int),cudaMemcpyHostToDevice);
 
+  gooMalloc((void**) d_KStarVector,sizeof(fptype)*(int)KStarVector.size());
+  MEMCPY(d_KStarVector,&KStarVector[0],sizeof(int)*KStarVector.size(),cudaMemcpyHostToDevice);
 
   GET_FUNCTION_ADDR(ptr_to_Matrix);
   GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
