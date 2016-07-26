@@ -105,7 +105,6 @@ public:
   	fptype* _dRadB0, fptype* _dRadKs);
 
   __host__ fptype integrate (fptype lo, fptype hi) const;
-  __host__ virtual bool hasAnalyticIntegral () const {return true;}
 
   /*
   EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu);
