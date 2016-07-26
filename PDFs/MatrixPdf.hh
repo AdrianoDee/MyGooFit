@@ -16,6 +16,18 @@
 #define KSTARSIZE 7
 #define SKIP -12
 
+#define M1HEL 123
+#define P1HEL 234
+#define ZEROHEL 0101
+
+#define ZEROSPIN 0001
+#define ONESPIN 1001
+#define TWOSPIN 2001
+#define THREESPIN 3001
+
+#define PSIONE 1000
+#define PSITWO 2000
+
 /*
 #define ZERO 0
 #define M1 1
