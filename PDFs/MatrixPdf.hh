@@ -1,17 +1,7 @@
 #ifndef MATRIX_PDF_HH
 #define MATRIX_PDF_HH
 
-#include "TComplex.h"
-#include "TMath.h"
-
-#include <thrust/host_vector.h>
-#include <thrust/device_vector.h>
-#include <thrust/copy.h>
-#include <thrust/fill.h>
-#include <thrust/sequence.h>
-#include <iostream>
-
-#include "devcomplex.hh"
+#include "GooPdf.hh"
 
 #define KSTARSIZE 7
 #define SKIP -12
