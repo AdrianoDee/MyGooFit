@@ -13,19 +13,6 @@
 #include "MatrixPdf.hh"
 #include "devcomplex.hh"
 
-
-#define M1HEL 123
-#define P1HEL 234
-#define ZEROHEL 0101
-
-#define ZEROSPIN 0001
-#define ONESPIN 1001
-#define TWOSPIN 2001
-#define THREESPIN 3001
-
-#define PSIONE 1000
-#define PSITWO 2000
-
 MEM_CONSTANT fptype* d_psi_nS;
 MEM_CONSTANT fptype* d_dRadB0;
 MEM_CONSTANT fptype* d_dRadKs;
@@ -377,7 +364,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
 }
 
-
+/*
 EXEC_TARGET fptype device_Matrix_Point (fptype* point, fptype* p, unsigned int* indices) {
 
   return 0;
@@ -388,12 +375,12 @@ EXEC_TARGET fptype device_Matrix_Bin (fptype* point, fptype* p, unsigned int* in
 
   return 0;
 
-}
+}*/
 
 
 MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
-MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
-MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
+//MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
+//MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
 __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
   const std::vector<Variable*>& _amplitudeGooVars,const std::vector<fptype>& _KStarVector,
@@ -430,7 +417,7 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Varia
   MEMCPY(d_KStarVector,&KStarVector[0],sizeof(int)*KStarVector.size(),cudaMemcpyHostToDevice);
 
   GET_FUNCTION_ADDR(ptr_to_Matrix);
-  GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
-  GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
-  initialiseInt(pindices);
+  //GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
+  //GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
+  initialise(pindices);
 }

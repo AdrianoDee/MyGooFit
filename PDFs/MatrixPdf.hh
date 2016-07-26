@@ -104,7 +104,7 @@ public:
     fptype* _psi_nS,
   	fptype* _dRadB0, fptype* _dRadKs);
 
-  __host__ fptype integrate (fptype lo, fptype hi) const;
+  //__host__ fptype integrate (fptype lo, fptype hi) const;
 
   /*
   EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu);
