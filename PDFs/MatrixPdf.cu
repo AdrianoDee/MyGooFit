@@ -331,7 +331,7 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp)
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
-  printf("Device Matrix \n");
+
 
   int numParams = indices[0];
 
@@ -360,8 +360,9 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS))
     return 0.;
-  else
-  return ME2(mkp,p,indices) * PhiPHSP(mkp);
+  else{
+      printf("Device Matrix mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,cJ,cKs,phi);
+  return ME2(mkp,p,indices) * PhiPHSP(mkp);}
 
 
 }
