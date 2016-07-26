@@ -123,5 +123,21 @@ typedef float fptype;
 #define POW powf
 #endif
 
+EXEC_TARGET void devicebug(int line,char* filename){
+
+  #ifdef CUDADEBUGGING
+  printf("Debugging on line %d in file %s \n",line,filename);
+  #endif
+
+}
+
+ __host__ void hostdebug(int line,char* filename){
+
+  #ifdef CUDADEBUGGING
+  printf("Debugging on line %d in file %s \n",line,filename);
+  #endif
+
+}
+
 
 #endif
