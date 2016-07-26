@@ -6,6 +6,7 @@ PdfBase* pdfPointer;
 FitManager* currGlue = 0;
 int numPars = 0;
 vector<Variable*> vars;
+int fitMan = 0;
 
 void specialTddpPrint (double fun);
 
@@ -22,9 +23,10 @@ FitManager::~FitManager () {
 }
 
 void FitManager::setupMinuit () {
+  printf("SetUp Minuit %d \n",fitMan); fitMan++;
   vars.clear();
   pdfPointer->getParameters(vars);
-
+  printf("SetUp Minuit %d \n",fitMan); fitMan++;
   numPars = vars.size();
   if (minuit) delete minuit;
   minuit = new TMinuit(numPars);
@@ -36,7 +38,7 @@ void FitManager::setupMinuit () {
     counter++;
     if (maxIndex < (*i)->getIndex()) maxIndex = (*i)->getIndex();
   }
-
+  printf("SetUp Minuit %d \n",fitMan); fitMan++;
   numPars = maxIndex+1;
   pdfPointer->copyParams();
   minuit->SetFCN(FitFun);
@@ -51,6 +53,7 @@ void FitManager::fit () {
 }
 
 void FitManager::runMigrad () {
+  printf("Run Migrad %d \n",fitMan); fitMan++;
   assert(minuit);
   host_callnumber = 0;
   if (0 < overrideCallLimit) {
@@ -81,10 +84,11 @@ void FitManager::getMinuitValues () const {
 }
 
 void FitFun(int &npar, double *gin, double &fun, double *fp, int iflag) {
+  printf("FitFun %d \n",fitMan); fitMan++;
   vector<double> pars;
   // Notice that npar is number of variable parameters, not total.
   pars.resize(numPars);
-
+  printf("FitFun %d \n",fitMan); fitMan++;
   int counter = 0;
 
   for (std::vector<Variable*>::iterator i = vars.begin(); i != vars.end(); ++i) {
@@ -93,11 +97,11 @@ void FitFun(int &npar, double *gin, double &fun, double *fp, int iflag) {
     pars[(*i)->getIndex()] = fp[counter++] + (*i)->blind;
 
  }
-
+  printf("FitFun %d \n",fitMan); fitMan++;
   pdfPointer->copyParams(pars);
-
+  printf("FitFun %d \n",fitMan); fitMan++;
   fun = pdfPointer->calculateNLL();
-
+  printf("FitFun %d \n",fitMan); fitMan++;
   host_callnumber++;
 
 #ifdef PRINTCALLS
