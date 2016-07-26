@@ -331,6 +331,8 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp)
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
+  printf("Device Matrix \n");
+
   int numParams = indices[0];
 
   fptype mkp = evt[indices[2 + indices[0]]];
