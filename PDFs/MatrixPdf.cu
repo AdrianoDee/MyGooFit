@@ -54,9 +54,9 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
     if (Lmin==0)
       return 1.;
     else if (Lmin==1)
-      rootterm =                     (1. + Dq02) / (1. + Dq2) ;
+      rootterm = (1. + Dq02) / (1. + Dq2) ;
     else if (Lmin==2)
-      rootterm =             (9. + 3*Dq02 +Dq04) / (9. + 3*Dq2 +Dq4) ;
+      rootterm = (9. + 3*Dq02 +Dq04) / (9. + 3*Dq2 +Dq4) ;
     else if (Lmin==3)
       rootterm = (225. + 45*Dq02 + 6*Dq04 + Dq06) / (225. + 45*Dq2 + 6*Dq4 + Dq6) ;
     else { printf("WARNING! Lmin = %d is not implemented for BlattWeisskopf functions at the moment. Returning 1 -> \"AngularTerm\" = 0\n",Lmin);
@@ -72,6 +72,12 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
 
 EXEC_TARGET fptype Pmom(fptype mkp)
 {
+
+    fptype  MPsi2S4mTwoMPsi2S2MBd2pMBd4 = 204.1150027743444;
+    fptype  MJpsi4mTwoMJpsi2MBd2pMBd4 = 334.2824610932961;
+
+    fptype  TwoMPsi2S2pTwoMBd2 = 82.92336262396199;
+    fptype  TwoMJpsi2pTwoMBd2 = 74.930340926312;
 
     fptype mkp2 = mkp*mkp;
     fptype rootterm = 0;
@@ -97,10 +103,15 @@ EXEC_TARGET fptype Pmom(fptype mkp)
 EXEC_TARGET fptype Qmom(fptype mkp)
 {
 
-    fptype mkp2 = mkp*mkp;
-    /*
-    fptype rootterm = MKaon4mTwoMKaon2MProton2pMProton4 + mkp2*(mkp2 - TwoMKaon2pTwoMProton2) ;
-    */
+      fptype mkp2 = mkp*mkp;
+      /*
+      fptype rootterm = MKaon4mTwoMKaon2MProton2pMProton4 + mkp2*(mkp2 - TwoMKaon2pTwoMProton2) ;
+      */
+
+     fptype  MKaon4mTwoMKaon2MPion2pMPion4 = 0.05028229728016605;
+
+     fptype  TwoMKaon2pTwoMPion2 = 0.5263936309484647;
+
     fptype rootterm = MKaon4mTwoMKaon2MPion2pMPion4 + mkp2*(mkp2 - TwoMKaon2pTwoMPion2) ;
     if (rootterm > 0)
         return 0.5*SQRT(rootterm)/mkp;
@@ -334,9 +345,11 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   int numParams = indices[0];
 
   fptype mkp = evt[indices[2 + indices[0]]];
-  fptype cJ = p[indices[1]];
-  fptype cKs = p[indices[2]];
-  fptype phi = p[indices[3]];
+  fptype cJ = evt[indices[2 + indices[0]]+1];
+  fptype cKs = evt[indices[2 + indices[0]]+2];
+  fptype phi = evt[indices[2 + indices[0]]+3];
+
+  fptype MKaon = 0.493677; fptype MPion = 0.13957018;
   /*
   thrust::device_vector<fptype> amplitudesA;
   thrust::device_vector<fptype> amplitudesB;
