@@ -331,8 +331,6 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp)
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
-  printf("Device Matrix \n");
-
   int numParams = indices[0];
 
   fptype mkp = evt[indices[2 + indices[0]]];
@@ -358,8 +356,9 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
       printf("PRINFT TO BE CONFIGURED = 0\n");
   // cout <<"psi_nS = " <<psi_nS <<" not allowed in the \"evaluate\" function at the moment. Keeping MPsi_nS to 0" <<endl;
 
-  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS))
-    return 0.;
+  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS)){
+    printf("Device Matrix \n");
+    return 0.;}
   else{
       printf("Device Matrix mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,cJ,cKs,phi);
   return ME2(mkp,p,indices) * PhiPHSP(mkp);}
