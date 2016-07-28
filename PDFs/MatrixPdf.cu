@@ -291,11 +291,12 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   int numParams = indices[0];
   //int numberOfKStar = indices[0]/6;
 
+
   fptype psi_nS = p[indices[1]];
   fptype dRadB0 = p[indices[2]];
   fptype dRadKs = p[indices[3]];
 
-  devcomplex<fptype> matrixElement (0.0,0.0);
+  devcomplex<fptype> matrixElement_R (0.0,0.0);
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
   for (int iKStar=0; iKStar<numParams-3; iKStar += 6) {
 
@@ -317,7 +318,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
     }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
     //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
-    matrixElement += matrixElement_R;
+    matrixElement_R += matrixElement_R;
     //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
   }
   return matrixElement;
