@@ -135,10 +135,8 @@ const fptype K1430_2 = 1430.2;*/
 class MatrixPdf : public GooPdf {
 public:
   MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
-  	const std::vector<Variable*>& _amplitudeGooVars,
-    const std::vector<fptype>& _KStarVector,
-    fptype* _psi_nS,
-  	fptype* _dRadB0, fptype* _dRadKs);
+    std::vector<Variable*>& _amplitudeGooVars,std::vector<Variable*>& _KParameters,
+    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
 
   //__host__ fptype integrate (fptype lo, fptype hi) const;
 
