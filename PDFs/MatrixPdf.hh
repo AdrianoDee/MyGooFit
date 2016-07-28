@@ -82,41 +82,41 @@ MEM_CONSTANT fptype MPion = 0.13957018;
  MEM_CONSTANT fptype  TwoMKaon2pTwoMProton2 = 2.248142825268052;
  MEM_CONSTANT fptype  TwoMKaon2pTwoMPion2 = 0.5263936309484647;*/
 
- MEM_CONSTANT fptype MLb = 5.61951;
- MEM_CONSTANT fptype MBd = 5.27961;
- MEM_CONSTANT fptype MPsi2S = 3.686109;
- MEM_CONSTANT fptype MJpsi = 3.096916;
- MEM_CONSTANT fptype MProton = 0.938272046;
- MEM_CONSTANT fptype MKaon = 0.493677;
- MEM_CONSTANT fptype MPion = 0.13957018;
+  fptype MLb = 5.61951;
+  fptype MBd = 5.27961;
+  fptype MPsi2S = 3.686109;
+  fptype MJpsi = 3.096916;
+  fptype MProton = 0.938272046;
+  fptype MKaon = 0.493677;
+  fptype MPion = 0.13957018;
 
 
-  MEM_CONSTANT fptype  MLb2 = 31.5788926401;
-  MEM_CONSTANT fptype  MLb4 = 997.226460374962;
-  MEM_CONSTANT fptype  MBd2 = 27.8742817521;
-  MEM_CONSTANT fptype  MBd4 = 776.975583195455;
-  MEM_CONSTANT fptype  MPsi2S2 = 13.587399559881;
-  MEM_CONSTANT fptype  MPsi2S4 = 184.6174267998544;
-  MEM_CONSTANT fptype  MJpsi2 = 9.590888711055999;
-  MEM_CONSTANT fptype  MJpsi4 = 91.98514626786141;
-  MEM_CONSTANT fptype  MJpsi4mTwoMJpsi2MLb2pMLb4 = 483.4723167836545;
-  MEM_CONSTANT fptype  MPsi2S4mTwoMPsi2S2MBd2pMBd4 = 204.1150027743444;
-  MEM_CONSTANT fptype  MJpsi4mTwoMJpsi2MBd2pMBd4 = 334.2824610932961;
-  MEM_CONSTANT fptype  TwoMJpsi2pTwoMLb2 = 82.33956270231201;
-  MEM_CONSTANT fptype  TwoMPsi2S2pTwoMBd2 = 82.92336262396199;
-  MEM_CONSTANT fptype  TwoMJpsi2pTwoMBd2 = 74.930340926312;
-  MEM_CONSTANT fptype  InvTwoMLb = 0.08897572920058866;
-  MEM_CONSTANT fptype  InvTwoMBd = 0.09470396487619351;
-  MEM_CONSTANT fptype  MProton2 = 0.8803544323050262;
-  MEM_CONSTANT fptype  MProton4 = 0.7750239264791049;
-  MEM_CONSTANT fptype  MKaon2 = 0.243716980329;
-  MEM_CONSTANT fptype  MKaon4 = 0.05939796650068616;
-  MEM_CONSTANT fptype  MPion2 = 0.0194798351452324;
-  MEM_CONSTANT fptype  MPion4 = 0.0003794639772854313;
-  MEM_CONSTANT fptype  MKaon4mTwoMKaon2MProton2pMProton4 = 0.405307245258527;
-  MEM_CONSTANT fptype  MKaon4mTwoMKaon2MPion2pMPion4 = 0.05028229728016605;
-  MEM_CONSTANT fptype  TwoMKaon2pTwoMProton2 = 2.248142825268052;
-  MEM_CONSTANT fptype  TwoMKaon2pTwoMPion2 = 0.5263936309484647;
+   fptype  MLb2 = 31.5788926401;
+   fptype  MLb4 = 997.226460374962;
+   fptype  MBd2 = 27.8742817521;
+   fptype  MBd4 = 776.975583195455;
+   fptype  MPsi2S2 = 13.587399559881;
+   fptype  MPsi2S4 = 184.6174267998544;
+   fptype  MJpsi2 = 9.590888711055999;
+   fptype  MJpsi4 = 91.98514626786141;
+   fptype  MJpsi4mTwoMJpsi2MLb2pMLb4 = 483.4723167836545;
+   fptype  MPsi2S4mTwoMPsi2S2MBd2pMBd4 = 204.1150027743444;
+   fptype  MJpsi4mTwoMJpsi2MBd2pMBd4 = 334.2824610932961;
+   fptype  TwoMJpsi2pTwoMLb2 = 82.33956270231201;
+   fptype  TwoMPsi2S2pTwoMBd2 = 82.92336262396199;
+   fptype  TwoMJpsi2pTwoMBd2 = 74.930340926312;
+   fptype  InvTwoMLb = 0.08897572920058866;
+   fptype  InvTwoMBd = 0.09470396487619351;
+   fptype  MProton2 = 0.8803544323050262;
+   fptype  MProton4 = 0.7750239264791049;
+   fptype  MKaon2 = 0.243716980329;
+   fptype  MKaon4 = 0.05939796650068616;
+   fptype  MPion2 = 0.0194798351452324;
+   fptype  MPion4 = 0.0003794639772854313;
+   fptype  MKaon4mTwoMKaon2MProton2pMProton4 = 0.405307245258527;
+   fptype  MKaon4mTwoMKaon2MPion2pMPion4 = 0.05028229728016605;
+   fptype  TwoMKaon2pTwoMProton2 = 2.248142825268052;
+   fptype  TwoMKaon2pTwoMPion2 = 0.5263936309484647;
 
 
 // K*
@@ -162,13 +162,9 @@ public:
 
 private:
   //HOST SIDE
-  std::vector<fptype > KStarVector;
-  //map< TString,RooRealProxy* > amplitudeVarProxy_map;
-  //std::map<std::string,Variable*> amplitudeVars_map;
-  fptype* psi_nS;
-  fptype* dRadB0;
-  fptype* dRadKs;
-  int numberOfKStar;
+  Variable* psi_nS;
+  Variable* dRadB0;
+  Variable* dRadKs;
 
 };
 
