@@ -136,7 +136,7 @@ class MatrixPdf : public GooPdf {
 public:
   MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
     std::vector<Variable*>& _amplitudeGooVars,std::vector<Variable*>& _KParameters,
-    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
+    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
 
   //__host__ fptype integrate (fptype lo, fptype hi) const;
 

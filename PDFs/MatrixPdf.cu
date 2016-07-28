@@ -395,8 +395,7 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
   std::vector<Variable*>& _amplitudeGooVars,std::vector<Variable*>& _KParameters,
   Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
-  : GooPdf(0, n),
-  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
+  : GooPdf(0, n),psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
 {
 
   registerObservable(_x);
