@@ -296,7 +296,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   fptype dRadB0 = p[indices[2]];
   fptype dRadKs = p[indices[3]];
 
-  devcomplex<fptype> matrixElement_R (0.0,0.0);
+  devcomplex<fptype> matrixElement (0.0,0.0);
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
   for (int iKStar=0; iKStar<numParams-3; iKStar += 6) {
 
@@ -315,13 +315,12 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
 	               ( AngularTerm(cJ,cKs,phi,p,indices,Spin, M1HEL, helDmu,iKStar) + AngularTerm(cJ,cKs,phi,p,indices, Spin, ZEROHEL, helDmu,iKStar) + AngularTerm(cJ,cKs,phi,p,indices,Spin, P1HEL, helDmu,iKStar) ) ;
                    iKStar +=6*2;
                }
-    }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
     //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
-    matrixElement_R += matrixElement_R;
+    matrixElement += matrixElement_R;
     //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
   }
-  return matrixElement_R;
+  return matrixElement;
 
 }
 
@@ -356,6 +355,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
    fptype MPsi_nS = 0.;
+
    if (psi_nS==1.0)
      MPsi_nS = 3.096916;
    else if (psi_nS==2.0)
