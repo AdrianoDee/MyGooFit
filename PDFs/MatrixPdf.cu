@@ -13,14 +13,6 @@
 #include "MatrixPdf.hh"
 #include "devcomplex.hh"
 
-MEM_CONSTANT fptype* d_psi_nS;
-MEM_CONSTANT fptype* d_dRadB0;
-MEM_CONSTANT fptype* d_dRadKs;
-
-MEM_CONSTANT int* d_numberOfKStar;
-
-MEM_CONSTANT fptype* d_KStarVector;
-
 /*
 EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu);
 
@@ -396,7 +388,7 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
 __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
-  std::vector<Variable*>& _amplitudeGooVars,std::vector<Variable*>& _KParameters,
+  std::vector<Variable*>& _KParameters,
   Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
   : GooPdf(0, n),
   psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
@@ -417,9 +409,10 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Varia
     pindices.push_back(registerParameter(_KParameters[j]));
   }
 
+  /*
   for (int j = 0 ; j < (int)_amplitudeGooVars.size(); j++) {
     pindices.push_back(registerParameter(_amplitudeGooVars[j]));
-  }
+  }*/
   /*
   gooMalloc((void**) d_psi_nS,sizeof(fptype));
   gooMalloc((void**) d_dRadB0,sizeof(fptype));
