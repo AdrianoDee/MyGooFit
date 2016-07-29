@@ -343,7 +343,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype psi_nS = p[indices[1]];
   fptype dRadB0 = p[indices[2]];
   fptype dRadKs = p[indices[3]];
-
+  printf("mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,cJ,cKs,phi);
   fptype MKaon = 0.493677; fptype MPion = 0.13957018;
   fptype MBd = 5.27961;
 
@@ -360,7 +360,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
       printf("PRINFT TO BE CONFIGURED = 0\n");
   // cout <<"psi_nS = " <<psi_nS <<" not allowed in the \"evaluate\" function at the moment. Keeping MPsi_nS to 0" <<endl;
   printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
-  
+
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS)){
     printf("Device Matrix \n");
     return 0.;}
