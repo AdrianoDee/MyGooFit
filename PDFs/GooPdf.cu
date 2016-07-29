@@ -510,7 +510,7 @@ __host__ fptype GooPdf::normalise () const {
   for (obsConstIter v = obsCBegin(); v != obsCEnd(); ++v) {
     ret *= ((*v)->upperlimit - (*v)->lowerlimit);
     totalBins *= (integrationBins > 0 ? integrationBins : (*v)->numbins);
-    //if (cpuDebug & 1) std::cout << "Total bins " << totalBins << " due to " << (*v)->name << " " << integrationBins << " " << (*v)->numbins << std::endl;
+    if (true) std::cout << "Total bins " << totalBins << " due to " << (*v)->name << " " << integrationBins << " " << (*v)->numbins << std::endl;
   }
   ret /= totalBins;
 
