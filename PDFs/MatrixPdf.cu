@@ -240,7 +240,7 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
     else if (helDmu==P1HEL)
       return (+1. + cJ)/(2.*exp(imUnit*angle));
     else {
-      printf("PRINFT TO BE CONFIGURED returning 0\n");
+      printf("WignerD_J HelDem PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
       return nullo; }
   } else {
@@ -299,6 +299,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
     fptype Spin = p[indices[3+2+iKStar]];
     fptype Gamma = p[indices[3+3+iKStar]];
 
+    printf("Mass = %f Gamma = %f Spin = %f \n",Mass,Gamma,Spin);
 
     devcomplex<fptype> matrixElement_R(0.0,0.0);
     if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
@@ -357,15 +358,14 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
      MPsi_nS = 3.686109;
    else
       printf("PRINFT TO BE CONFIGURED = 0 mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %f \n",mkp,cJ,cKs,phi,psi_nS);
-  // cout <<"psi_nS = " <<psi_nS <<" not allowed in the \"evaluate\" function at the moment. Keeping MPsi_nS to 0" <<endl;
-  printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
+      printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
 
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS)){
     printf("Device Matrix \n");
     return 0.;}
   else{
       printf("Device Matrix mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,cJ,cKs,phi);
-  return ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp,psi_nS);}
+      return ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp,psi_nS);}
 
 
 }
