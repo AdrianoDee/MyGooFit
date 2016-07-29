@@ -42,7 +42,7 @@ void FitManager::setupMinuit () {
   numPars = maxIndex+1;
   pdfPointer->copyParams();
   minuit->SetFCN(FitFun);
-  minuit->SetPrintLevel(-1);
+  //minuit->SetPrintLevel(-1);
 }
 
 void FitManager::fit () {
