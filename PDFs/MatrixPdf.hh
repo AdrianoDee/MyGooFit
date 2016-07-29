@@ -23,6 +23,7 @@ public:
   MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
     std::vector<Variable*>& _KParameters,
     Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
+  __host__ virtual bool hasAnalyticIntegral () const {return false;} 
 
   //__host__ fptype integrate (fptype lo, fptype hi) const;
 
