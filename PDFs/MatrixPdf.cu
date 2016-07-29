@@ -62,7 +62,7 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
     }
 }
 
-EXEC_TARGET fptype Pmom(fptype mkp)
+EXEC_TARGET fptype Pmom(fptype mkp,fptype psiN)
 {
 
     fptype  MPsi2S4mTwoMPsi2S2MBd2pMBd4 = 204.1150027743444;
@@ -76,19 +76,19 @@ EXEC_TARGET fptype Pmom(fptype mkp)
     fptype mkp2 = mkp*mkp;
     fptype rootterm = 0;
 
-    if (d_psi_nS[0]==1.0)
+    if (psiN==1.0)
       rootterm = MJpsi4mTwoMJpsi2MBd2pMBd4 + mkp2*(mkp2 - TwoMJpsi2pTwoMBd2);
-    else if (d_psi_nS[0]==2.0)
+    else if (psiN==2.0)
       rootterm = MPsi2S4mTwoMPsi2S2MBd2pMBd4 + mkp2*(mkp2 - TwoMPsi2S2pTwoMBd2);
     else
       //cout <<"psi_nS = " <<psi_nS <<" not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0" <<endl;
-      printf("psi_nS = %.2f not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0\n",d_psi_nS[0]);
+      printf("psi_nS = %.2f not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0\n",psiN);
 
     //cout <<"\nrootterm for psi_nS = " <<psi_nS <<" and mkp = " <<mkp <<": " <<rootterm <<endl;
     if (rootterm > 0)
         return InvTwoMBd * SQRT(rootterm);
     else { //cout <<"WARNING! In \"Pmom\" function: rootterm (" <<rootterm <<") <= 0 for mkp = " <<mkp <<" and psi_nS = " <<psi_nS <<" -> returning 0" <<endl;
-           printf("WARNING! In \"Pmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f and psi_nS = %.2f  -> returning 0 \n",rootterm,mkp,d_psi_nS[0]);
+           printf("WARNING! In \"Pmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f and psi_nS = %.2f  -> returning 0 \n",rootterm,mkp,psiN);
            return 0.;
     }
 
@@ -326,9 +326,9 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
   return matrixElement(mkp,cJ,cKs,phi,p,indices,M1HEL).abs2() + matrixElement(mkp,cJ,cKs,phi,p,indices,P1HEL).abs2() ;
 }
 
-EXEC_TARGET fptype PhiPHSP(fptype mkp)
+EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 {
-    return Pmom(mkp) * Qmom(mkp) ;
+    return Pmom(mkp,psiN) * Qmom(mkp) ;
 }
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
@@ -364,7 +364,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
     return 0.;}
   else{
       printf("Device Matrix mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,cJ,cKs,phi);
-  return ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp);}
+  return ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp,psi_nS);}
 
 
 }
