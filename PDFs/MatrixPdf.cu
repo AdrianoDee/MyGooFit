@@ -79,6 +79,8 @@ EXEC_TARGET fptype Pmom(fptype mkp)
     fptype  TwoMPsi2S2pTwoMBd2 = 82.92336262396199;
     fptype  TwoMJpsi2pTwoMBd2 = 74.930340926312;
 
+    fptype  InvTwoMBd = 0.09470396487619351;
+
     fptype mkp2 = mkp*mkp;
     fptype rootterm = 0;
 
@@ -289,6 +291,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
 {
 
   int numParams = indices[0];
+  fptype MBd = 5.27961;
   //int numberOfKStar = indices[0]/6;
 
 
@@ -395,7 +398,8 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
   std::vector<Variable*>& _amplitudeGooVars,std::vector<Variable*>& _KParameters,
   Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
-  : GooPdf(0, n),psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
+  : GooPdf(0, n),
+  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
 {
 
   registerObservable(_x);
