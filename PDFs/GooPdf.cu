@@ -237,12 +237,13 @@ __host__ int GooPdf::findFunctionIdx (void* dev_functionPtr) {
 
 __host__ void GooPdf::initialise (std::vector<unsigned int> pindices, void* dev_functionPtr) {
   if (!fitControl) setFitControl(new UnbinnedNllFit());
-
+  printf("GooPfd Initialisation - in\n");
   // MetricTaker must be created after PdfBase initialisation is done.
   PdfBase::initialiseIndices(pindices);
 
   functionIdx = findFunctionIdx(dev_functionPtr);
   setMetrics();
+  printf("GooPfd Initialisation - out\n");
 }
 
 __host__ void GooPdf::initialiseInt (std::vector<unsigned int> pindices, void* dev_functionPtr, void* dev_integralPtr,void* dev_pointPtr) {
@@ -488,7 +489,7 @@ __host__ fptype GooPdf::getValue () {
 
 __host__ fptype GooPdf::normalise () const {
   //if (cpuDebug & 1) std::cout << "Normalising " << getName() << " " << hasAnalyticIntegral() << " " << normRanges << std::endl;
-
+  printf("GooPfd normalisaion - in\n");
   if (!fitControl->metricIsPdf()) {
     host_normalisation[parameters] = 1.0;
     return 1.0;
@@ -537,7 +538,7 @@ __host__ fptype GooPdf::normalise () const {
   host_normalisation[parameters] = 1.0/ret;
 
   //printf("Return = %f\n",ret);
-
+  printf("GooPfd normalisaion - out\n");
   return (fptype) ret;
 }
 
