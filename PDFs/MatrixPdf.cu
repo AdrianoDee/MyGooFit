@@ -178,7 +178,7 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
     else if (helJ==P1HEL)
       return -(SIN(ACOS(cKs)) / root2) ;
     else {
-      printf("PRINFT TO BE CONFIGURED returning 0\n");
+      printf("Wignerd_R Spin 1.0 PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helJ = " <<helJ <<" is not allowed for spinR-" <<spinR <<" Wigner d^{spinR}_{helJ,0} functions. Returning 0" <<endl;
       return 0 ;
     }
@@ -190,7 +190,7 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
     else if (helJ==P1HEL)
       return -(SIN(2*ACOS(cKs)) * SQRT(3./8.)) ;
     else {
-      printf("PRINFT TO BE CONFIGURED returning 0\n");
+      printf("Wignerd_R Spin 2.0 PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helJ = " <<helJ <<" is not allowed for spinR-" <<spinR <<" Wigner d^{spinR}_{helJ,0} functions. Returning 0" <<endl;
       return 0 ;
     }
@@ -202,7 +202,7 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
     else if (helJ==P1HEL)
       return -(SIN(ACOS(cKs))*(5*COS(2*ACOS(cKs)) + 3.) * SQRT(3.)/8.) ;
     else {
-      printf("PRINFT TO BE CONFIGURED returning 0\n");
+      printf("Wignerd_R Spin 3.0 PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helJ = " <<helJ <<" is not allowed for spinR-" <<spinR <<" Wigner d^{spinR}_{helJ,0} functions. Returning 0" <<endl;
       return 0 ;
     }
@@ -421,6 +421,8 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype dRadKs = p[indices[3]];
   fptype MKaon = 0.493677; fptype MPion = 0.13957018;
   fptype MBd = 5.27961;
+
+  printf("%.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f ",psi_nS,dRadB0,dRadKs,p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
 
 
 
