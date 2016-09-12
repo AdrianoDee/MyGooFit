@@ -325,8 +325,8 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   }*/
 
   fptype Mass = p[indices[4]];
-  fptype Spin = p[indices[5]];
-  fptype Gamma = p[indices[6]];
+  fptype Gamma = p[indices[5]];
+  fptype Spin = p[indices[6]];
 
   printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
 
