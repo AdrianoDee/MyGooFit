@@ -62,7 +62,7 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
     }
 }
 
-/*
+
 EXEC_TARGET fptype Pmom(fptype mkp,fptype psiN)
 {
 
@@ -93,9 +93,9 @@ EXEC_TARGET fptype Pmom(fptype mkp,fptype psiN)
            return 0.;
     }
 
-}*/
+}
 
-/*
+
 EXEC_TARGET fptype Qmom(fptype mkp)
 {
 
@@ -115,7 +115,7 @@ EXEC_TARGET fptype Qmom(fptype mkp)
         return 0.;
     }
 
-}*/
+}
 
 EXEC_TARGET fptype BWGamma(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
 {
