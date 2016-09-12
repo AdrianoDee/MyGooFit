@@ -328,7 +328,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   fptype Spin = p[indices[5]];
   fptype Gamma = p[indices[6]];
 
-  printf("Mass = %f Gamma = %f Spin = %f \n",Mass,Gamma,Spin);
+  printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
 
   devcomplex<fptype> matrixElement_R(0.0,0.0);
   if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
