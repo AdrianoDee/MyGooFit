@@ -62,6 +62,7 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
     }
 }
 
+/*
 EXEC_TARGET fptype Pmom(fptype mkp,fptype psiN)
 {
 
@@ -92,15 +93,14 @@ EXEC_TARGET fptype Pmom(fptype mkp,fptype psiN)
            return 0.;
     }
 
-}
+}*/
 
+/*
 EXEC_TARGET fptype Qmom(fptype mkp)
 {
 
       fptype mkp2 = mkp*mkp;
-      /*
-      fptype rootterm = MKaon4mTwoMKaon2MProton2pMProton4 + mkp2*(mkp2 - TwoMKaon2pTwoMProton2) ;
-      */
+
 
      fptype  MKaon4mTwoMKaon2MPion2pMPion4 = 0.05028229728016605;
 
@@ -115,7 +115,7 @@ EXEC_TARGET fptype Qmom(fptype mkp)
         return 0.;
     }
 
-}
+}*/
 
 EXEC_TARGET fptype BWGamma(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
 {
@@ -329,7 +329,53 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
 
 EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 {
-    return Pmom(mkp,psiN) * Qmom(mkp) ;
+
+  fptype Pmom = 1.0;
+  fptype Qmom = 1.0;
+
+  fptype  MPsi2S4mTwoMPsi2S2MBd2pMBd4 = 204.1150027743444;
+  fptype  MJpsi4mTwoMJpsi2MBd2pMBd4 = 334.2824610932961;
+
+  fptype  TwoMPsi2S2pTwoMBd2 = 82.92336262396199;
+  fptype  TwoMJpsi2pTwoMBd2 = 74.930340926312;
+
+  fptype  InvTwoMBd = 0.09470396487619351;
+
+  fptype  MKaon4mTwoMKaon2MPion2pMPion4 = 0.05028229728016605;
+
+
+  fptype mkp2 = mkp*mkp;
+
+  fptype  TwoMKaon2pTwoMPion2 = 0.5263936309484647;
+
+  fptype rootterm = MKaon4mTwoMKaon2MPion2pMPion4 + mkp2*(mkp2 - TwoMKaon2pTwoMPion2) ;
+
+  if (rootterm > 0)
+    Qmom = 0.5*SQRT(rootterm)/mkp;
+
+      else { //cout <<"WARNING! In \"Qmom\" function: rootterm <= 0 for mkp = " <<mkp <<" -> returning 0" <<endl;
+
+        printf("WARNING! In \"Qmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f  -> returning 0 \n",rootterm,mkp);
+        Qmom = 0.;
+      }
+
+  rootterm = 0.;
+
+  if (psiN==1.0)
+    rootterm = MJpsi4mTwoMJpsi2MBd2pMBd4 + mkp2*(mkp2 - TwoMJpsi2pTwoMBd2);
+  else if (psiN==2.0)
+    rootterm = MPsi2S4mTwoMPsi2S2MBd2pMBd4 + mkp2*(mkp2 - TwoMPsi2S2pTwoMBd2);
+  else
+    printf("psi_nS = %.2f not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0\n",psiN);
+
+  if (rootterm > 0)
+      Pmom = InvTwoMBd * SQRT(rootterm);
+  else {
+         printf("WARNING! In \"Pmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f and psi_nS = %.2f  -> returning 0 \n",rootterm,mkp,psiN);
+         Pmom = 0.;
+         }
+
+    return Pmom * Qmom;
 }
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
@@ -361,7 +407,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
       printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
 
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS)){
-    printf("Device Matrix \n");
+    printf("Out of the borders \n");
     return 0.;}
   else{
       printf("Device Matrix mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,cJ,cKs,phi);
