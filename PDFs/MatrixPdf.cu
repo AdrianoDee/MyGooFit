@@ -257,11 +257,14 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
 
 EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fptype* p,unsigned int* indices,fptype spinR, fptype helJ, fptype helDmu,int iKStar)
 {
+  devcomplex<fptype> result;
 
+  result = H(p,indices,helJ,iKStar) * Wignerd_R(spinR, helJ,cKs) * conj( WignerD_J(helJ, helDmu, phi,cJ) ) ;
   //cout <<"\nAngularTerm for K* " <<R <<" and helDmu = " <<helDmu <<" and helJ = " <<helJ <<" is made of Wignerd_R(spinR, helJ) * cWignerD_J(helJ, helDmu, phi) = " <<Wignerd_R(spinR, helJ) <<" * " <<cWignerD_J( WignerD_J(helJ, helDmu, phi) ) <<endl;
   //cout <<"It is multiplied by H(R,helJ) = H(" <<R <<"," <<helJ <<") = " <<H(R,helJ) <<endl;
-  return H(p,indices,helJ,iKStar) * Wignerd_R(spinR, helJ,cKs) * conj( WignerD_J(helJ, helDmu, phi,cJ) ) ;
+  printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n",cJ,cKs,phi);
 
+  return result;
 }
 
 EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma, fptype MomMass, int LminMom, int LminR, fptype DB0, fptype DKs,fptype psi_nS)
@@ -279,6 +282,9 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     //cout <<"POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<POW(QmKP/mKP,LminR) <<endl;
     //cout <<"POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<(POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR)) <<endl;
     //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
+
+    printf("======= RFunction (%.2f ,%.2f)\n  RMass = %.3f Mass KPi = %.3f ",RFunc.real,RFunc.imag,RMass,mkp);
+
     return RFunc ;
 }
 
