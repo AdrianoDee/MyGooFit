@@ -345,7 +345,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   matrixElement += matrixElement_R;
   //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
 
-  printf("======= Matrix Element HEL = %.2f \n  Mass KPi = %.3f cJ = %.3f  cKs = %.3f cKs = %.3f \n",helDmu,cJ,cKs,cKs);
+  printf("======= Matrix Element HEL = %.2f \n  Mass KPi = %.3f cJ = %.3f  cKs = %.3f cKs = %.3f \n mE = ( %.3f , %.3f )",helDmu,cJ,cKs,cKs,matrixElement.real,matrixElement.imag);
 
   return matrixElement;
 
