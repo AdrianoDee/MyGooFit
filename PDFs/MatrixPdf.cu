@@ -328,7 +328,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   fptype Gamma = p[indices[5]];
   fptype Spin = p[indices[6]];
 
-  printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
+  //printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
 
   devcomplex<fptype> matrixElement_R(0.0,0.0);
   if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
@@ -345,6 +345,8 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   matrixElement += matrixElement_R;
   //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
 
+  printf("======= Matrix Element HEL = %.2f \n  Mass KPi = %.3f cJ = %.3f  cKs = %.3f cKs = %.3f \n",helDmu,cJ,cKs,cKs);
+
   return matrixElement;
 
 }
@@ -358,12 +360,12 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
 
 EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 {
-    printf("=======Phase Space \n");
+    //printf("=======Phase Space \n");
     fptype p = Pmom(mkp,psiN);
     fptype q = Qmom(mkp);
     fptype phsp = p*q;
-    printf(" Mass KPi = %.3f Phase space = %.3f\n",mkp,phsp);
-    printf("==================");
+    //printf(" Mass KPi = %.3f Phase space = %.3f\n",mkp,phsp);
+    //printf("==================");
 
     return  Pmom(mkp,psiN) * Qmom(mkp);
 }
