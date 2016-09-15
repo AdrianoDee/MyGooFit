@@ -289,28 +289,7 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     //cout <<"POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<POW(QmKP/mKP,LminR) <<endl;
     //cout <<"POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<(POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR)) <<endl;
     //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
-    printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f
-               \n PmKP  = %.3f PRMass = %.3f
-              \n PmKP  = %.3f PRMass = %.3f
-              \n QmKP = %.3f LminMom = %.3f
-              \n LminMom = %.3f LminR = %.3f
-              \n DB0 = %.3f DKs = %.3f
-              \n BlattWeisskopf LminM = %.3f
-              \n BlattWeisskopf LminR = %.3f
-              \n Power1  = %.3f
-              \n Power2  = %.3f
-              \n BW  = (%.3f ,%.3f)",
-              RFunc.real,RFunc.imag,RMass,mkp,
-              PmKP,PRMass,
-              QmKP,QRMass,
-              LminMom,LminR,
-              DB0,DKs,
-              blatt1,
-              blatt2,
-              pow1,
-              pow2,
-              bw.real,bw.imag,
-              );
+    printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f  \n PmKP  = %.3f PRMass = %.3f    \n PmKP  = %.3f PRMass = %.3f    \n QmKP = %.3f LminMom = %.3f    \n LminMom = %.3f LminR = %.3f    \n DB0 = %.3f DKs = %.3f    \n BlattWeisskopf LminM = %.3f    \n BlattWeisskopf LminR = %.3f    \n Power1  = %.3f    \n Power2  = %.3f    \n BW  = (%.3f ,%.3f)",    RFunc.real,RFunc.imag,RMass,mkp,    PmKP,PRMass,    QmKP,QRMass,    LminMom,LminR,    DB0,DKs,    blatt1,    blatt2,    pow1,    pow2,    bw.real,bw.imag,    );
 
     printf("======= RFunction (%.2f ,%.2f)\n  RMass = %.3f Mass KPi = %.3f ",RFunc.real,RFunc.imag,RMass,mkp);
 
