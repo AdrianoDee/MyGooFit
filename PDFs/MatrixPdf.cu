@@ -274,14 +274,43 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     fptype QmKP = Qmom(mkp);
     fptype QRMass = Qmom(RMass);
 
+    devcomplex<fptype> blatt1 = BlattWeisskopf(LminMom, PmKP, PRMass, DB0);
+    devcomplex<fptype> blatt2 = BlattWeisskopf(LminR, QmKP, QRMass, DKs);
+    devcomplex<fptype> bw = BW(mkp,RMass, RGamma, LminR, DKs);
+
+    fptype pow1 = POW(PmKP/MomMass,LminMom);
+    fptype pow2 = POW(QmKP/mkp,LminR);
+
     //TComplex RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, D) * POW(PmKP/MomMass,LminMom) * BW(RMass, RGamma, LminR, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) * POW(QmKP/RMass,LminR);
-    devcomplex<fptype> RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, DB0) * POW(PmKP/MomMass,LminMom) * BW(mkp,RMass, RGamma, LminR, DKs) * BlattWeisskopf(LminR, QmKP, QRMass, DKs) * POW(QmKP/mkp,LminR);
+    devcomplex<fptype> RFunc = blatt1 * pow1 * bw * blatt2 * pow2;
     //cout <<"BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
     //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) <<endl;
     //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
     //cout <<"POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<POW(QmKP/mKP,LminR) <<endl;
     //cout <<"POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<(POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR)) <<endl;
     //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
+    printf("\nRFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f \n
+              PmKP  = %.3f PRMass = %.3f
+              \nPmKP  = %.3f PRMass = %.3f
+              \nQmKP = %.3f LminMom = %.3f
+              \nLminMom = %.3f LminR = %.3f
+              \nDB0 = %.3f DKs = %.3f
+              \nBlattWeisskopf LminM = (%.3f ,%.3f)
+              \nBlattWeisskopf LminR = (%.3f ,%.3f)
+              \nPower1  = %.3f
+              \nPower2  = %.3f
+              \nBW  = (%.3f ,%.3f)",
+              RFunc.real,RFunc.imag,RMass,mkp,
+              PmKP,PRMass,
+              QmKP,QRMass,
+              LminMom,LminR,
+              DB0,DKs,
+              blatt1.real,blatt1.imag,
+              blatt2.real,blatt2.imag,
+              pow1,
+              pow2,
+              bw.real,bw.imag,
+              );
 
     printf("======= RFunction (%.2f ,%.2f)\n  RMass = %.3f Mass KPi = %.3f ",RFunc.real,RFunc.imag,RMass,mkp);
 
