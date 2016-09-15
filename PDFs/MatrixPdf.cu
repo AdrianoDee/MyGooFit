@@ -274,8 +274,8 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     fptype QmKP = Qmom(mkp);
     fptype QRMass = Qmom(RMass);
 
-    devcomplex<fptype> blatt1 = BlattWeisskopf(LminMom, PmKP, PRMass, DB0);
-    devcomplex<fptype> blatt2 = BlattWeisskopf(LminR, QmKP, QRMass, DKs);
+    fptype blatt1 = BlattWeisskopf(LminMom, PmKP, PRMass, DB0);
+    fptype blatt2 = BlattWeisskopf(LminR, QmKP, QRMass, DKs);
     devcomplex<fptype> bw = BW(mkp,RMass, RGamma, LminR, DKs);
 
     fptype pow1 = POW(PmKP/MomMass,LminMom);
@@ -289,24 +289,24 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     //cout <<"POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<POW(QmKP/mKP,LminR) <<endl;
     //cout <<"POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<(POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR)) <<endl;
     //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
-    printf("\nRFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f \n
-              PmKP  = %.3f PRMass = %.3f
-              \nPmKP  = %.3f PRMass = %.3f
-              \nQmKP = %.3f LminMom = %.3f
-              \nLminMom = %.3f LminR = %.3f
-              \nDB0 = %.3f DKs = %.3f
-              \nBlattWeisskopf LminM = (%.3f ,%.3f)
-              \nBlattWeisskopf LminR = (%.3f ,%.3f)
-              \nPower1  = %.3f
-              \nPower2  = %.3f
-              \nBW  = (%.3f ,%.3f)",
+    printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f
+               \n PmKP  = %.3f PRMass = %.3f
+              \n PmKP  = %.3f PRMass = %.3f
+              \n QmKP = %.3f LminMom = %.3f
+              \n LminMom = %.3f LminR = %.3f
+              \n DB0 = %.3f DKs = %.3f
+              \n BlattWeisskopf LminM = %.3f
+              \n BlattWeisskopf LminR = %.3f
+              \n Power1  = %.3f
+              \n Power2  = %.3f
+              \n BW  = (%.3f ,%.3f)",
               RFunc.real,RFunc.imag,RMass,mkp,
               PmKP,PRMass,
               QmKP,QRMass,
               LminMom,LminR,
               DB0,DKs,
-              blatt1.real,blatt1.imag,
-              blatt2.real,blatt2.imag,
+              blatt1,
+              blatt2,
               pow1,
               pow2,
               bw.real,bw.imag,
