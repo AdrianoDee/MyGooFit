@@ -24,7 +24,7 @@ public:
     std::vector<Variable*>& _KParameters,
     Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);*/
   MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
-      std::vector<Variable*> _Mass,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,Variable* _a,Variable* _b,
+      Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b,
       Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
   __host__ virtual bool hasAnalyticIntegral () const {return false;}
 
