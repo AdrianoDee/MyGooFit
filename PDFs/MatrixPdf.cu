@@ -372,7 +372,7 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
 
 EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 {
-    printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psin);
+    printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
     const fptype psin = psiN;
     fptype p = Pmom(mkp,psin);
     fptype q = Qmom(mkp);
