@@ -163,7 +163,7 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
 
   result *= a;
 
-  printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f \n",result.real,result.imag,a,b);
+  //printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f \n",result.real,result.imag,a,b);
 
   return result ;
 
@@ -382,6 +382,8 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
+  printf("%d %d %.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
+
   int numParams = indices[0];
 
   fptype mkp = evt[indices[2 + indices[0]]];
@@ -394,9 +396,6 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype dRadKs = p[indices[4]];
   fptype MKaon = 0.493677; fptype MPion = 0.13957018;
   fptype MBd = 5.27961;
-
-  printf("%d %d %.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f \n",indices[0],indices[1],psi_nS,dRadB0,dRadKs,p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
-
 
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
