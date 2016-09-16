@@ -489,7 +489,7 @@ __host__ fptype GooPdf::getValue () {
 
 __host__ fptype GooPdf::normalise () const {
   //if (cpuDebug & 1) std::cout << "Normalising " << getName() << " " << hasAnalyticIntegral() << " " << normRanges << std::endl;
-  printf("GooPfd normalisaion - in\n");
+  //printf("GooPfd normalisaion - in\n");
   if (!fitControl->metricIsPdf()) {
     host_normalisation[parameters] = 1.0;
     return 1.0;
@@ -510,7 +510,7 @@ __host__ fptype GooPdf::normalise () const {
   for (obsConstIter v = obsCBegin(); v != obsCEnd(); ++v) {
     ret *= ((*v)->upperlimit - (*v)->lowerlimit);
     totalBins *= (integrationBins > 0 ? integrationBins : (*v)->numbins);
-    if (true) std::cout << "Total bins " << totalBins << " due to " << (*v)->name << " " << integrationBins << " " << (*v)->numbins << std::endl;
+    //if (true) std::cout << "Total bins " << totalBins << " due to " << (*v)->name << " " << integrationBins << " " << (*v)->numbins << std::endl;
   }
   ret /= totalBins;
 
@@ -538,7 +538,7 @@ __host__ fptype GooPdf::normalise () const {
   host_normalisation[parameters] = 1.0/ret;
 
   //printf("Return = %f\n",ret);
-  printf("GooPfd normalisaion - out\n");
+  //printf("GooPfd normalisaion - out\n");
   return (fptype) ret;
 }
 

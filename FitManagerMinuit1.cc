@@ -84,11 +84,11 @@ void FitManager::getMinuitValues () const {
 }
 
 void FitFun(int &npar, double *gin, double &fun, double *fp, int iflag) {
-  printf("FitFun %d \n",fitMan); fitMan++;
+  //printf("FitFun %d \n",fitMan); fitMan++;
   vector<double> pars;
   // Notice that npar is number of variable parameters, not total.
   pars.resize(numPars);
-  printf("FitFun %d \n",fitMan); fitMan++;
+  //printf("FitFun %d \n",fitMan); fitMan++;
   int counter = 0;
 
   for (std::vector<Variable*>::iterator i = vars.begin(); i != vars.end(); ++i) {
@@ -97,11 +97,11 @@ void FitFun(int &npar, double *gin, double &fun, double *fp, int iflag) {
     pars[(*i)->getIndex()] = fp[counter++] + (*i)->blind;
 
  }
-  printf("FitFun %d \n",fitMan); fitMan++;
+  //printf("FitFun %d \n",fitMan); fitMan++;
   pdfPointer->copyParams(pars);
-  printf("FitFun %d \n",fitMan); fitMan++;
+  //printf("FitFun %d \n",fitMan); fitMan++;
   fun = pdfPointer->calculateNLL();
-  printf("FitFun %d \n",fitMan); fitMan++;
+  //printf("FitFun %d \n",fitMan); fitMan++;
   host_callnumber++;
 
 #ifdef PRINTCALLS
@@ -112,7 +112,7 @@ void FitFun(int &npar, double *gin, double &fun, double *fp, int iflag) {
 #ifdef PRINTCALLS
 void specialTddpPrint (double fun) {
   // Stupid amplitude-fit debugging method.
-  cout << "Function call " << host_callnumber << ": " << fun << "\n";
+  //cout << "Function call " << host_callnumber << ": " << fun << "\n";
   currGlue->getMinuitValues();
   int varCount = 1;
   for (std::vector<Variable*>::iterator v = vars.begin(); v != vars.end(); ++v) {
