@@ -153,8 +153,8 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   if(helJ==P1HEL) whichOfThree = 1;
   if(helJ==M1HEL) whichOfThree = 2;
 
-  fptype a = p[indices[4+(iKStar+whichOfThree)*5+3]];
-  fptype b = p[indices[4+(iKStar+whichOfThree)*5+4]];
+  fptype a = p[indices[3+(iKStar+whichOfThree)*5+3]];
+  fptype b = p[indices[3+(iKStar+whichOfThree)*5+4]];
 
   //fptype a = p[indices[7]];
   //fptype b = p[indices[8]];
@@ -314,6 +314,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
 {
 
   int numParams = indices[0];
+  unsigned int nOfKstar = indices[1];
   fptype MBd = 5.27961;
   //int numberOfKStar = indices[0]/6;
 
@@ -321,7 +322,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   fptype psi_nS = p[indices[1]];
   fptype dRadB0 = p[indices[2]];
   fptype dRadKs = p[indices[3]];
-  int nKStars = (int) p[indices[4]];
+  //int nKStars = (int) p[indices[4]];
 
   devcomplex<fptype> matrixElement (0.0,0.0);
 
@@ -330,11 +331,9 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
 
   for (int iKStar=0; iKStar<nKStars; ++iKStar) {
 
-
-
-    fptype Mass = p[indices[4+1+iKStar]];
-    fptype Gamma = p[indices[4+2+iKStar]];
-    fptype Spin = p[indices[4+3+iKStar]];
+    fptype Mass = p[indices[3+1+iKStar]];
+    fptype Gamma = p[indices[3+2+iKStar]];
+    fptype Spin = p[indices[3+3+iKStar]];
 
     devcomplex<fptype> matrixElement_R(0.0,0.0);
 
@@ -458,10 +457,10 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variab
 
   unsigned int noOfKStars = (int) _Masses.size();
 
+  pindices.push_back(noOfKStars);
   pindices.push_back(registerParameter(_psi_nS));  // p[indices[1]]
   pindices.push_back(registerParameter(_dRadB0));  // p[indices[2]]
   pindices.push_back(registerParameter(_dRadKs));  // p[indices[3]]
-  pindices.push_back(noOfKStars);
 
   printf("No. of kStars = %d \n",noOfKStars);
 
