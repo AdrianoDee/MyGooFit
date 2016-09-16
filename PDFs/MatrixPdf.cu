@@ -79,7 +79,7 @@ EXEC_TARGET fptype Pmom(fptype mkp,const fptype psiN)
     fptype mkp2 = mkp*mkp;
     fptype rootterm = 0;
 
-    printf("=======Pmom mpk = %.2f psiN = %.2f \n",mkp,psiN);
+    //printf("=======Pmom mpk = %.2f psiN = %.2f \n",mkp,psiN);
 
     //if (psiN==1.0)
     if (true)
@@ -358,7 +358,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
     //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
   }
 
-  printf("======= Matrix Element HEL = %.2f \n  Mass KPi = %.3f cJ = %.3f  cKs = %.3f phi = %.3f \n mE = ( %.3f , %.3f )",helDmu,mkp,cJ,cKs,phi,matrixElement.real,matrixElement.imag);
+  //printf("======= Matrix Element HEL = %.2f \n  Mass KPi = %.3f cJ = %.3f  cKs = %.3f phi = %.3f \n mE = ( %.3f , %.3f )",helDmu,mkp,cJ,cKs,phi,matrixElement.real,matrixElement.imag);
 
   return matrixElement;
 
@@ -373,7 +373,7 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
 
 EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 {
-    printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
+    //printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
     const fptype psin = psiN;
     fptype p = Pmom(mkp,psin);
     fptype q = Qmom(mkp);
@@ -401,7 +401,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype MKaon = 0.493677; fptype MPion = 0.13957018;
   fptype MBd = 5.27961;
 
-  printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs);
+  //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs);
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
    fptype MPsi_nS = 0.;
@@ -415,7 +415,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
       //printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
 
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS)){
-    printf("Out of the borders \n");
+    //printf("Out of the borders \n");
     return 0.;}
   else{
       //printf("Device Matrix mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,cJ,cKs,phi);
