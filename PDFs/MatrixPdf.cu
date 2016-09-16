@@ -178,7 +178,7 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
     if (helJ==M1HEL)
       return +(SIN(ACOS(cKs)) / root2) ;
     else if (helJ==ZEROHEL){
-      printf("helj = 0 : Wignerd_R = %.3f \n",cKs);
+      //printf("helj = 0 : Wignerd_R = %.3f \n",cKs);
       return cKs ;}
     else if (helJ==P1HEL)
       return -(SIN(ACOS(cKs)) / root2) ;
@@ -234,12 +234,12 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
       return nullo; }
   } else if (helJ==ZEROHEL) {
-    printf("Helj = zerohel \n");
+    //printf("Helj = zerohel \n");
     if (helDmu==M1HEL){
-      printf("HelDmu = M1HEL \n");
+      //printf("HelDmu = M1HEL \n");
       return devcomplex<fptype>((-1.0)*(SQRT(1. - POW(cJ,2))/root2),0.0);}
     else if (helDmu==P1HEL){
-      printf("HelDmu = P1HEL \n");
+      //printf("HelDmu = P1HEL \n");
       return devcomplex<fptype>((SQRT(1. - POW(cJ,2))/root2),0.0);}
     else {
       printf("PRINFT TO BE CONFIGURED returning 0\n");
@@ -275,7 +275,7 @@ EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fp
   result = HH * WR * cWR ;
   //cout <<"\nAngularTerm for K* " <<R <<" and helDmu = " <<helDmu <<" and helJ = " <<helJ <<" is made of Wignerd_R(spinR, helJ) * cWignerD_J(helJ, helDmu, phi) = " <<Wignerd_R(spinR, helJ) <<" * " <<cWignerD_J( WignerD_J(helJ, helDmu, phi) ) <<endl;
   //cout <<"It is multiplied by H(R,helJ) = H(" <<R <<"," <<helJ <<") = " <<H(R,helJ) <<endl;
-  printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
+  //printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
 
   return result;
 }
@@ -303,7 +303,7 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     //cout <<"POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<(POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR)) <<endl;
     //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
 
-    printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f  \n PmKP  = %.3f PRMass = %.3f    \n QmKP  = %.3f QRMass = %.3f  \n LminMom = %.3f LminR = %.3f    \n DB0 = %.3f DKs = %.3f    \n BlattWeisskopf LminM = %.3f    \n BlattWeisskopf LminR = %.3f    \n Power1  = %.3f    \n Power2  = %.3f    \n BW  = (%.3f ,%.3f)",RFunc.real,RFunc.imag,RMass,mkp,PmKP,PRMass,QmKP,QRMass,LminMom,LminR,DB0,DKs,blatt1,blatt2,pow1,pow2,bw.real,bw.imag);
+    //printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f  \n PmKP  = %.3f PRMass = %.3f    \n QmKP  = %.3f QRMass = %.3f  \n LminMom = %.3f LminR = %.3f    \n DB0 = %.3f DKs = %.3f    \n BlattWeisskopf LminM = %.3f    \n BlattWeisskopf LminR = %.3f    \n Power1  = %.3f    \n Power2  = %.3f    \n BW  = (%.3f ,%.3f)",RFunc.real,RFunc.imag,RMass,mkp,PmKP,PRMass,QmKP,QRMass,LminMom,LminR,DB0,DKs,blatt1,blatt2,pow1,pow2,bw.real,bw.imag);
 
     //printf("======= RFunction (%.2f ,%.2f)\n  RMass = %.3f Mass KPi = %.3f ",RFunc.real,RFunc.imag,RMass,mkp);
 
@@ -327,7 +327,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   devcomplex<fptype> matrixElement (0.0,0.0);
 
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
-  printf("psi_nS = %f dRadB0 = %f dRadKs = %f nKStars = %d numparm = %d \n",psi_nS,dRadB0,dRadKs,nOfKstar,numParams);
+  //printf("psi_nS = %f dRadB0 = %f dRadKs = %f nKStars = %d numparm = %d \n",psi_nS,dRadB0,dRadKs,nOfKstar,numParams);
 
   for (int iKStar=0; iKStar<nOfKstar; ++iKStar) {
 
@@ -337,7 +337,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
 
     devcomplex<fptype> matrixElement_R(0.0,0.0);
 
-    printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
+    //printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
 
     if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
       matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin+1, Spin, dRadB0, dRadKs,psi_nS) *
