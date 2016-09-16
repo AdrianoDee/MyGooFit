@@ -439,7 +439,7 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
 __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
-        std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
+        std::vector<Variable*> _Masses,std::vector<Variable*> _Gammas,std::vector<Variable*> _Spins,std::vector<Variable*> _a,std::vector<Variable*> _b,
         Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
 /*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
     Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b,
@@ -455,18 +455,18 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variab
 
   std::vector<unsigned int> pindices;
 
-  unsigned int noOfKStars = (int) _Mass.size();
+  unsigned int noOfKStars = (int) _Masses.size();
 
   pindices.push_back(registerParameter(_psi_nS));  // p[indices[1]]
   pindices.push_back(registerParameter(_dRadB0));  // p[indices[2]]
   pindices.push_back(registerParameter(_dRadKs));  // p[indices[3]]
-  pindices.push_back(registerParameter(noOfKStars));
+  pindices.push_back(noOfKStars);
 
   for (int j = 0 ; j < noOfKStars; j++) {
 
-    pindices.push_back(registerParameter(_Mass[j]));  // p[indices[4]]
-    pindices.push_back(registerParameter(_Gamma[j]));  // p[indices[5]]
-    pindices.push_back(registerParameter(_Spin[j]));
+    pindices.push_back(registerParameter(_Masses[j]));  // p[indices[4]]
+    pindices.push_back(registerParameter(_Gammas[j]));  // p[indices[5]]
+    pindices.push_back(registerParameter(_Spins[j]));
     //pindices.push_back(registerParameter(_helj[j]));   // p[indices[6]]
     pindices.push_back(registerParameter(_a[j]));  // p[indices[7]]
     pindices.push_back(registerParameter(_b[j]));  // p[indices[8]]
