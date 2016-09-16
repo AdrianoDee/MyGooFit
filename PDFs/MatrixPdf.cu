@@ -153,8 +153,8 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   if(helJ==P1HEL) whichOfThree = 1;
   if(helJ==M1HEL) whichOfThree = 2;
 
-  fptype a = p[indices[3+(iKStar+whichOfThree)*5+3]];
-  fptype b = p[indices[3+(iKStar+whichOfThree)*5+4]];
+  fptype a = p[indices[4+(iKStar+whichOfThree)*5+3]];
+  fptype b = p[indices[4+(iKStar+whichOfThree)*5+4]];
 
   //fptype a = p[indices[7]];
   //fptype b = p[indices[8]];
@@ -331,9 +331,9 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
 
   for (int iKStar=0; iKStar<nOfKstar; ++iKStar) {
 
-    fptype Mass = p[indices[3+1+iKStar]];
-    fptype Gamma = p[indices[3+2+iKStar]];
-    fptype Spin = p[indices[3+3+iKStar]];
+    fptype Mass = p[indices[4+1+iKStar]];
+    fptype Gamma = p[indices[4+2+iKStar]];
+    fptype Spin = p[indices[4+3+iKStar]];
 
     devcomplex<fptype> matrixElement_R(0.0,0.0);
 
@@ -389,13 +389,13 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype cKs = evt[indices[2 + indices[0]]+2];
   fptype phi = evt[indices[2 + indices[0]]+3];
 
-  fptype psi_nS = p[indices[1]];
-  fptype dRadB0 = p[indices[2]];
-  fptype dRadKs = p[indices[3]];
+  fptype psi_nS = p[indices[2]];
+  fptype dRadB0 = p[indices[3]];
+  fptype dRadKs = p[indices[4]];
   fptype MKaon = 0.493677; fptype MPion = 0.13957018;
   fptype MBd = 5.27961;
 
-  printf("%d %d %.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f ",indices[0],indices[1],psi_nS,dRadB0,dRadKs,p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
+  printf("%d %d %.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f \n",indices[0],indices[1],psi_nS,dRadB0,dRadKs,p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
 
 
 
