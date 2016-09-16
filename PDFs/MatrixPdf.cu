@@ -382,7 +382,7 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
-  printf("%d %d %.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
+  //printf("%d %d %.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
 
   int numParams = indices[0];
 
@@ -397,6 +397,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype MKaon = 0.493677; fptype MPion = 0.13957018;
   fptype MBd = 5.27961;
 
+  printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs);
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
    fptype MPsi_nS = 0.;
