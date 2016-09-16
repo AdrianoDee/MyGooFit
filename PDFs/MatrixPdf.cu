@@ -329,7 +329,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
   printf("psi_nS = %f dRadB0 = %f dRadKs = %f nKStars = %d numparm = %d \n",psi_nS,dRadB0,dRadKs,nOfKstar,numParams);
 
-  for (int iKStar=0; iKStar<nKStars; ++iKStar) {
+  for (int iKStar=0; iKStar<nOfKstar; ++iKStar) {
 
     fptype Mass = p[indices[3+1+iKStar]];
     fptype Gamma = p[indices[3+2+iKStar]];
