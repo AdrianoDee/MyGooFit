@@ -43,6 +43,8 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
     fptype Dq06 = Dq04*Dq02;
     fptype rootterm = -1;
 
+
+
     if (Lmin==0)
       return 1.;
     else if (Lmin==1)
@@ -76,6 +78,8 @@ EXEC_TARGET fptype Pmom(fptype mkp,fptype psiN)
 
     fptype mkp2 = mkp*mkp;
     fptype rootterm = 0;
+
+    printf("=======Pmom mpk = %.2f psiN = %.2f \n",mkp,psiN);
 
     if (psiN==1.0)
       rootterm = MJpsi4mTwoMJpsi2MBd2pMBd4 + mkp2*(mkp2 - TwoMJpsi2pTwoMBd2);
@@ -370,7 +374,7 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
 
 EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 {
-    //printf("=======Phase Space \n");
+    printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
     fptype p = Pmom(mkp,psiN);
     fptype q = Qmom(mkp);
     fptype phsp = p*q;
