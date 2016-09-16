@@ -65,7 +65,7 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
 }
 
 
-EXEC_TARGET fptype Pmom(fptype mkp,fptype psiN)
+EXEC_TARGET fptype Pmom(fptype mkp,const fptype psiN)
 {
 
     fptype  MPsi2S4mTwoMPsi2S2MBd2pMBd4 = 204.1150027743444;
@@ -372,8 +372,9 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
 
 EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 {
-    printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
-    fptype p = Pmom(mkp,psiN);
+    printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psin);
+    const fptype psin = psiN;
+    fptype p = Pmom(mkp,psin);
     fptype q = Qmom(mkp);
     fptype phsp = p*q;
     //printf(" Mass KPi = %.3f Phase space = %.3f\n",mkp,phsp);
