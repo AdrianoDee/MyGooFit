@@ -462,6 +462,8 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variab
   pindices.push_back(registerParameter(_dRadKs));  // p[indices[3]]
   pindices.push_back(noOfKStars);
 
+  printf("No. of kStars = %d \n",noOfKStars);
+
   for (int j = 0 ; j < noOfKStars; j++) {
 
     pindices.push_back(registerParameter(_Masses[j]));  // p[indices[4]]
