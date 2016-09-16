@@ -153,11 +153,11 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   if(helJ==P1HEL) whichOfThree = 1;
   if(helJ==M1HEL) whichOfThree = 2;
 
-  //fptype a = p[indices[3+(iKStar+whichOfThree)*6+4]];
-  //fptype b = p[indices[3+(iKStar+whichOfThree)*6+5]];
+  fptype a = p[indices[4+(iKStar+whichOfThree)*5+3]];
+  fptype b = p[indices[4+(iKStar+whichOfThree)*5+4]];
 
-  fptype a = p[indices[7]];
-  fptype b = p[indices[8]];
+  //fptype a = p[indices[7]];
+  //fptype b = p[indices[8]];
 
   result = exp(imUnit*b);
 
@@ -321,57 +321,39 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   fptype psi_nS = p[indices[1]];
   fptype dRadB0 = p[indices[2]];
   fptype dRadKs = p[indices[3]];
+  int nKStars = (int) p[indices[4]];
 
   devcomplex<fptype> matrixElement (0.0,0.0);
 
-  int iKStar = 0;
-
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
 
-  /*for (int iKStar=0; iKStar<numParams-3; iKStar += 6) {
+  for (int iKStar=0; iKStar<nKStars; ++iKStar) {
 
-    fptype Mass = p[indices[3+1+iKStar]];
-    fptype Spin = p[indices[3+2+iKStar]];
-    fptype Gamma = p[indices[3+3+iKStar]];
 
-    printf("Mass = %f Gamma = %f Spin = %f \n",Mass,Gamma,Spin);
+
+    fptype Mass = p[indices[4+1+iKStar]];
+    fptype Gamma = p[indices[4+2+iKStar]];
+    fptype Spin = p[indices[4+3+iKStar]];
 
     devcomplex<fptype> matrixElement_R(0.0,0.0);
+
+    printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
+
     if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
       matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin+1, Spin, dRadB0, dRadKs,psi_nS) *
-	               AngularTerm(cJ,cKs,phi,p,indices,Spin, ZEROHEL, helDmu,iKStar) ;
-    } else
+      AngularTerm(cJ,cKs,phi,p,indices,Spin, ZEROHEL, helDmu,iKStar) ;
+    }
+       else
               {
                 matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin-1, Spin,dRadB0,dRadKs,psi_nS) *
 	               ( AngularTerm(cJ,cKs,phi,p,indices,Spin, M1HEL, helDmu,iKStar) + AngularTerm(cJ,cKs,phi,p,indices, Spin, ZEROHEL, helDmu,iKStar) + AngularTerm(cJ,cKs,phi,p,indices,Spin, P1HEL, helDmu,iKStar) ) ;
-                   iKStar +=6*2;
+                   iKStar +=3;
                }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
     //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
     matrixElement += matrixElement_R;
     //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
-  }*/
-
-  fptype Mass = p[indices[4]];
-  fptype Gamma = p[indices[5]];
-  fptype Spin = p[indices[6]];
-
-  printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
-
-  devcomplex<fptype> matrixElement_R(0.0,0.0);
-  if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
-    matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin+1, Spin, dRadB0, dRadKs,psi_nS) *
-               AngularTerm(cJ,cKs,phi,p,indices,Spin, ZEROHEL, helDmu,iKStar) ;
-  } else
-            {
-              matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin-1, Spin,dRadB0,dRadKs,psi_nS) *
-               ( AngularTerm(cJ,cKs,phi,p,indices,Spin, M1HEL, helDmu,iKStar) + AngularTerm(cJ,cKs,phi,p,indices, Spin, ZEROHEL, helDmu,iKStar) + AngularTerm(cJ,cKs,phi,p,indices,Spin, P1HEL, helDmu,iKStar) ) ;
-                 iKStar +=6*2;
-             }
-  //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
-  //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
-  matrixElement += matrixElement_R;
-  //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
+  }
 
   printf("======= Matrix Element HEL = %.2f \n  Mass KPi = %.3f cJ = %.3f  cKs = %.3f phi = %.3f \n mE = ( %.3f , %.3f )",helDmu,mkp,cJ,cKs,phi,matrixElement.real,matrixElement.imag);
 
@@ -455,13 +437,13 @@ EXEC_TARGET fptype device_Matrix_Bin (fptype* point, fptype* p, unsigned int* in
 MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
-/*
+
 __host__ MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
         std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
-        std::vector<Variable*> helj,Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);*/
-__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+        Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
+/*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
     Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b,
-    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
+    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)*/
   : GooPdf(0, n),
   psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
 {
@@ -473,15 +455,25 @@ __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Varia
 
   std::vector<unsigned int> pindices;
 
+  unsigned int noOfKStars = (int) _Mass.size();
+
   pindices.push_back(registerParameter(_psi_nS));  // p[indices[1]]
   pindices.push_back(registerParameter(_dRadB0));  // p[indices[2]]
   pindices.push_back(registerParameter(_dRadKs));  // p[indices[3]]
+  pindices.push_back(registerParameter(noOfKStars));
 
-  pindices.push_back(registerParameter(_Mass));  // p[indices[4]]
-  pindices.push_back(registerParameter(_Gamma));  // p[indices[5]]
-  pindices.push_back(registerParameter(_Spin));  // p[indices[6]]
-  pindices.push_back(registerParameter(_a));  // p[indices[7]]
-  pindices.push_back(registerParameter(_b));  // p[indices[8]]
+  for (int j = 0 ; j < noOfKStars; j++) {
+
+    pindices.push_back(registerParameter(_Mass[j]));  // p[indices[4]]
+    pindices.push_back(registerParameter(_Gamma[j]));  // p[indices[5]]
+    pindices.push_back(registerParameter(_Spin[j]));
+    //pindices.push_back(registerParameter(_helj[j]));   // p[indices[6]]
+    pindices.push_back(registerParameter(_a[j]));  // p[indices[7]]
+    pindices.push_back(registerParameter(_b[j]));  // p[indices[8]]
+
+  }
+
+
 
   /*for (int j = 0 ; j < (int)_KParameters.size(); j++) {
     pindices.push_back(registerParameter(_KParameters[j]));
