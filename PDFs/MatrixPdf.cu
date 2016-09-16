@@ -81,7 +81,8 @@ EXEC_TARGET fptype Pmom(fptype mkp,const fptype psiN)
 
     printf("=======Pmom mpk = %.2f psiN = %.2f \n",mkp,psiN);
 
-    if (psiN==1.0)
+    //if (psiN==1.0)
+    if (true)
       rootterm = MJpsi4mTwoMJpsi2MBd2pMBd4 + mkp2*(mkp2 - TwoMJpsi2pTwoMBd2);
     else if (psiN==2.0)
       rootterm = MPsi2S4mTwoMPsi2S2MBd2pMBd4 + mkp2*(mkp2 - TwoMPsi2S2pTwoMBd2);
