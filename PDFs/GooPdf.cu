@@ -285,7 +285,7 @@ __host__ double GooPdf::sumOfNll (int numVars) const {
   thrust::constant_iterator<int> eventSize(numVars);
   thrust::constant_iterator<fptype*> arrayAddress(dev_event_array);
   double dummy = 0;
-  printf(" No. Entries : %d \n",numEntries);
+  //printf(" No. Entries : %d \n",numEntries);
   //if (host_callnumber >= 2) abortWithCudaPrintFlush(__FILE__, __LINE__, getName() + " debug abort", this);
   thrust::counting_iterator<int> eventIndex(0);
   return thrust::transform_reduce(thrust::make_zip_iterator(thrust::make_tuple(eventIndex, arrayAddress, eventSize)),
