@@ -395,7 +395,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype MKaon = 0.493677; fptype MPion = 0.13957018;
   fptype MBd = 5.27961;
 
-  //printf("%.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f ",psi_nS,dRadB0,dRadKs,p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
+  printf("%d %d %.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f ",indices[0],indices[1],psi_nS,dRadB0,dRadKs,p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
 
 
 
