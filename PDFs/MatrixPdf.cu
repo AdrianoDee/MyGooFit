@@ -161,7 +161,11 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
 
   result = exp(imUnit*b);
 
-  return a * result ;
+  result *= a;
+
+  printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f \n",result.real,result.imag,a,b);
+
+  return result ;
 
 }
 
@@ -173,8 +177,9 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
   else if (spinR==1.0)
     if (helJ==M1HEL)
       return +(SIN(ACOS(cKs)) / root2) ;
-    else if (helJ==ZEROHEL)
-      return cKs ;
+    else if (helJ==ZEROHEL){
+      printf("helj = 0 : Wignerd_R = %.3f \n",cKs);
+      return cKs ;}
     else if (helJ==P1HEL)
       return -(SIN(ACOS(cKs)) / root2) ;
     else {
@@ -229,10 +234,13 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
       return nullo; }
   } else if (helJ==ZEROHEL) {
-    if (helDmu==M1HEL)
-      return devcomplex<fptype>((-1.0)*(SQRT(1. - POW(cJ,2))/root2),0.0);
-    else if (helDmu==P1HEL)
-      return devcomplex<fptype>((SQRT(1. - POW(cJ,2))/root2),0.0);
+    printf("Helj = zerohel \n");
+    if (helDmu==M1HEL){
+      printf("HelDmu = M1HEL \n");
+      return devcomplex<fptype>((-1.0)*(SQRT(1. - POW(cJ,2))/root2),0.0);}
+    else if (helDmu==P1HEL){
+      printf("HelDmu = P1HEL \n");
+      return devcomplex<fptype>((SQRT(1. - POW(cJ,2))/root2),0.0);}
     else {
       printf("PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
@@ -267,10 +275,7 @@ EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fp
   result = HH * WR * cWR ;
   //cout <<"\nAngularTerm for K* " <<R <<" and helDmu = " <<helDmu <<" and helJ = " <<helJ <<" is made of Wignerd_R(spinR, helJ) * cWignerD_J(helJ, helDmu, phi) = " <<Wignerd_R(spinR, helJ) <<" * " <<cWignerD_J( WignerD_J(helJ, helDmu, phi) ) <<endl;
   //cout <<"It is multiplied by H(R,helJ) = H(" <<R <<"," <<helJ <<") = " <<H(R,helJ) <<endl;
-  printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n",cJ,cKs,phi);
-  printf("====== HH = (%.3f , %.3f) \n",HH.real,HH.imag);
-  printf("====== WR = %.3f \n",WR);
-  printf("====== cWR = (%.3f , %.3f) \n",cWR.real,cWR.imag);
+  printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n",cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ);
 
   return result;
 }
@@ -451,9 +456,9 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 /*
-__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
-  std::vector<Variable*>& _KParameters,
-  Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)*/
+__host__ MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+        std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
+        std::vector<Variable*> helj,Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);*/
 __host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
     Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b,
     Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
