@@ -99,7 +99,7 @@ __host__ void PdfBase::initialiseIndices (std::vector<unsigned int> pindices) {
 	    << cudaArray << " "
 	    << paramIndices << " "
 	    << std::endl;
-  
+
   MEMCPY_TO_SYMBOL(paramIndices, host_indices, totalParams*sizeof(unsigned int), 0, cudaMemcpyHostToDevice);
 }
 
