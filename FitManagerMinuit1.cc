@@ -112,7 +112,7 @@ void FitFun(int &npar, double *gin, double &fun, double *fp, int iflag) {
 #ifdef PRINTCALLS
 void specialTddpPrint (double fun) {
   // Stupid amplitude-fit debugging method.
-  //cout << "Function call " << host_callnumber << ": " << fun << "\n";
+  cout << "Function call " << host_callnumber << ": " << fun << "\n";
   currGlue->getMinuitValues();
   int varCount = 1;
   for (std::vector<Variable*>::iterator v = vars.begin(); v != vars.end(); ++v) {
