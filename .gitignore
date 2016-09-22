@@ -15,3 +15,4 @@ html/
 *.log
 *.out
 *.toc
+.DS_Store
