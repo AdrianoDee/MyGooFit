@@ -166,7 +166,9 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
 
   result *= a;
 
-  printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f \n",result.real,result.imag,a,b);
+  if(helJ==ZEROHEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",result.real,result.imag,a,b,helJ);
+  if(helJ==M1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",result.real,result.imag,a,b,helJ);
+  if(helJ==P1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = P1(%.2f) \n",result.real,result.imag,a,b,helJ);
 
   return result ;
 
@@ -178,13 +180,19 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
   if (spinR==0.0)
     return 1. ;
   else if (spinR==1.0)
-    if (helJ==M1HEL)
-      return +(SIN(ACOS(cKs)) / root2) ;
+    if (helJ==M1HEL){
+      fptype result = +(SIN(ACOS(cKs)) / root2);
+      printf("helj = m1 cKs = %.3f -> Wignerd_R = %.3f \n",cKs);
+      return result;
+      }
     else if (helJ==ZEROHEL){
-      //printf("helj = 0 : Wignerd_R = %.3f \n",cKs);
+      printf("helj = 0 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,cKs);
       return cKs ;}
-    else if (helJ==P1HEL)
-      return -(SIN(ACOS(cKs)) / root2) ;
+    else if (helJ==P1HEL){
+      fptype result = +(SIN(ACOS(cKs)) / root2);
+      printf("helj = p1 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,result);
+      return result;
+    }
     else {
       printf("Wignerd_R Spin 1.0 PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helJ = " <<helJ <<" is not allowed for spinR-" <<spinR <<" Wigner d^{spinR}_{helJ,0} functions. Returning 0" <<endl;
@@ -307,8 +315,6 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
 
     printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f  \n PmKP  = %.3f PRMass = %.3f    \n QmKP  = %.3f QRMass = %.3f  \n LminMom = %.3f LminR = %.3f    \n DB0 = %.3f DKs = %.3f    \n BlattWeisskopf LminM = %.3f    \n BlattWeisskopf LminR = %.3f    \n Power1  = %.3f    \n Power2  = %.3f    \n BW  = (%.3f ,%.3f)",RFunc.real,RFunc.imag,RMass,mkp,PmKP,PRMass,QmKP,QRMass,LminMom,LminR,DB0,DKs,blatt1,blatt2,pow1,pow2,bw.real,bw.imag);
-
-    printf("======= RFunction (%.2f ,%.2f)\n  RMass = %.3f Mass KPi = %.3f ",RFunc.real,RFunc.imag,RMass,mkp);
 
     return RFunc ;
 }
