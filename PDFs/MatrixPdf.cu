@@ -322,9 +322,9 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   //int numberOfKStar = indices[0]/6;
 
 
-  fptype psi_nS = p[indices[1]];
-  fptype dRadB0 = p[indices[2]];
-  fptype dRadKs = p[indices[3]];
+  fptype psi_nS = p[indices[2]];
+  fptype dRadB0 = p[indices[3]];
+  fptype dRadKs = p[indices[4]];
   //int nKStars = (int) p[indices[4]];
 
   devcomplex<fptype> matrixElement (0.0,0.0);
