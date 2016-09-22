@@ -399,7 +399,13 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
 {
   //cout <<"\nME(\"m1\") + ME(\"p1\") = " <<ME("m1") <<" + " <<ME("p1") <<endl;
   //cout <<"ME(\"m1\").Rho2() + ME(\"p1\").Rho2() = " <<ME("m1").Rho2() <<" + " <<ME("p1").Rho2() <<endl;
-  return matrixElement(mkp,cJ,cKs,phi,p,indices,M1HEL).abs2() + matrixElement(mkp,cJ,cKs,phi,p,indices,P1HEL).abs2() ;
+
+  fptype finalDevice1 = matrixElement(mkp,cJ,cKs,phi,p,indices,M1HEL).abs2();
+  fptype finalDevice2 = matrixElement(mkp,cJ,cKs,phi,p,indices,P1HEL).abs2();
+
+  printf("Matrix Element HelDMu m1 = %.3f Matrix Element HelDMu p1 = %.3f ( mkp = %.3f - cJ = %.3f cKs = %.3f phi = %.3f)\n",finalDevice1,finalDevice2,mkp,cJ,cKs,phi);
+
+  return finalDevice1 + finalDevice2 ;
 }
 
 EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
