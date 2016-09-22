@@ -79,7 +79,7 @@ EXEC_TARGET fptype Pmom(fptype mkp,const fptype psiN)
     fptype mkp2 = mkp*mkp;
     fptype rootterm = 0;
 
-    //printf("=======Pmom mpk = %.2f psiN = %.2f \n",mkp,psiN);
+    printf("=======Pmom mpk = %.2f psiN = %.2f \n",mkp,psiN);
 
     //if (psiN==1.0)
     if (true)
@@ -166,7 +166,7 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
 
   result *= a;
 
-  //printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f \n",result.real,result.imag,a,b);
+  printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f \n",result.real,result.imag,a,b);
 
   return result ;
 
@@ -306,9 +306,9 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     //cout <<"POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<(POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR)) <<endl;
     //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
 
-    //printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f  \n PmKP  = %.3f PRMass = %.3f    \n QmKP  = %.3f QRMass = %.3f  \n LminMom = %.3f LminR = %.3f    \n DB0 = %.3f DKs = %.3f    \n BlattWeisskopf LminM = %.3f    \n BlattWeisskopf LminR = %.3f    \n Power1  = %.3f    \n Power2  = %.3f    \n BW  = (%.3f ,%.3f)",RFunc.real,RFunc.imag,RMass,mkp,PmKP,PRMass,QmKP,QRMass,LminMom,LminR,DB0,DKs,blatt1,blatt2,pow1,pow2,bw.real,bw.imag);
+    printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f  \n PmKP  = %.3f PRMass = %.3f    \n QmKP  = %.3f QRMass = %.3f  \n LminMom = %.3f LminR = %.3f    \n DB0 = %.3f DKs = %.3f    \n BlattWeisskopf LminM = %.3f    \n BlattWeisskopf LminR = %.3f    \n Power1  = %.3f    \n Power2  = %.3f    \n BW  = (%.3f ,%.3f)",RFunc.real,RFunc.imag,RMass,mkp,PmKP,PRMass,QmKP,QRMass,LminMom,LminR,DB0,DKs,blatt1,blatt2,pow1,pow2,bw.real,bw.imag);
 
-    //printf("======= RFunction (%.2f ,%.2f)\n  RMass = %.3f Mass KPi = %.3f ",RFunc.real,RFunc.imag,RMass,mkp);
+    printf("======= RFunction (%.2f ,%.2f)\n  RMass = %.3f Mass KPi = %.3f ",RFunc.real,RFunc.imag,RMass,mkp);
 
     return RFunc ;
 }
@@ -330,7 +330,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   devcomplex<fptype> matrixElement (0.0,0.0);
 
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
-  //printf("psi_nS = %f dRadB0 = %f dRadKs = %f nKStars = %d numparm = %d \n",psi_nS,dRadB0,dRadKs,nOfKstar,numParams);
+  printf("psi_nS = %f dRadB0 = %f dRadKs = %f nKStars = %d numparm = %d \n",psi_nS,dRadB0,dRadKs,nOfKstar,numParams);
 
   for (int iKStar=0; iKStar<nOfKstar; ++iKStar) {
 
@@ -340,7 +340,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
 
     devcomplex<fptype> matrixElement_R(0.0,0.0);
 
-    //printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
+    printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
 
     if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
       matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin+1, Spin, dRadB0, dRadKs,psi_nS) *
@@ -358,7 +358,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
     //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
   }
 
-  //printf("======= Matrix Element HEL = %.2f \n  Mass KPi = %.3f cJ = %.3f  cKs = %.3f phi = %.3f \n mE = ( %.3f , %.3f )",helDmu,mkp,cJ,cKs,phi,matrixElement.real,matrixElement.imag);
+  printf("======= Matrix Element HEL = %.2f \n  Mass KPi = %.3f cJ = %.3f  cKs = %.3f phi = %.3f \n mE = ( %.3f , %.3f )",helDmu,mkp,cJ,cKs,phi,matrixElement.real,matrixElement.imag);
 
   return matrixElement;
 
@@ -373,20 +373,20 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
 
 EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 {
-    //printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
+    printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
     const fptype psin = psiN;
     fptype p = Pmom(mkp,psin);
     fptype q = Qmom(mkp);
     fptype phsp = p*q;
-    //printf(" Mass KPi = %.3f Phase space = %.3f\n",mkp,phsp);
-    //printf("==================");
+    printf(" Mass KPi = %.3f Phase space = %.3f\n",mkp,phsp);
+    printf("==================");
 
     return  Pmom(mkp,psiN) * Qmom(mkp);
 }
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
-  //printf("%d %d %.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
+  printf("%d %d %.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
 
   int numParams = indices[0];
 
