@@ -248,7 +248,7 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
   if (helJ==M1HEL) {
     if (helDmu==M1HEL){
       devcomplex<fptype> result = ((+1. + cJ)*exp(imUnit*angle))*.5;
-      printf("helj = m1 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+      printf("helj = m1 (%.3f) helDmu = (%.3f)  m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",helJ,helDmu,cJ,angle,result.real,result.imag);
       return result;}
     else if (helDmu==P1HEL){
       devcomplex<fptype> result = (-1.0)*((-1. + cJ)*exp(imUnit*angle))*.5;
@@ -452,7 +452,8 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
     //printf("Out of the borders \n");
     return 0.;}
   else{
-      printf("Device Matrix mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,cJ,cKs,phi);
+      fptype result = ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp,psi_nS);
+      printf("Device Matrix = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",result,mkp,cJ,cKs,phi);
       return ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp,psi_nS);}
 
 
