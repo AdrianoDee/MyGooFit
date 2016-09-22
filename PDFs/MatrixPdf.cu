@@ -190,7 +190,7 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
   else if (spinR==1.0)
     if (helJ==M1HEL){
       fptype result = +(SIN(ACOS(cKs)) / root2);
-      printf("helj = m1 cKs = %.3f -> Wignerd_R = %.3f \n",cKs);
+      printf("helj = m1 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,result);
       return result;
       }
     else if (helJ==ZEROHEL){
@@ -243,11 +243,17 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
   devcomplex<fptype> imUnit(0.0,1.0);
   devcomplex<fptype> nullo(0.0,0.0);
 
+  printf("imUinit = (%.3f , %.3f) nullo = (%.3f , %.3f) \n",imUnit.real,imUnit.imag,nullo.real,nullo.imag);
+
   if (helJ==M1HEL) {
-    if (helDmu==M1HEL)
-      return ((+1. + cJ)*exp(imUnit*angle))*.5;
-    else if (helDmu==P1HEL)
-      return (-1.0)*((-1. + cJ)*exp(imUnit*angle))*.5;
+    if (helDmu==M1HEL){
+      devcomplex<fptype> result = ((+1. + cJ)*exp(imUnit*angle))*.5;
+      printf("helj = m1 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+      return result;}
+    else if (helDmu==P1HEL){
+      devcomplex<fptype> result = (-1.0)*((-1. + cJ)*exp(imUnit*angle))*.5;
+      printf("helj = m1 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+      return result;}
     else {
       printf("PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
@@ -255,20 +261,31 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
   } else if (helJ==ZEROHEL) {
     //printf("Helj = zerohel \n");
     if (helDmu==M1HEL){
-      //printf("HelDmu = M1HEL \n");
-      return devcomplex<fptype>((-1.0)*(SQRT(1. - POW(cJ,2))/root2),0.0);}
+      devcomplex<fptype> result = devcomplex<fptype>((-1.0)*(SQRT(1. - POW(cJ,2))/root2),0.0);
+      printf("helj = 0 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+      return result;
+    }
     else if (helDmu==P1HEL){
-      //printf("HelDmu = P1HEL \n");
-      return devcomplex<fptype>((SQRT(1. - POW(cJ,2))/root2),0.0);}
-    else {
+    devcomplex<fptype> result = devcomplex<fptype>((SQRT(1. - POW(cJ,2))/root2),0.0);
+    printf("helj = 0 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+    return result;}
+       else {
       printf("PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
       return nullo; }
   } else if(helJ==P1HEL) {
     if (helDmu==M1HEL)
-      return (-1.0)*(-1. + cJ)/(2.*exp(imUnit*angle));
+      {
+        devcomplex<fptype> result = (-1.0)*(-1. + cJ)/(2.*exp(imUnit*angle));
+        printf("helj = p1 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+        return result;
+        }
     else if (helDmu==P1HEL)
-      return (+1. + cJ)/(2.*exp(imUnit*angle));
+      {
+        devcomplex<fptype> result = (+1. + cJ)/(2.*exp(imUnit*angle));
+        printf("helj = p1 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+        return result;
+        }
     else {
       printf("WignerD_J HelDem PRINFT TO BE CONFIGURED returning 0\n");
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
@@ -294,7 +311,7 @@ EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fp
   result = HH * WR * cWR ;
   //cout <<"\nAngularTerm for K* " <<R <<" and helDmu = " <<helDmu <<" and helJ = " <<helJ <<" is made of Wignerd_R(spinR, helJ) * cWignerD_J(helJ, helDmu, phi) = " <<Wignerd_R(spinR, helJ) <<" * " <<cWignerD_J( WignerD_J(helJ, helDmu, phi) ) <<endl;
   //cout <<"It is multiplied by H(R,helJ) = H(" <<R <<"," <<helJ <<") = " <<H(R,helJ) <<endl;
-  //printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
+  printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
 
   return result;
 }
