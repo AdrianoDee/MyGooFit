@@ -458,8 +458,10 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
     //printf("Out of the borders \n");
     return 0.;}
   else{
-      fptype result = ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp,psi_nS);
-      printf("Device Matrix = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",result,mkp,cJ,cKs,phi);
+      fptype MEME = ME2(mkp,cJ,cKs,phi,p,indices);
+      fptype phiPhase = PhiPHSP(mkp,psi_nS);
+      fptype result = MEME * phiPhase;
+      printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi);
       return ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp,psi_nS);}
 
 
