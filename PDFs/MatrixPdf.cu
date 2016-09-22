@@ -153,11 +153,13 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
 
   int whichOfThree = 0;
 
+
   if(helJ==P1HEL) whichOfThree = 1;
   if(helJ==M1HEL) whichOfThree = 2;
 
   fptype a = p[indices[4+(iKStar+whichOfThree)*5+3]];
   fptype b = p[indices[4+(iKStar+whichOfThree)*5+4]];
+
 
   //fptype a = p[indices[7]];
   //fptype b = p[indices[8]];
@@ -189,7 +191,7 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
       printf("helj = 0 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,cKs);
       return cKs ;}
     else if (helJ==P1HEL){
-      fptype result = +(SIN(ACOS(cKs)) / root2);
+      fptype result = -(SIN(ACOS(cKs)) / root2);
       printf("helj = p1 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,result);
       return result;
     }
@@ -392,7 +394,10 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
-  printf("%d %d %.2f %.2f  %.2f  %.2f  %.2f  %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]],p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]]);
+  printf("Zero paramater set %d %d %.2f %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]]);
+  printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
+  printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
+  printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
 
   int numParams = indices[0];
 
