@@ -79,7 +79,7 @@ EXEC_TARGET fptype Pmom(fptype mkp,const fptype psiN)
     fptype mkp2 = mkp*mkp;
     fptype rootterm = 0;
 
-    printf("=======Pmom mpk = %.2f psiN = %.2f \n",mkp,psiN);
+    //printf("=======Pmom mpk = %.2f psiN = %.2f \n",mkp,psiN);
 
     //if (psiN==1.0)
     if (true)
@@ -160,9 +160,9 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   fptype a = p[indices[5+(iKStar+whichOfThree)*5+3]];
   fptype b = p[indices[5+(iKStar+whichOfThree)*5+4]];
 
-  if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
-  if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
-  if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
+  //if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
+  //if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
+  //if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
 
 
   //fptype a = p[indices[7]];
@@ -174,9 +174,9 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
 
   result *= a;
 
-  if(helJ==ZEROHEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",result.real,result.imag,a,b,helJ);
-  if(helJ==M1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",result.real,result.imag,a,b,helJ);
-  if(helJ==P1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = P1(%.2f) \n",result.real,result.imag,a,b,helJ);
+  //if(helJ==ZEROHEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",result.real,result.imag,a,b,helJ);
+  //if(helJ==M1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",result.real,result.imag,a,b,helJ);
+  //if(helJ==P1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = P1(%.2f) \n",result.real,result.imag,a,b,helJ);
 
   return result ;
 
@@ -190,15 +190,15 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
   else if (spinR==1.0)
     if (helJ==M1HEL){
       fptype result = +(SIN(ACOS(cKs)) / root2);
-      printf("helj = m1 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,result);
+      //printf("helj = m1 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,result);
       return result;
       }
     else if (helJ==ZEROHEL){
-      printf("helj = 0 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,cKs);
+      //printf("helj = 0 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,cKs);
       return cKs ;}
     else if (helJ==P1HEL){
       fptype result = -(SIN(ACOS(cKs)) / root2);
-      printf("helj = p1 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,result);
+      //printf("helj = p1 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,result);
       return result;
     }
     else {
@@ -243,16 +243,16 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
   devcomplex<fptype> imUnit(0.0,1.0);
   devcomplex<fptype> nullo(0.0,0.0);
 
-  printf("imUinit = (%.3f , %.3f) nullo = (%.3f , %.3f) \n",imUnit.real,imUnit.imag,nullo.real,nullo.imag);
+  //printf("imUinit = (%.3f , %.3f) nullo = (%.3f , %.3f) \n",imUnit.real,imUnit.imag,nullo.real,nullo.imag);
 
   if (helJ==M1HEL) {
     if (helDmu==M1HEL){
       devcomplex<fptype> result = ((+1. + cJ)*exp(imUnit*angle))*.5;
-      printf("helj = m1 (%.3f) helDmu = (%.3f)  m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",helJ,helDmu,cJ,angle,result.real,result.imag);
+      //printf("helj = m1 (%.3f) helDmu = (%.3f)  m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",helJ,helDmu,cJ,angle,result.real,result.imag);
       return result;}
     else if (helDmu==P1HEL){
       devcomplex<fptype> result = (-1.0)*((-1. + cJ)*exp(imUnit*angle))*.5;
-      printf("helj = m1 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+      //printf("helj = m1 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
       return result;}
     else {
       printf("PRINFT TO BE CONFIGURED returning 0\n");
@@ -262,12 +262,12 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
     //printf("Helj = zerohel \n");
     if (helDmu==M1HEL){
       devcomplex<fptype> result = devcomplex<fptype>((-1.0)*(SQRT(1. - POW(cJ,2))/root2),0.0);
-      printf("helj = 0 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+      //printf("helj = 0 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
       return result;
     }
     else if (helDmu==P1HEL){
     devcomplex<fptype> result = devcomplex<fptype>((SQRT(1. - POW(cJ,2))/root2),0.0);
-    printf("helj = 0 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+    //printf("helj = 0 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
     return result;}
        else {
       printf("PRINFT TO BE CONFIGURED returning 0\n");
@@ -277,13 +277,13 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
     if (helDmu==M1HEL)
       {
         devcomplex<fptype> result = (-1.0)*(-1. + cJ)/(2.*exp(imUnit*angle));
-        printf("helj = p1 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+        //printf("helj = p1 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
         return result;
         }
     else if (helDmu==P1HEL)
       {
         devcomplex<fptype> result = (+1. + cJ)/(2.*exp(imUnit*angle));
-        printf("helj = p1 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+        //printf("helj = p1 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
         return result;
         }
     else {
@@ -311,7 +311,7 @@ EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fp
   result = HH * WR * cWR ;
   //cout <<"\nAngularTerm for K* " <<R <<" and helDmu = " <<helDmu <<" and helJ = " <<helJ <<" is made of Wignerd_R(spinR, helJ) * cWignerD_J(helJ, helDmu, phi) = " <<Wignerd_R(spinR, helJ) <<" * " <<cWignerD_J( WignerD_J(helJ, helDmu, phi) ) <<endl;
   //cout <<"It is multiplied by H(R,helJ) = H(" <<R <<"," <<helJ <<") = " <<H(R,helJ) <<endl;
-  printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
+  //printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
 
   return result;
 }
@@ -339,7 +339,7 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
     //cout <<"POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<(POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR)) <<endl;
     //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
 
-    printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f  \n PmKP  = %.3f PRMass = %.3f    \n QmKP  = %.3f QRMass = %.3f  \n LminMom = %.3f LminR = %.3f    \n DB0 = %.3f DKs = %.3f    \n BlattWeisskopf LminM = %.3f    \n BlattWeisskopf LminR = %.3f    \n Power1  = %.3f    \n Power2  = %.3f    \n BW  = (%.3f ,%.3f)",RFunc.real,RFunc.imag,RMass,mkp,PmKP,PRMass,QmKP,QRMass,LminMom,LminR,DB0,DKs,blatt1,blatt2,pow1,pow2,bw.real,bw.imag);
+    //printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f  \n PmKP  = %.3f PRMass = %.3f    \n QmKP  = %.3f QRMass = %.3f  \n LminMom = %.3f LminR = %.3f    \n DB0 = %.3f DKs = %.3f    \n BlattWeisskopf LminM = %.3f    \n BlattWeisskopf LminR = %.3f    \n Power1  = %.3f    \n Power2  = %.3f    \n BW  = (%.3f ,%.3f)",RFunc.real,RFunc.imag,RMass,mkp,PmKP,PRMass,QmKP,QRMass,LminMom,LminR,DB0,DKs,blatt1,blatt2,pow1,pow2,bw.real,bw.imag);
 
     return RFunc ;
 }
@@ -361,7 +361,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   devcomplex<fptype> matrixElement (0.0,0.0);
 
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
-  printf("psi_nS = %f dRadB0 = %f dRadKs = %f nKStars = %d numparm = %d \n",psi_nS,dRadB0,dRadKs,nOfKstar,numParams);
+  //printf("psi_nS = %f dRadB0 = %f dRadKs = %f nKStars = %d numparm = %d \n",psi_nS,dRadB0,dRadKs,nOfKstar,numParams);
 
   for (int iKStar=0; iKStar<nOfKstar; ++iKStar) {
 
@@ -371,7 +371,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
 
     devcomplex<fptype> matrixElement_R(0.0,0.0);
 
-    printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
+    //printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
 
     if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
       matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin+1, Spin, dRadB0, dRadKs,psi_nS) *
@@ -389,7 +389,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
     //cout <<"matrixElement_R.Rho2() for (R,helDmu) = (" <<R <<"," <<helDmu <<") = " <<matrixElement_R.Rho2() <<"\n\n" <<endl;
   }
 
-  printf("======= Matrix Element HEL = %.2f \n  Mass KPi = %.3f cJ = %.3f  cKs = %.3f phi = %.3f \n mE = ( %.3f , %.3f )",helDmu,mkp,cJ,cKs,phi,matrixElement.real,matrixElement.imag);
+  //printf("======= Matrix Element HEL = %.2f \n  Mass KPi = %.3f cJ = %.3f  cKs = %.3f phi = %.3f \n mE = ( %.3f , %.3f )",helDmu,mkp,cJ,cKs,phi,matrixElement.real,matrixElement.imag);
 
   return matrixElement;
 
@@ -403,30 +403,30 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
   fptype finalDevice1 = matrixElement(mkp,cJ,cKs,phi,p,indices,M1HEL).abs2();
   fptype finalDevice2 = matrixElement(mkp,cJ,cKs,phi,p,indices,P1HEL).abs2();
 
-  printf("Matrix Element HelDMu m1 = %.3f Matrix Element HelDMu p1 = %.3f ( mkp = %.3f - cJ = %.3f cKs = %.3f phi = %.3f)\n",finalDevice1,finalDevice2,mkp,cJ,cKs,phi);
+  //printf("Matrix Element HelDMu m1 = %.3f Matrix Element HelDMu p1 = %.3f ( mkp = %.3f - cJ = %.3f cKs = %.3f phi = %.3f)\n",finalDevice1,finalDevice2,mkp,cJ,cKs,phi);
 
   return finalDevice1 + finalDevice2 ;
 }
 
 EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 {
-    printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
+    //printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
     const fptype psin = psiN;
     fptype p = Pmom(mkp,psin);
     fptype q = Qmom(mkp);
     fptype phsp = p*q;
-    printf(" Mass KPi = %.3f Phase space = %.3f\n",mkp,phsp);
-    printf("==================");
+    //printf(" Mass KPi = %.3f Phase space = %.3f\n",mkp,phsp);
+    //printf("==================");
 
     return  Pmom(mkp,psiN) * Qmom(mkp);
 }
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
-  printf("Zero paramater set %d %d %.2f %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]]);
-  printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
-  printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
-  printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
+  //printf("Zero paramater set %d %d %.2f %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]]);
+  //printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
+  //printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
+  //printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
 
   int numParams = indices[0];
 
@@ -441,7 +441,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype MKaon = 0.493677; fptype MPion = 0.13957018;
   fptype MBd = 5.27961;
 
-  printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs);
+  //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs);
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
    fptype MPsi_nS = 0.;
@@ -461,7 +461,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
       fptype MEME = ME2(mkp,cJ,cKs,phi,p,indices);
       fptype phiPhase = PhiPHSP(mkp,psi_nS);
       fptype result = MEME * phiPhase;
-      printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi);
+      //printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi);
       return ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp,psi_nS);}
 
 
