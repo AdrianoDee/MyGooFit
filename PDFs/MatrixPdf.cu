@@ -160,9 +160,15 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   fptype a = p[indices[4+(iKStar+whichOfThree)*5+3]];
   fptype b = p[indices[4+(iKStar+whichOfThree)*5+4]];
 
+  if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
+  if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
+  if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
+
 
   //fptype a = p[indices[7]];
   //fptype b = p[indices[8]];
+
+
 
   result = exp(imUnit*b);
 
