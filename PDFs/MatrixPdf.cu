@@ -381,7 +381,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
               {
                 matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin-1, Spin,dRadB0,dRadKs,psi_nS) *
 	               ( AngularTerm(cJ,cKs,phi,p,indices,Spin, M1HEL, helDmu,iKStar) + AngularTerm(cJ,cKs,phi,p,indices, Spin, ZEROHEL, helDmu,iKStar) + AngularTerm(cJ,cKs,phi,p,indices,Spin, P1HEL, helDmu,iKStar) ) ;
-                   iKStar +=3;
+                   iKStar +=2;
                }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
     //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
