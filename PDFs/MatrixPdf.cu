@@ -365,10 +365,11 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
 
   for (int iKStar=0; iKStar<nOfKstar; ++iKStar) {
 
-    fptype Mass = p[indices[4+1+iKStar]];
-    fptype Gamma = p[indices[4+2+iKStar]];
-    fptype Spin = p[indices[4+3+iKStar]];
+    fptype Mass = p[indices[4+1+iKStar*5]];
+    fptype Gamma = p[indices[4+2+iKStar*5]];
+    fptype Spin = p[indices[4+3+iKStar*5]];
 
+    // 2) psi_ns 3) DB0 4) DBK 5) M1 6) G1 7) S1 8) A1 9)B1 10)M2
     devcomplex<fptype> matrixElement_R(0.0,0.0);
 
     //printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
