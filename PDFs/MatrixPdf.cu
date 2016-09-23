@@ -202,7 +202,7 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
       return result;
     }
     else {
-      printf("Wignerd_R Spin 1.0 PRINFT TO BE CONFIGURED returning 0\n");
+      printf("Wignerd_R Spin 1.0 not Allowed  returning 0\n");
       //cout <<"helJ = " <<helJ <<" is not allowed for spinR-" <<spinR <<" Wigner d^{spinR}_{helJ,0} functions. Returning 0" <<endl;
       return 0 ;
     }
@@ -214,7 +214,7 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
     else if (helJ==P1HEL)
       return -(SIN(2*ACOS(cKs)) * SQRT(3./8.)) ;
     else {
-      printf("Wignerd_R Spin 2.0 PRINFT TO BE CONFIGURED returning 0\n");
+      printf("Wignerd_R Spin 2.0 not Allowed  returning 0\n");
       //cout <<"helJ = " <<helJ <<" is not allowed for spinR-" <<spinR <<" Wigner d^{spinR}_{helJ,0} functions. Returning 0" <<endl;
       return 0 ;
     }
@@ -226,12 +226,12 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
     else if (helJ==P1HEL)
       return -(SIN(ACOS(cKs))*(5*COS(2*ACOS(cKs)) + 3.) * SQRT(3.)/8.) ;
     else {
-      printf("Wignerd_R Spin 3.0 PRINFT TO BE CONFIGURED returning 0\n");
+      printf("Wignerd_R Spin 3.0 not Allowed returning 0\n");
       //cout <<"helJ = " <<helJ <<" is not allowed for spinR-" <<spinR <<" Wigner d^{spinR}_{helJ,0} functions. Returning 0" <<endl;
       return 0 ;
     }
   else {
-    printf("PRINFT TO BE CONFIGURED returning 0\n");
+    printf("Wignerd_R Spin %.2f not Allowed  returning 0\n",spinR);
     //cout <<"spinR = " <<spinR <<" is not implemented for Wigner d^{spinR}_{helJ,0} functions at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl;
     return 0 ;
   }
@@ -255,7 +255,7 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
       //printf("helj = m1 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
       return result;}
     else {
-      printf("PRINFT TO BE CONFIGURED returning 0\n");
+      printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = M1HEL returning 0\n",helDmu);
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
       return nullo; }
   } else if (helJ==ZEROHEL) {
@@ -270,7 +270,7 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
     //printf("helj = 0 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
     return result;}
        else {
-      printf("PRINFT TO BE CONFIGURED returning 0\n");
+      printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = 0 returning 0\n",helDmu);
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
       return nullo; }
   } else if(helJ==P1HEL) {
@@ -287,11 +287,11 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
         return result;
         }
     else {
-      printf("WignerD_J HelDem PRINFT TO BE CONFIGURED returning 0\n");
+      printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = P1 returning 0\n",helDmu);
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
       return nullo; }
   } else {
-    printf("PRINFT TO BE CONFIGURED returning 0\n");
+    printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = %.2f returning 0\n",helDmu,helJ);
     //cout <<"helJ = " <<helJ <<" not allowed in \"WignerD_J\" functions at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
     return nullo;
   }
