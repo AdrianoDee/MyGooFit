@@ -12,7 +12,15 @@ void specialTddpPrint (double fun);
 
 FitManager::FitManager (PdfBase* dat)
   : minuit(0)
-  , overrideCallLimit(-1)
+  , overrideCallLimit(-1),runhesse(false)
+{
+  pdfPointer = dat;
+  currGlue = this;
+}
+
+FitManager::FitManager (PdfBase* dat,bool hesse)
+  : minuit(0)
+  , overrideCallLimit(-1),runhesse(hesse)
 {
   pdfPointer = dat;
   currGlue = this;
@@ -23,10 +31,10 @@ FitManager::~FitManager () {
 }
 
 void FitManager::setupMinuit () {
-  printf("SetUp Minuit %d \n",fitMan); fitMan++;
+  //printf("SetUp Minuit %d \n",fitMan); fitMan++;
   vars.clear();
   pdfPointer->getParameters(vars);
-  printf("SetUp Minuit %d \n",fitMan); fitMan++;
+  //printf("SetUp Minuit %d \n",fitMan); fitMan++;
   numPars = vars.size();
   if (minuit) delete minuit;
   minuit = new TMinuit(numPars);
@@ -38,7 +46,7 @@ void FitManager::setupMinuit () {
     counter++;
     if (maxIndex < (*i)->getIndex()) maxIndex = (*i)->getIndex();
   }
-  printf("SetUp Minuit %d \n",fitMan); fitMan++;
+  //printf("SetUp Minuit %d \n",fitMan); fitMan++;
   numPars = maxIndex+1;
   pdfPointer->copyParams();
   minuit->SetFCN(FitFun);
@@ -50,10 +58,12 @@ void FitManager::fit () {
    setupMinuit();
    runMigrad();
 
+   if(runhesse) runHesse();
+
 }
 
 void FitManager::runMigrad () {
-  printf("Run Migrad %d \n",fitMan); fitMan++;
+  //printf("Run Migrad %d \n",fitMan); fitMan++;
   assert(minuit);
   host_callnumber = 0;
   if (0 < overrideCallLimit) {
@@ -71,6 +81,30 @@ void FitManager::runMigrad () {
 //   minuit->mnexcm("SET STR",arglist,1,ierflg);
 
    minuit->Migrad();
+
+  }
+
+}
+
+void FitManager::runHesse () {
+  //printf("Run Migrad %d \n",fitMan); fitMan++;
+  assert(minuit);
+  host_callnumber = 0;
+  if (0 < overrideCallLimit) {
+    std::cout << "Calling HESSE with call limit " << overrideCallLimit << std::endl;
+    double plist[1];
+    plist[0] = overrideCallLimit;
+    int err = 0;
+    minuit->mnexcm("HESSE", plist, 1, err);
+  }
+  else{
+
+//   double arglist[10];
+//   arglist [0]=2;
+//   int ierflg=0;
+//   minuit->mnexcm("SET STR",arglist,1,ierflg);
+
+   minuit->Hesse();
 
   }
 
