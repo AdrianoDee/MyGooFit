@@ -15,6 +15,7 @@ public:
   void setMaxCalls (double mxc) {overrideCallLimit = mxc;}
   void setupMinuit ();
   void runMigrad ();
+  void runHesse();
   void fit ();
   TMinuit* getMinuitObject () {return minuit;}
   void getMinuitValues () const;
