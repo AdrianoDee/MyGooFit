@@ -20,7 +20,7 @@ public:
   TMinuit* getMinuitObject () {return minuit;}
   void getMinuitValues () const;
   TMinuit* minuit;
-  void setHesse(bool hesse){runhesse = true}
+  void setHesse(bool hesse){runhesse = true;}
 private:
   double overrideCallLimit;
   bool runhesse;
