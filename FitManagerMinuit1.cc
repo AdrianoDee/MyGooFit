@@ -98,13 +98,10 @@ void FitManager::runHesse () {
     minuit->mnexcm("HESSE", plist, 1, err);
   }
   else{
-
-//   double arglist[10];
-//   arglist [0]=2;
-//   int ierflg=0;
-//   minuit->mnexcm("SET STR",arglist,1,ierflg);
-
-   minuit->Hesse();
+    int err;
+    double tmp[1];
+    tmp[0] = 0;
+    minuit->mnexcm("HESSE", tmp, 1, err);
 
   }
 
