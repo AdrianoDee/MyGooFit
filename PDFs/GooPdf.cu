@@ -751,7 +751,7 @@ __host__ void GooPdf::getCompProbsAtDataPoints (std::vector<std::vector<fptype> 
 __host__ void GooPdf::getCompProbsAtDataPointsUn (std::vector<std::vector<fptype> >& values) {
   copyParams();
   //double overall = normalise();
-  MEMCPY_TO_SYMBOL(normalisationFactors, host_normalisation, totalParams*sizeof(fptype), 0, cudaMemcpyHostToDevice);
+  //MEMCPY_TO_SYMBOL(normalisationFactors, host_normalisation, totalParams*sizeof(fptype), 0, cudaMemcpyHostToDevice);
 
   int numVars = observables.size();
   if (fitControl->binnedFit()) {
