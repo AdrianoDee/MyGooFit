@@ -501,7 +501,7 @@ __host__ fptype GooPdf::getValue () {
     }
     ret /= totalBins;
 
-    MetricTaker evalor(this, getMetricPointer("ptr_to_Eval"));
+
 
     fptype dummy = 0;
     static thrust::plus<fptype> cudaPlus;
@@ -509,6 +509,9 @@ __host__ fptype GooPdf::getValue () {
     thrust::constant_iterator<int> eventSize(observables.size());
     thrust::counting_iterator<int> binIndex(0);
     thrust::constant_iterator<int> flagIntg(1);
+
+    MetricTaker evalor(this, getMetricPointer("ptr_to_Eval"));
+    
     fptype sum = thrust::transform_reduce(thrust::make_zip_iterator(thrust::make_tuple(binIndex, eventSize, arrayAddress)),
   					thrust::make_zip_iterator(thrust::make_tuple(binIndex + totalBins, eventSize, arrayAddress)),
   					evalor, dummy, cudaPlus);
