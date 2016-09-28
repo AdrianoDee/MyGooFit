@@ -748,6 +748,49 @@ __host__ void GooPdf::getCompProbsAtDataPoints (std::vector<std::vector<fptype> 
 
 }
 
+__host__ void GooPdf::getCompProbsAtDataPointsUn (std::vector<std::vector<fptype> >& values) {
+  copyParams();
+  //double overall = normalise();
+  MEMCPY_TO_SYMBOL(normalisationFactors, host_normalisation, totalParams*sizeof(fptype), 0, cudaMemcpyHostToDevice);
+
+  int numVars = observables.size();
+  if (fitControl->binnedFit()) {
+    numVars += 2;
+    numVars *= -1;
+  }
+  thrust::device_vector<fptype> results(numEntries);
+  thrust::constant_iterator<int> eventSize(numVars);
+  thrust::constant_iterator<fptype*> arrayAddress(dev_event_array);
+  thrust::counting_iterator<int> eventIndex(0);
+  printf("Pdf Evaluation - in\n");
+  MetricTaker evalor(this, getMetricPointer("ptr_to_Eval"));
+  thrust::transform(thrust::make_zip_iterator(thrust::make_tuple(eventIndex, arrayAddress, eventSize)),
+		    thrust::make_zip_iterator(thrust::make_tuple(eventIndex + numEntries, arrayAddress, eventSize)),
+		    results.begin(),
+		    evalor);
+  printf("Pdf Evaluation - out\n");
+  values.clear();
+  values.resize(components.size() + 1);
+  thrust::host_vector<fptype> host_results = results;
+  for (unsigned int i = 0; i < host_results.size(); ++i) {
+    values[0].push_back(host_results[i]);
+  }
+
+  for (unsigned int i = 0; i < components.size(); ++i) {
+    MetricTaker compevalor(components[i], getMetricPointer("ptr_to_Eval"));
+    thrust::counting_iterator<int> ceventIndex(0);
+    thrust::transform(thrust::make_zip_iterator(thrust::make_tuple(ceventIndex, arrayAddress, eventSize)),
+		      thrust::make_zip_iterator(thrust::make_tuple(ceventIndex + numEntries, arrayAddress, eventSize)),
+		      results.begin(),
+		      compevalor);
+    host_results = results;
+    for (unsigned int j = 0; j < host_results.size(); ++j) {
+      values[1 + i].push_back(host_results[j]);
+    }
+  }
+
+}
+
 __host__ void GooPdf::getCompProbsAtDataPoints (std::vector<std::vector<fptype> >& values,unsigned int evts) {
   copyParams();
   double overall = normalise();

@@ -43,6 +43,7 @@ public:
   __host__ fptype getValue ();
   __host__ void getCompProbsAtDataPoints (std::vector<std::vector<fptype> >& values);
   __host__ void getCompProbsAtDataPoints (std::vector<std::vector<fptype> >& values,unsigned int evts);
+  __host__ void getCompProbsAtDataPointsUn (std::vector<std::vector<fptype> >& values);
   __host__ void initialise (std::vector<unsigned int> pindices, void* dev_functionPtr = host_fcn_ptr);
   __host__ void initialiseInt (std::vector<unsigned int> pindices, void* dev_functionPtr = host_fcn_ptr,  void* dev_integralPtr = host_int_ptr, void* dev_pointPtr = host_pnt_ptr);
   __host__ void scan (Variable* var, std::vector<fptype>& values);
