@@ -1,25 +1,25 @@
 #include "FitControl.hh"
-#include "PdfBase.hh" 
+#include "PdfBase.hh"
 
-FitControl::FitControl (bool bin, std::string mn) 
-  : binned(bin) 
+FitControl::FitControl (bool bin, std::string mn)
+  : binned(bin)
   , metricName(mn)
   , owner(0)
   , errorsOnBins(false)
 {}
 
-FitControl::~FitControl () {} 
+FitControl::~FitControl () {}
 
 void FitControl::setOwner (PdfBase* dat) {
-  assert(!owner); 
+  assert(!owner);
   owner = dat;
-} 
+}
 
-UnbinnedNllFit::UnbinnedNllFit () 
+UnbinnedNllFit::UnbinnedNllFit ()
   : FitControl(false, "ptr_to_NLL")
 {}
 
-BinnedNllFit::BinnedNllFit () 
+BinnedNllFit::BinnedNllFit ()
   : FitControl(true, "ptr_to_BinAvg")
 {}
 
@@ -34,11 +34,9 @@ BinnedNllFitIntExt::BinnedNllFitIntExt ()
 BinnedErrorFit::BinnedErrorFit ()
   : FitControl(true, "ptr_to_BinWithError")
 {
-  errorsOnBins = true; 
+  errorsOnBins = true;
 }
 
-BinnedChisqFit::BinnedChisqFit () 
+BinnedChisqFit::BinnedChisqFit ()
   : FitControl(true, "ptr_to_Chisq")
 {}
-
-
