@@ -489,9 +489,9 @@ __host__ fptype GooPdf::getValue () {
   return results[0];
 }
 
-  __host__ virtual fptype doIntegral () const{
+  __host__ fptype doIntegral () const{
 
-    ptype ret = 1;
+    fptype ret = 1;
 
     int totalBins = 1;
     for (obsConstIter v = obsCBegin(); v != obsCEnd(); ++v) {
