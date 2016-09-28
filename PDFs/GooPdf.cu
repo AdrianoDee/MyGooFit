@@ -489,7 +489,7 @@ __host__ fptype GooPdf::getValue () {
   return results[0];
 }
 
-  __host__ fptype doIntegral () const{
+  __host__ fptype GooPdf::doIntegral () const{
 
     fptype ret = 1;
 
