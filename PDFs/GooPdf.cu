@@ -491,30 +491,26 @@ __host__ fptype GooPdf::getValue () {
 
   __host__ fptype GooPdf::doIntegral (){
 
-    fptype ret = 1;
+    fptype binVolume = 1.0;
 
     int totalBins = 1;
     for (obsConstIter v = obsCBegin(); v != obsCEnd(); ++v) {
-      ret *= ((*v)->upperlimit - (*v)->lowerlimit);
-      totalBins *= (integrationBins > 0 ? integrationBins : (*v)->numbins);
-      //if (true) std::cout << "Total bins " << totalBins << " due to " << (*v)->name << " " << integrationBins << " " << (*v)->numbins << std::endl;
+      binVolume *= ((*v)->upperlimit - (*v)->lowerlimit)/((fptype)((*v)->numbins));
     }
-    ret /= totalBins;
-
-
 
     fptype dummy = 0;
     static thrust::plus<fptype> cudaPlus;
-    thrust::constant_iterator<fptype*> arrayAddress(normRanges);
+    thrust::constant_iterator<fptype*> arrayAddress(dev_event_array);
     thrust::constant_iterator<int> eventSize(observables.size());
     thrust::counting_iterator<int> binIndex(0);
-    thrust::constant_iterator<int> flagIntg(1);
 
     MetricTaker evalor(this, getMetricPointer("ptr_to_Eval"));
 
-    fptype sum = thrust::transform_reduce(thrust::make_zip_iterator(thrust::make_tuple(binIndex, eventSize, arrayAddress)),
-  					thrust::make_zip_iterator(thrust::make_tuple(binIndex + totalBins, eventSize, arrayAddress)),
+    fptype sum = thrust::transform_reduce(thrust::make_zip_iterator(thrust::make_tuple(eventIndex,arrayAddress,eventSize)),
+  					thrust::make_zip_iterator(thrust::make_tuple(eventIndex + numEntries,arrayAddress,eventSize)),
   					evalor, dummy, cudaPlus);
+
+    sum *= binVolume;
 
     if (isnan(sum)) {
       abortWithCudaPrintFlush(__FILE__, __LINE__, getName() + " NaN in normalisation", this);
@@ -523,18 +519,14 @@ __host__ fptype GooPdf::getValue () {
       abortWithCudaPrintFlush(__FILE__, __LINE__, "Non-positive normalisation", this);
     }
 
-    ret *= sum;
-
-
-    if (0 == ret) abortWithCudaPrintFlush(__FILE__, __LINE__, "Zero integral");
-    host_normalisation[parameters] = 1.0/ret;
+    if (0 == sum) abortWithCudaPrintFlush(__FILE__, __LINE__, "Zero integral");
 
     //printf("I = %f\n",ret);
     //printf("GooPfd normalisaion - out\n");
-    return (fptype) ret;
-
+    return (fptype) sum;
 
   }
+  
 __host__ fptype GooPdf::normalise () const {
   //if (cpuDebug & 1) std::cout << "Normalising " << getName() << " " << hasAnalyticIntegral() << " " << normRanges << std::endl;
   //printf("GooPfd normalisaion - in\n");
