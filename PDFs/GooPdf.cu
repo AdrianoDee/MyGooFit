@@ -500,9 +500,9 @@ __host__ fptype GooPdf::getValue () {
 
     fptype dummy = 0;
     static thrust::plus<fptype> cudaPlus;
+    thrust::counting_iterator<int> eventIndex(0);
     thrust::constant_iterator<fptype*> arrayAddress(dev_event_array);
     thrust::constant_iterator<int> eventSize(observables.size());
-    thrust::counting_iterator<int> binIndex(0);
 
     MetricTaker evalor(this, getMetricPointer("ptr_to_Eval"));
 
@@ -526,7 +526,7 @@ __host__ fptype GooPdf::getValue () {
     return (fptype) sum;
 
   }
-  
+
 __host__ fptype GooPdf::normalise () const {
   //if (cpuDebug & 1) std::cout << "Normalising " << getName() << " " << hasAnalyticIntegral() << " " << normRanges << std::endl;
   //printf("GooPfd normalisaion - in\n");
