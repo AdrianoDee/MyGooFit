@@ -39,7 +39,7 @@ public:
   __host__ virtual fptype normalise () const;
   __host__ virtual fptype normaliseInt () const;
   __host__ virtual fptype integrate (fptype lo, fptype hi) const {return 0;}
-  __host__ virtual fptype doIntegral () const;
+  __host__ virtual fptype doIntegral ();
   __host__ virtual bool hasAnalyticIntegral () const {return false;}
   __host__ fptype getValue ();
   __host__ void getCompProbsAtDataPoints (std::vector<std::vector<fptype> >& values);

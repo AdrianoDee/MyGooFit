@@ -489,7 +489,7 @@ __host__ fptype GooPdf::getValue () {
   return results[0];
 }
 
-  __host__ fptype GooPdf::doIntegral () const{
+  __host__ fptype GooPdf::doIntegral (){
 
     fptype ret = 1;
 
@@ -511,7 +511,7 @@ __host__ fptype GooPdf::getValue () {
     thrust::constant_iterator<int> flagIntg(1);
 
     MetricTaker evalor(this, getMetricPointer("ptr_to_Eval"));
-    
+
     fptype sum = thrust::transform_reduce(thrust::make_zip_iterator(thrust::make_tuple(binIndex, eventSize, arrayAddress)),
   					thrust::make_zip_iterator(thrust::make_tuple(binIndex + totalBins, eventSize, arrayAddress)),
   					evalor, dummy, cudaPlus);
