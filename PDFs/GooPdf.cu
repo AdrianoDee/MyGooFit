@@ -577,7 +577,7 @@ __host__ fptype GooPdf::normalise () const {
   if (0 == ret) abortWithCudaPrintFlush(__FILE__, __LINE__, "Zero integral");
   host_normalisation[parameters] = 1.0/ret;
 
-  printf("Normalisation Factor = %f\n",ret);
+  //printf("Normalisation Factor = %f\n",ret);
   //printf("GooPfd normalisaion - out\n");
   return (fptype) ret;
 }
