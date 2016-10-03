@@ -89,9 +89,9 @@ __host__ void PdfBase::initialiseIndices (std::vector<unsigned int> pindices) {
   totalParams += (2 + pindices.size() + observables.size());
 
   //std::cout << "host_indices after " << getName() << " initialisation : ";
-  for (int i = 0; i < totalParams; ++i) {
+  /*for (int i = 0; i < totalParams; ++i) {
     std::cout << host_indices[i] << " ";
-  }
+  }*/
 
   /*std::cout << " | "
 	    << parameters << " "

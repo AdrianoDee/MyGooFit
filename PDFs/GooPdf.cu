@@ -757,13 +757,13 @@ __host__ void GooPdf::getCompProbsAtDataPoints (std::vector<std::vector<fptype> 
   thrust::constant_iterator<int> eventSize(numVars);
   thrust::constant_iterator<fptype*> arrayAddress(dev_event_array);
   thrust::counting_iterator<int> eventIndex(0);
-  printf("Pdf Evaluation - in\n");
+  //printf("Pdf Evaluation - in\n");
   MetricTaker evalor(this, getMetricPointer("ptr_to_Prob"));
   thrust::transform(thrust::make_zip_iterator(thrust::make_tuple(eventIndex, arrayAddress, eventSize)),
 		    thrust::make_zip_iterator(thrust::make_tuple(eventIndex + numEntries, arrayAddress, eventSize)),
 		    results.begin(),
 		    evalor);
-  printf("Pdf Evaluation - out\n");
+  //printf("Pdf Evaluation - out\n");
   values.clear();
   values.resize(components.size() + 1);
   thrust::host_vector<fptype> host_results = results;
