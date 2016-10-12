@@ -444,7 +444,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
    else if (psi_nS==2.0)
      MPsi_nS = 3.686109;
    else
-      printf("PRINFT TO BE CONFIGURED = 0 mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %f \n",mkp,cJ,cKs,phi,psi_nS);
+      printf("PRINFT TO BE CONFIGURED = 0 mpk = %.2f cJ = %.2f mPsiP = %.2f phi = %.2f psi_nS = %f \n",mkp,cJ,mPsiP,phi,psi_nS);
       //printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
 
 
