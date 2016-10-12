@@ -13,23 +13,14 @@
 #include "MatrixPdf.hh"
 #include "devcomplex.hh"
 
-/*
-EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype* p,unsigned int* indices,fptype helDmu);
 
-EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma, fptype MomMass, int LminMom, int LminR, fptype DB0, fptype DKs);
-EXEC_TARGET devcomplex<fptype> AngularTerm(fptype* p,unsigned int* indices, fptype spinR, fptype helJ, fptype helDmu,int iKStar);
-EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D);
-EXEC_TARGET fptype BWGamma(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D);
-EXEC_TARGET devcomplex<fptype> BW(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D);
-EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,int iKStar);
-EXEC_TARGET fptype Pmom(fptype mkp);
-EXEC_TARGET fptype Qmom(fptype mkp);
-EXEC_TARGET fptype PhiPHSP(fptype mkp);
-EXEC_TARGET fptype ME2();
+EXEC_TARGET fptype cosTheta_FromMasses(const fptype sameSideM2, const fptype oppositeSideM2, const fptype psi_nSM2, const fptype motherM2, const fptype refM2, const fptype otherM2) {
 
-EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs);
-EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ);*/
+  fptype num = (sameSideM2/2)*(motherM2 + refM2 - oppositeSideM2) - (1./4.)*(motherM2 - psi_nSM2 + sameSideM2)*(sameSideM2 - otherM2 + refM2) ;
+  fptype denom2 = ((1./4.)*POW(motherM2 - psi_nSM2 + sameSideM2,2) - sameSideM2*motherM2) * ((1./4.)*POW(sameSideM2 - otherM2 + refM2,2) - sameSideM2*refM2) ;
 
+  return (num / SQRT(denom2)) ;
+}
 
 EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
 {
@@ -433,15 +424,16 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
   fptype mkp = evt[indices[2 + indices[0]]];
   fptype cJ = evt[indices[2 + indices[0]]+1];
-  fptype cKs = evt[indices[2 + indices[0]]+2];
+  //fptype cKs = evt[indices[2 + indices[0]]+2];
+  fptype mPsiP = evt[indices[2 + indices[0]]+2];
   fptype phi = evt[indices[2 + indices[0]]+3];
 
   fptype psi_nS = p[indices[2]];
   fptype dRadB0 = p[indices[3]];
   fptype dRadKs = p[indices[4]];
-  fptype MKaon = 0.493677; fptype MPion = 0.13957018;
-  fptype MBd = 5.27961;
-
+  fptype MKaon = 0.493677; fptype MKaon2 = MKaon*MKaon;
+  fptype MPion = 0.13957018; fptype MPion2 = MPion*MPion;
+  fptype MBd = 5.27961; fptype MBd2 = MBd*MBd;
   //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs);
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
@@ -454,6 +446,13 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
    else
       printf("PRINFT TO BE CONFIGURED = 0 mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %f \n",mkp,cJ,cKs,phi,psi_nS);
       //printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
+
+
+    fptype mKP2 = mkp*mkp;
+    fptype mPsiP2 = mPsiP*mPsiP;
+    fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
+
+    fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
 
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS)){
     //printf("Out of the borders \n");
