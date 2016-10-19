@@ -434,7 +434,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype MKaon = 0.493677; fptype MKaon2 = MKaon*MKaon;
   fptype MPion = 0.13957018; fptype MPion2 = MPion*MPion;
   fptype MBd = 5.27961; fptype MBd2 = MBd*MBd;
-  //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs);
+
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
    fptype MPsi_nS = 0.;
@@ -453,6 +453,8 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
     fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
 
     fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
+
+    printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs,mPsiP);
 
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS)){
     //printf("Out of the borders \n");
