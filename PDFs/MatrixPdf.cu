@@ -423,9 +423,9 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   int numParams = indices[0];
 
   fptype mkp = evt[indices[2 + indices[0]]];
-  fptype cJ = evt[indices[2 + indices[0]]+1];
+  fptype mPsiP = evt[indices[2 + indices[0]]+1];
+  fptype cJ = evt[indices[2 + indices[0]]+2];
   //fptype cKs = evt[indices[2 + indices[0]]+2];
-  fptype mPsiP = evt[indices[2 + indices[0]]+2];
   fptype phi = evt[indices[2 + indices[0]]+3];
 
   fptype psi_nS = p[indices[2]];
@@ -485,7 +485,7 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
-__host__ MatrixPdf::MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+__host__ MatrixPdf::MatrixPdf(std::string n, Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi,
         std::vector<Variable*> _Masses,std::vector<Variable*> _Gammas,std::vector<Variable*> _Spins,std::vector<Variable*> _a,std::vector<Variable*> _b,
         Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
 /*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
@@ -496,8 +496,8 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variab
 {
 
   registerObservable(_x);
+  registerObservable(_mJP);
   registerObservable(_cJ);
-  registerObservable(_cKs);
   registerObservable(_phi);
 
   std::vector<unsigned int> pindices;
