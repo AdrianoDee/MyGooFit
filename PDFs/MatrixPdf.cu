@@ -456,7 +456,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
     printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs,mPsiP);
 
-  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS)){
+  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)){
     //printf("Out of the borders \n");
     return 0.;}
   else{
