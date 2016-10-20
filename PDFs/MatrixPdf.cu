@@ -454,7 +454,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
     fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
 
-    printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs,mPsiP);
+    //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs,mPsiP);
 
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)){
     //printf("Out of the borders \n");
@@ -463,7 +463,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
       fptype MEME = ME2(mkp,cJ,cKs,phi,p,indices);
       fptype phiPhase = PhiPHSP(mkp,psi_nS);
       fptype result = MEME * phiPhase;
-      //printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi);
+      printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f mPSIP = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi,mPsiP);
       return ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp,psi_nS);}
 
 
