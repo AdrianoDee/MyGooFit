@@ -444,7 +444,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
    else if (psi_nS==2.0)
      MPsi_nS = 3.686109;
    else
-      printf("PRINFT TO BE CONFIGURED = 0 mpk = %.2f cJ = %.2f mPsiP = %.2f phi = %.2f psi_nS = %f \n",mkp,cJ,mPsiP,phi,psi_nS);
+      printf("\nMatrix P.d.f not configured for psi_nS = %.2f",psi_nS);
       //printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
 
 
@@ -453,6 +453,8 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
     fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
 
     fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
+
+  if (FABS(cKs) > 1) return 0.;
 
     //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs,mPsiP);
 
