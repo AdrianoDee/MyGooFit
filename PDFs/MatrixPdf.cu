@@ -454,7 +454,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
     fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
 
-  if (FABS(cKs) > 1) { printf("ckS > 1 or < -1 "); return 0.};
+  if (FABS(cKs) > 1) { printf("ckS > 1 or < -1 "); return 0.;};
 
     //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs,mPsiP);
 
