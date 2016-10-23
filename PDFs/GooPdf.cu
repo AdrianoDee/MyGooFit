@@ -290,7 +290,7 @@ __host__ double GooPdf::sumOfNll (int numVars) const {
   //printf(" No. Entries : %d \n",numEntries);
   //if (host_callnumber >= 2) abortWithCudaPrintFlush(__FILE__, __LINE__, getName() + " debug abort", this);
   thrust::counting_iterator<int> eventIndex(0);
-  double ret thrust::transform_reduce(thrust::make_zip_iterator(thrust::make_tuple(eventIndex, arrayAddress, eventSize)),
+  double ret = thrust::transform_reduce(thrust::make_zip_iterator(thrust::make_tuple(eventIndex, arrayAddress, eventSize)),
 				  thrust::make_zip_iterator(thrust::make_tuple(eventIndex + numEntries, arrayAddress, eventSize)),
 				  *logger, dummy, cudaPlus);
   printf("Event index : %d - SumOfNll : %.2f \n",eventIndex,ret);
