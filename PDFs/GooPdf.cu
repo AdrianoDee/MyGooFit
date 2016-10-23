@@ -96,7 +96,7 @@ EXEC_TARGET fptype calculateEval (fptype rawPdf, fptype* evtVal, unsigned int pa
 EXEC_TARGET fptype calculateNLL (fptype rawPdf, fptype* evtVal, unsigned int par) {
   //if ((10 > callnumber) && (THREADIDX < 10) && (BLOCKIDX == 0)) cuPrintf("calculateNll %i %f %f %f\n", callnumber, rawPdf, normalisationFactors[par], rawPdf*normalisationFactors[par]);
   //if (THREADIDX < 50) printf("Thread %i %f %f\n", THREADIDX, rawPdf, normalisationFactors[par]);
-  printf("Raw Pdf : %.3f - norm = %.3f \n",rawPdf,normalisationFactors[par]);
+  //printf("Raw Pdf : %.3f - norm = %.3f \n",rawPdf,normalisationFactors[par]);
   rawPdf *= normalisationFactors[par];
   return rawPdf > 0 ? -LOG(rawPdf): 0;
 }
@@ -109,12 +109,12 @@ EXEC_TARGET fptype calculateProb (fptype rawPdf, fptype* evtVal, unsigned int pa
 EXEC_TARGET fptype calculateBinAvg (fptype rawPdf, fptype* evtVal, unsigned int par) {
   rawPdf *= normalisationFactors[par];
   //rawPdf *= evtVal[1]; // Bin volume
-  printf("Raw Pdf : %.3f - norm = %.3f \n",rawPdf,normalisationFactors[par]);
+  //printf("Raw Pdf : %.3f - norm = %.3f \n",rawPdf,normalisationFactors[par]);
   // Log-likelihood of numEvents with expectation of exp is (-exp + numEvents*ln(exp) - ln(numEvents!)).
   // The last is constant, so we drop it; and then multiply by minus one to get the negative log-likelihood.
   if (rawPdf > 0) {
     fptype expEvents = functorConstants[0]*rawPdf;
-    printf("Bin Center : %.2f --- Normalization : %.2f --- RawPdf : %.2f --- Expected : %.2f --- Data : %.2f \n",evtVal[2],normalisationFactors[par],rawPdf,expEvents,evtVal[0]);
+    //printf("Bin Center : %.2f --- Normalization : %.2f --- RawPdf : %.2f --- Expected : %.2f --- Data : %.2f \n",evtVal[2],normalisationFactors[par],rawPdf,expEvents,evtVal[0]);
     return (expEvents - evtVal[0]*log(expEvents));
   //printf("Bin Center : %.2f --- Normalization : %.2f --- RawPdf : %.2f --- Expected : %.2f --- Data : %.2f \n",evtVal[2],normalisationFactors[par],rawPdf,expEvents,evtVal[0]);
   }
@@ -686,7 +686,7 @@ EXEC_TARGET fptype MetricTaker::operator () (thrust::tuple<int, fptype*, int> t)
   // the structure of the event is (obs1 obs2... binentry binvolume), so that the array
   // passed to the metric consists of (binentry binvolume).
   ret = (*(reinterpret_cast<device_metric_ptr>(device_function_table[metricIndex])))(ret, eventAddress + (abs(eventSize)-2), parameters);
-  printf("Metrica : %.3f \n",ret);
+  //printf("Metrica : %.3f \n",ret);
   return ret;
 }
 
@@ -725,7 +725,7 @@ EXEC_TARGET fptype MetricTaker::operator () (thrust::tuple<int, int, fptype*> t)
 
   // Causes stack size to be statically undeterminable.
   fptype ret = callFunction(binCenters+THREADIDX*MAX_NUM_OBSERVABLES, functionIdx, parameters);
-  printf("Metrica : %.3f \n",ret);
+  // printf("Metrica : %.3f \n",ret);
   //printf("event Size= %d binNumber = %d x = %f  return = %f\n",evtSize,binNumber,binCenters[indices[indices[0] + 2 + 0]+THREADIDX*MAX_NUM_OBSERVABLES],ret);
   return ret;
 }
@@ -746,7 +746,7 @@ EXEC_TARGET fptype MetricTaker::operator () (thrust::tuple<fptype*,int, int> t) 
   // the structure of the event is (obs1 obs2... binentry binvolume), so that the array
   // passed to the metric consists of (binentry binvolume).
   ret = (*(reinterpret_cast<device_metric_ptr>(device_function_table[metricIndex])))(ret, eventAddress + (abs(eventSize)-2), parameters);
-  printf("Metrica : %.3f \n",ret);
+  // printf("Metrica : %.3f \n",ret);
   return ret;
 }
 
