@@ -721,7 +721,7 @@ EXEC_TARGET fptype MetricTaker::operator () (thrust::tuple<int, int, fptype*> t)
 
   // Causes stack size to be statically undeterminable.
   fptype ret = callFunction(binCenters+THREADIDX*MAX_NUM_OBSERVABLES, functionIdx, parameters);
-
+  printf("Metrica : %.3f \n",ret);
   //printf("event Size= %d binNumber = %d x = %f  return = %f\n",evtSize,binNumber,binCenters[indices[indices[0] + 2 + 0]+THREADIDX*MAX_NUM_OBSERVABLES],ret);
   return ret;
 }
