@@ -295,6 +295,8 @@ __host__ double GooPdf::sumOfNll (int numVars) const {
 				  *logger, dummy, cudaPlus);
 
   printf("Event index : %d - SumOfNll : %.2f \n",eventIndex,ret);
+
+  ret += 1.0;
   return ret;
 }
 
