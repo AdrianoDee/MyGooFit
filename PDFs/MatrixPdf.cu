@@ -423,8 +423,8 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   int numParams = indices[0];
 
   fptype mkp = evt[indices[2 + indices[0]]];
-  fptype mPsiP = evt[indices[2 + indices[0]]+1];
-  fptype cJ = evt[indices[2 + indices[0]]+2];
+  fptype mPsiP = evt[indices[2 + indices[0]]+2];
+  fptype cJ = evt[indices[2 + indices[0]]+1];
   //fptype cKs = evt[indices[2 + indices[0]]+2];
   fptype phi = evt[indices[2 + indices[0]]+3];
 
