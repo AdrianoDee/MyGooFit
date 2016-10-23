@@ -96,6 +96,7 @@ EXEC_TARGET fptype calculateEval (fptype rawPdf, fptype* evtVal, unsigned int pa
 EXEC_TARGET fptype calculateNLL (fptype rawPdf, fptype* evtVal, unsigned int par) {
   //if ((10 > callnumber) && (THREADIDX < 10) && (BLOCKIDX == 0)) cuPrintf("calculateNll %i %f %f %f\n", callnumber, rawPdf, normalisationFactors[par], rawPdf*normalisationFactors[par]);
   //if (THREADIDX < 50) printf("Thread %i %f %f\n", THREADIDX, rawPdf, normalisationFactors[par]);
+  printf("Raw Pdf : %.3f - norm = %.3f \n",rawPdf,normalisationFactors[par]);
   rawPdf *= normalisationFactors[par];
   return rawPdf > 0 ? -LOG(rawPdf): 0;
 }
