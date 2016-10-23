@@ -97,7 +97,7 @@ EXEC_TARGET fptype calculateNLL (fptype rawPdf, fptype* evtVal, unsigned int par
   //if ((10 > callnumber) && (THREADIDX < 10) && (BLOCKIDX == 0)) cuPrintf("calculateNll %i %f %f %f\n", callnumber, rawPdf, normalisationFactors[par], rawPdf*normalisationFactors[par]);
   //if (THREADIDX < 50) printf("Thread %i %f %f\n", THREADIDX, rawPdf, normalisationFactors[par]);
   rawPdf *= normalisationFactors[par];
-  return rawPdf > 0 ? -LOG(rawPdf)+1 : 0;
+  return rawPdf > 0 ? -LOG(rawPdf): 0;
 }
 
 EXEC_TARGET fptype calculateProb (fptype rawPdf, fptype* evtVal, unsigned int par) {
@@ -290,9 +290,11 @@ __host__ double GooPdf::sumOfNll (int numVars) const {
   //printf(" No. Entries : %d \n",numEntries);
   //if (host_callnumber >= 2) abortWithCudaPrintFlush(__FILE__, __LINE__, getName() + " debug abort", this);
   thrust::counting_iterator<int> eventIndex(0);
-  return thrust::transform_reduce(thrust::make_zip_iterator(thrust::make_tuple(eventIndex, arrayAddress, eventSize)),
+  double ret thrust::transform_reduce(thrust::make_zip_iterator(thrust::make_tuple(eventIndex, arrayAddress, eventSize)),
 				  thrust::make_zip_iterator(thrust::make_tuple(eventIndex + numEntries, arrayAddress, eventSize)),
 				  *logger, dummy, cudaPlus);
+  printf("Event index : %d - SumOfNll : %.2f \n",eventIndex,ret);
+  return ret;
 }
 
 __host__ double GooPdf::calculateNLL () const {
