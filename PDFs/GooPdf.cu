@@ -296,7 +296,7 @@ __host__ double GooPdf::sumOfNll (int numVars) const {
 				  thrust::make_zip_iterator(thrust::make_tuple(eventIndex + numEntries, arrayAddress, eventSize)),
 				  *logger, dummy, cudaPlus);
 
-  printf("Event index : %d - SumOfNll : %.2f \n",eventIndex,ret);
+  // printf("Event index : %d - SumOfNll : %.2f \n",eventIndex,ret);
 
   ret += 1.0;
   return ret;
@@ -584,7 +584,7 @@ __host__ fptype GooPdf::normalise () const {
   if (0 == ret) abortWithCudaPrintFlush(__FILE__, __LINE__, "Zero integral");
   host_normalisation[parameters] = 1.0/ret;
 
-  printf("Normalisation Factor = %f\n",host_normalisation[parameters]);
+  // printf("Normalisation Factor = %f\n",host_normalisation[parameters]);
   //printf("GooPfd normalisaion - out\n");
   return (fptype) ret;
 }
