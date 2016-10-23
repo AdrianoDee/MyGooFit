@@ -448,15 +448,18 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
       //printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
 
 
+
     fptype mKP2 = mkp*mkp;
     fptype mPsiP2 = mPsiP*mPsiP;
     fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
 
     fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
 
+  printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs,mPsiP);
+
   if (FABS(cKs) > 1) { printf("ckS > 1 or < -1 "); return 0.;};
 
-    //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs,mPsiP);
+
 
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)){
     printf("Out of the borders \n");
