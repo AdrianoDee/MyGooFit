@@ -109,11 +109,12 @@ EXEC_TARGET fptype calculateProb (fptype rawPdf, fptype* evtVal, unsigned int pa
 EXEC_TARGET fptype calculateBinAvg (fptype rawPdf, fptype* evtVal, unsigned int par) {
   rawPdf *= normalisationFactors[par];
   //rawPdf *= evtVal[1]; // Bin volume
+  printf("Raw Pdf : %.3f - norm = %.3f \n",rawPdf,normalisationFactors[par]);
   // Log-likelihood of numEvents with expectation of exp is (-exp + numEvents*ln(exp) - ln(numEvents!)).
   // The last is constant, so we drop it; and then multiply by minus one to get the negative log-likelihood.
   if (rawPdf > 0) {
     fptype expEvents = functorConstants[0]*rawPdf;
-//    printf("Bin Center : %.2f --- Normalization : %.2f --- RawPdf : %.2f --- Expected : %.2f --- Data : %.2f \n",evtVal[2],normalisationFactors[par],rawPdf,expEvents,evtVal[0]);
+    printf("Bin Center : %.2f --- Normalization : %.2f --- RawPdf : %.2f --- Expected : %.2f --- Data : %.2f \n",evtVal[2],normalisationFactors[par],rawPdf,expEvents,evtVal[0]);
     return (expEvents - evtVal[0]*log(expEvents));
   //printf("Bin Center : %.2f --- Normalization : %.2f --- RawPdf : %.2f --- Expected : %.2f --- Data : %.2f \n",evtVal[2],normalisationFactors[par],rawPdf,expEvents,evtVal[0]);
   }
