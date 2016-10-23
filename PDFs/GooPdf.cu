@@ -742,7 +742,7 @@ EXEC_TARGET fptype MetricTaker::operator () (thrust::tuple<fptype*,int, int> t) 
   // the structure of the event is (obs1 obs2... binentry binvolume), so that the array
   // passed to the metric consists of (binentry binvolume).
   ret = (*(reinterpret_cast<device_metric_ptr>(device_function_table[metricIndex])))(ret, eventAddress + (abs(eventSize)-2), parameters);
-  printf("Metrica : %.3f \n",ret)
+  printf("Metrica : %.3f \n",ret);
   return ret;
 }
 
