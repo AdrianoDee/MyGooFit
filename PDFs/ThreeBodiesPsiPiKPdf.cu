@@ -90,21 +90,21 @@ MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK = device_ThreeBodiesPsiP
 //MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK_Point = device_ThreeBodiesPsiPiK_Point;
 
 
-__host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _mkp, Variable* _mJP,
-  Variable* _cJ, Variable* _phi,Variable* _mp,Variable* _m1,Variable* _m2,Variable* _m3)
+__host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable _mkp, Variable _mJP,
+  Variable _cJ, Variable _phi,Variable _mp,Variable _m1,Variable _m2,Variable _m3)
   : GooPdf(0, n)
 {
   std::vector<unsigned int> pindices;
 
-  registerObservable(_mkp);
-  registerObservable(_mJP);
-  registerObservable(_cJ);
-  registerObservable(_phi);
+  registerObservable(&_mkp);
+  registerObservable(&_mJP);
+  registerObservable(&_cJ);
+  registerObservable(&_phi);
 
-  pindices.push_back(registerParameter(_mp));
-  pindices.push_back(registerParameter(_m1));
-  pindices.push_back(registerParameter(_m2));
-  pindices.push_back(registerParameter(_m3));
+  pindices.push_back(registerParameter(&_mp));
+  pindices.push_back(registerParameter(&_m1));
+  pindices.push_back(registerParameter(&_m2));
+  pindices.push_back(registerParameter(&_m3));
 
   GET_FUNCTION_ADDR(ptr_to_ThreeBodiesPsiPiK);
   //GET_INTEGRAL_ADDR(ptr_to_Three_Bin);
