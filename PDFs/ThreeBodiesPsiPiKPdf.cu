@@ -8,6 +8,7 @@ EXEC_TARGET fptype device_ThreeBodiesPsiPiK (fptype* evt, fptype* p, unsigned in
   fptype m1 = p[indices[2]];
   fptype m2 = p[indices[3]];
   fptype m3 = p[indices[4]];
+  RooAbsPdf* BdToPsiPiK_PHSP = new RooGenericPdf("BdToPsiPiK_PHSP","3-body PHSP","sqrt( pow(mass2KPiFor,2) + pow(m2Pion,2) + pow(m2Kaon,2) - 2*mass2KPiFor*m2Pion - 2*mass2KPiFor*m2Kaon - 2*m2Pion*m2Kaon ) * sqrt( pow(m2Bd,2) + pow(mass2KPiFor,2) + pow(m2Psi,2) - 2*m2Bd*mass2KPiFor - 2*m2Bd*m2Psi - 2*mass2KPiFor*m2Psi ) / sqrt(mass2KPiFor)", RooArgSet(mass2KPiFor,m2Pion,m2Kaon,m2Bd,m2Psi)); // variables name used in the formula must be = name of the RooVariables in the list
 
   fptype ret = isnan(sqrt(pow(x,4) + pow(m1,4) + pow(m2,4) - 2*pow(x,2)*pow(m1,2) - 2*pow(x,2)*pow(m2,2) - 2*pow(m1,2)*pow(m2,2)) * sqrt(pow(mP,4) + pow(x,4) + pow(m3,4) - 2*pow(mP,2)*pow(x,2) - 2*pow(mP,2)*pow(m3,2) - 2*pow(x,2)*pow(m3,2) ) / (x)) ? 0 : (sqrt(pow(x,4) + pow(m1,4) + pow(m2,4) - 2*pow(x,2)*pow(m1,2) - 2*pow(x,2)*pow(m2,2) - 2*pow(m1,2)*pow(m2,2)) * sqrt(pow(mP,4) + pow(x,4) + pow(m3,4) - 2*pow(mP,2)*pow(x,2) - 2*pow(mP,2)*pow(m3,2) - 2*pow(x,2)*pow(m3,2) ) / (x));
   //printf("mP = %.4f  -  m1 = %.4f  -  m2 = %.4f - m3 = %.4f - result = %.4f ",mP,m1,m2,m3,ret);
@@ -86,10 +87,15 @@ MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK = device_ThreeBodiesPsiP
 MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK_Point = device_ThreeBodiesPsiPiK_Point;
 
 
-__host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _x,Variable* _mp,Variable* _m1,Variable* _m2,Variable* _m3)
+__host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _mkp, Variable* _mJP, Variable* _cJ, Variable* _phi,Variable* _mp,Variable* _m1,Variable* _m2,Variable* _m3)
   : GooPdf(_x, n)
 {
   std::vector<unsigned int> pindices;
+
+  registerObservable(_mkp);
+  registerObservable(_mJP);
+  registerObservable(_cJ);
+  registerObservable(_phi);
 
   pindices.push_back(registerParameter(_mp));
   pindices.push_back(registerParameter(_m1));
@@ -98,79 +104,78 @@ __host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _x,Varia
 
   GET_FUNCTION_ADDR(ptr_to_ThreeBodiesPsiPiK);
   //GET_INTEGRAL_ADDR(ptr_to_Three_Bin);
-  GET_ATPOINTS_ADDR(ptr_to_ThreeBodiesPsiPiK_Point);
+  //GET_ATPOINTS_ADDR(ptr_to_ThreeBodiesPsiPiK_Point);
   initialise(pindices);
 }
 
-__host__ fptype ThreeBodiesPsiPiK::integrate (fptype lo, fptype hi) const {
+// __host__ fptype ThreeBodiesPsiPiK::integrate (fptype lo, fptype hi) const {
+//
+//   int loind=0, hiind=0;
+//   fptype max =2.0;
+//   fptype min =1.0;
+//
+//   if(lo<=1.0){
+//   if(hi>=2) return 5.06186;
+//   else {
+//   while(hi<max){
+//   max=PUNTI[255-hiind];
+//   hiind++;
+//   }
+//   return AREA[255-hiind];
+//   }}
+//
+//   if(hi>=2.0){
+//   if(lo<=1) return 5.06186;
+//   else {
+//   while(lo>min){
+//   min=PUNTI[loind];
+//   loind++;
+//   }
+//   return AREA[loind];
+//   }}
+//
+//   while(lo>min){
+//   min=PUNTI[loind];
+//   loind++;
+//   }
+//
+//   while(hi<max){
+//   max=PUNTI[255-hiind];
+//   hiind++;
+//   }
+//
+//   return AREA[255-hiind]-AREA[loind];
+// }
 
-  int loind=0, hiind=0;
-  fptype max =2.0;
-  fptype min =1.0;
-
-  if(lo<=1.0){
-  if(hi>=2) return 5.06186;
-  else {
-  while(hi<max){
-  max=PUNTI[255-hiind];
-  hiind++;
-  }
-  return AREA[255-hiind];
-  }}
-
-  if(hi>=2.0){
-  if(lo<=1) return 5.06186;
-  else {
-  while(lo>min){
-  min=PUNTI[loind];
-  loind++;
-  }
-  return AREA[loind];
-  }}
-
-  while(lo>min){
-  min=PUNTI[loind];
-  loind++;
-  }
-
-  while(hi<max){
-  max=PUNTI[255-hiind];
-  hiind++;
-  }
-
-  return AREA[255-hiind]-AREA[loind];
-}
-/*
-__global__ void fillHisto (TH1F* histo,unsigned int nevents,fptype fmax){
-
-
-    fptype roll,func,x;
-    fptype xmin = histo->GetBinLowEdge(1);
-    fptype xmax = histo->GetBinLowEdge(histo->GetNbinsX()+1);
-    long int ms; struct timeval tp;
-
-    for (int j = 0; j < nevents; ++j) {
-
-		    gettimeofday(&tp,NULL);
-        ms = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-        TRandom3 ranGen(ms);
-
-  			x = donram.Uniform(xmax-xmins)+xmin;
-  			func = background(xvar->value);
-  			roll = donram.Uniform(fmax);
-
-  			if (roll > func) {
-  				--j;
-  				continue; }
-
-  			if ((x < xmin) || (x > xmax)) {
-  				--j;
-  				continue;}
-
-  			histo->Fill(x);
-
-  		}
-
-
-}
-*/
+// __global__ void fillHisto (TH1F* histo,unsigned int nevents,fptype fmax){
+//
+//
+//     fptype roll,func,x;
+//     fptype xmin = histo->GetBinLowEdge(1);
+//     fptype xmax = histo->GetBinLowEdge(histo->GetNbinsX()+1);
+//     long int ms; struct timeval tp;
+//
+//     for (int j = 0; j < nevents; ++j) {
+//
+// 		    gettimeofday(&tp,NULL);
+//         ms = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+//         TRandom3 ranGen(ms);
+//
+//   			x = donram.Uniform(xmax-xmins)+xmin;
+//   			func = background(xvar->value);
+//   			roll = donram.Uniform(fmax);
+//
+//   			if (roll > func) {
+//   				--j;
+//   				continue; }
+//
+//   			if ((x < xmin) || (x > xmax)) {
+//   				--j;
+//   				continue;}
+//
+//   			histo->Fill(x);
+//
+//   		}
+//
+//
+// }

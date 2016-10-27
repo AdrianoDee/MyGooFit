@@ -10,8 +10,8 @@
 class ThreeBodiesPsiPiK : public GooPdf {
 public:
 
-    ThreeBodiesPsiPiK (std::string n, Variable* _x,Variable* _mp,Variable* _m1,Variable* _m2,Variable* _m3);//,Variable* nBk);
-  __host__ fptype integrate (fptype lo, fptype hi) const;
+    ThreeBodiesPsiPiK (std::string n, Variable* _mkp, Variable* _mJP, Variable* _cJ, Variable* _phi, Variable* _mp,Variable* _m1,Variable* _m2,Variable* _m3);//,Variable* nBk);
+  //__host__ fptype integrate (fptype lo, fptype hi) const;
   __host__ virtual bool hasAnalyticIntegral () const {return false;}
   //__global__ void fillHisto (TH1F* histo,unsigned int nevents);
   //__global__ void fillDataset (BinnedDataSet dataset,unsigned int nevents);
