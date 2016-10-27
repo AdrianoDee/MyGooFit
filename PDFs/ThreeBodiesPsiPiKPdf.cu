@@ -2,13 +2,16 @@
 #include "TRandom.h"
 
 EXEC_TARGET fptype device_ThreeBodiesPsiPiK (fptype* evt, fptype* p, unsigned int* indices) {
+
   fptype x = evt[indices[2 + indices[0]]];
+  fptype mPsiP = evt[indices[2 + indices[0]]+2];
+  fptype cJ = evt[indices[2 + indices[0]]+1];
+  fptype phi = evt[indices[2 + indices[0]]+3];
 
   fptype mP = p[indices[1]];
   fptype m1 = p[indices[2]];
   fptype m2 = p[indices[3]];
   fptype m3 = p[indices[4]];
-  RooAbsPdf* BdToPsiPiK_PHSP = new RooGenericPdf("BdToPsiPiK_PHSP","3-body PHSP","sqrt( pow(mass2KPiFor,2) + pow(m2Pion,2) + pow(m2Kaon,2) - 2*mass2KPiFor*m2Pion - 2*mass2KPiFor*m2Kaon - 2*m2Pion*m2Kaon ) * sqrt( pow(m2Bd,2) + pow(mass2KPiFor,2) + pow(m2Psi,2) - 2*m2Bd*mass2KPiFor - 2*m2Bd*m2Psi - 2*mass2KPiFor*m2Psi ) / sqrt(mass2KPiFor)", RooArgSet(mass2KPiFor,m2Pion,m2Kaon,m2Bd,m2Psi)); // variables name used in the formula must be = name of the RooVariables in the list
 
   fptype ret = isnan(sqrt(pow(x,4) + pow(m1,4) + pow(m2,4) - 2*pow(x,2)*pow(m1,2) - 2*pow(x,2)*pow(m2,2) - 2*pow(m1,2)*pow(m2,2)) * sqrt(pow(mP,4) + pow(x,4) + pow(m3,4) - 2*pow(mP,2)*pow(x,2) - 2*pow(mP,2)*pow(m3,2) - 2*pow(x,2)*pow(m3,2) ) / (x)) ? 0 : (sqrt(pow(x,4) + pow(m1,4) + pow(m2,4) - 2*pow(x,2)*pow(m1,2) - 2*pow(x,2)*pow(m2,2) - 2*pow(m1,2)*pow(m2,2)) * sqrt(pow(mP,4) + pow(x,4) + pow(m3,4) - 2*pow(mP,2)*pow(x,2) - 2*pow(mP,2)*pow(m3,2) - 2*pow(x,2)*pow(m3,2) ) / (x));
   //printf("mP = %.4f  -  m1 = %.4f  -  m2 = %.4f - m3 = %.4f - result = %.4f ",mP,m1,m2,m3,ret);
@@ -88,7 +91,7 @@ MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK_Point = device_ThreeBodi
 
 
 __host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _mkp, Variable* _mJP, Variable* _cJ, Variable* _phi,Variable* _mp,Variable* _m1,Variable* _m2,Variable* _m3)
-  : GooPdf(_x, n)
+  : GooPdf(_mkp, n)
 {
   std::vector<unsigned int> pindices;
 
