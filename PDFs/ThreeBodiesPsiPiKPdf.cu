@@ -16,7 +16,7 @@ EXEC_TARGET fptype device_ThreeBodiesPsiPiK (fptype* evt, fptype* p, unsigned in
   fptype ret = isnan(sqrt(pow(x,4) + pow(m1,4) + pow(m2,4) - 2*pow(x,2)*pow(m1,2) - 2*pow(x,2)*pow(m2,2) - 2*pow(m1,2)*pow(m2,2)) * sqrt(pow(mP,4) + pow(x,4) + pow(m3,4) - 2*pow(mP,2)*pow(x,2) - 2*pow(mP,2)*pow(m3,2) - 2*pow(x,2)*pow(m3,2) ) / (x)) ? 0 : (sqrt(pow(x,4) + pow(m1,4) + pow(m2,4) - 2*pow(x,2)*pow(m1,2) - 2*pow(x,2)*pow(m2,2) - 2*pow(m1,2)*pow(m2,2)) * sqrt(pow(mP,4) + pow(x,4) + pow(m3,4) - 2*pow(mP,2)*pow(x,2) - 2*pow(mP,2)*pow(m3,2) - 2*pow(x,2)*pow(m3,2) ) / (x));
   //printf("mP = %.4f  -  m1 = %.4f  -  m2 = %.4f - m3 = %.4f - result = %.4f ",mP,m1,m2,m3,ret);
 
-return ret;
+  return ret;
 }
 
 // EXEC_TARGET fptype device_ThreeBodiesPsiPiK_Point (fptype* point, fptype* p, unsigned int* indices) {
