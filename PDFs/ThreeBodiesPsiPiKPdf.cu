@@ -19,18 +19,18 @@ EXEC_TARGET fptype device_ThreeBodiesPsiPiK (fptype* evt, fptype* p, unsigned in
 return ret;
 }
 
-EXEC_TARGET fptype device_ThreeBodiesPsiPiK_Point (fptype* point, fptype* p, unsigned int* indices) {
-  fptype x = point[0];
-
-  fptype mP = p[indices[1]];
-  fptype m1 = p[indices[2]];
-  fptype m2 = p[indices[3]];
-  fptype m3 = p[indices[4]];
-
-  fptype ret = isnan(sqrt(pow(x,4) + pow(m1,4) + pow(m2,4) - 2*pow(x,2)*pow(m1,2) - 2*pow(x,2)*pow(m2,2) - 2*pow(m1,2)*pow(m2,2)) * sqrt(pow(mP,4) + pow(x,4) + pow(m3,4) - 2*pow(mP,2)*pow(x,2) - 2*pow(mP,2)*pow(m3,2) - 2*pow(x,2)*pow(m3,2) ) / (x)) ? 0 : (sqrt(pow(x,4) + pow(m1,4) + pow(m2,4) - 2*pow(x,2)*pow(m1,2) - 2*pow(x,2)*pow(m2,2) - 2*pow(m1,2)*pow(m2,2)) * sqrt(pow(mP,4) + pow(x,4) + pow(m3,4) - 2*pow(mP,2)*pow(x,2) - 2*pow(mP,2)*pow(m3,2) - 2*pow(x,2)*pow(m3,2) ) / (x));
-
-  return ret;
-}
+// EXEC_TARGET fptype device_ThreeBodiesPsiPiK_Point (fptype* point, fptype* p, unsigned int* indices) {
+//   fptype x = point[0];
+//
+//   fptype mP = p[indices[1]];
+//   fptype m1 = p[indices[2]];
+//   fptype m2 = p[indices[3]];
+//   fptype m3 = p[indices[4]];
+//
+//   fptype ret = isnan(sqrt(pow(x,4) + pow(m1,4) + pow(m2,4) - 2*pow(x,2)*pow(m1,2) - 2*pow(x,2)*pow(m2,2) - 2*pow(m1,2)*pow(m2,2)) * sqrt(pow(mP,4) + pow(x,4) + pow(m3,4) - 2*pow(mP,2)*pow(x,2) - 2*pow(mP,2)*pow(m3,2) - 2*pow(x,2)*pow(m3,2) ) / (x)) ? 0 : (sqrt(pow(x,4) + pow(m1,4) + pow(m2,4) - 2*pow(x,2)*pow(m1,2) - 2*pow(x,2)*pow(m2,2) - 2*pow(m1,2)*pow(m2,2)) * sqrt(pow(mP,4) + pow(x,4) + pow(m3,4) - 2*pow(mP,2)*pow(x,2) - 2*pow(mP,2)*pow(m3,2) - 2*pow(x,2)*pow(m3,2) ) / (x));
+//
+//   return ret;
+// }
 
 /*
 EXEC_TARGET fptype device_Three_Bin (fptype* evt, fptype* p, unsigned int* indices) {
@@ -87,10 +87,11 @@ return integralF;
 
 MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK = device_ThreeBodiesPsiPiK;
 //MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK_Bin = device_Three_Bin;
-MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK_Point = device_ThreeBodiesPsiPiK_Point;
+//MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK_Point = device_ThreeBodiesPsiPiK_Point;
 
 
-__host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _mkp, Variable* _mJP, Variable* _cJ, Variable* _phi,Variable* _mp,Variable* _m1,Variable* _m2,Variable* _m3)
+__host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _mkp, Variable* _mJP,
+  Variable* _cJ, Variable* _phi,Variable* _mp,Variable* _m1,Variable* _m2,Variable* _m3)
   : GooPdf(0, n)
 {
   std::vector<unsigned int> pindices;
