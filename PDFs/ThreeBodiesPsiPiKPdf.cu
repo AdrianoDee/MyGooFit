@@ -91,7 +91,7 @@ MEM_DEVICE device_function_ptr ptr_to_ThreeBodiesPsiPiK_Point = device_ThreeBodi
 
 
 __host__ ThreeBodiesPsiPiK::ThreeBodiesPsiPiK (std::string n, Variable* _mkp, Variable* _mJP, Variable* _cJ, Variable* _phi,Variable* _mp,Variable* _m1,Variable* _m2,Variable* _m3)
-  : GooPdf(_mkp, n)
+  : GooPdf(0, n)
 {
   std::vector<unsigned int> pindices;
 
