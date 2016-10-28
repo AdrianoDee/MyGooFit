@@ -34,8 +34,6 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
     fptype Dq06 = Dq04*Dq02;
     fptype rootterm = -1;
 
-
-
     if (Lmin==0)
       return 1.;
     else if (Lmin==1)
@@ -58,14 +56,6 @@ EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
 
 EXEC_TARGET fptype Pmom(fptype mkp,const fptype psiN)
 {
-
-    fptype  MPsi2S4mTwoMPsi2S2MBd2pMBd4 = 204.1150027743444;
-    fptype  MJpsi4mTwoMJpsi2MBd2pMBd4 = 334.2824610932961;
-
-    fptype  TwoMPsi2S2pTwoMBd2 = 82.92336262396199;
-    fptype  TwoMJpsi2pTwoMBd2 = 74.930340926312;
-
-    fptype  InvTwoMBd = 0.09470396487619351;
 
     fptype mkp2 = mkp*mkp;
     fptype rootterm = 0;
@@ -93,21 +83,15 @@ EXEC_TARGET fptype Pmom(fptype mkp,const fptype psiN)
 EXEC_TARGET fptype Qmom(fptype mkp)
 {
 
-      fptype mkp2 = mkp*mkp;
+  fptype mkp2 = mkp*mkp;
 
-
-     fptype  MKaon4mTwoMKaon2MPion2pMPion4 = 0.05028229728016605;
-
-     fptype  TwoMKaon2pTwoMPion2 = 0.5263936309484647;
-
-    fptype rootterm = MKaon4mTwoMKaon2MPion2pMPion4 + mkp2*(mkp2 - TwoMKaon2pTwoMPion2) ;
-    if (rootterm > 0)
-        return 0.5*SQRT(rootterm)/mkp;
-    else { //cout <<"WARNING! In \"Qmom\" function: rootterm <= 0 for mkp = " <<mkp <<" -> returning 0" <<endl;
-            printf("WARNING! In \"Qmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f  -> returning 0 \n",rootterm,mkp);
-
-        return 0.;
-    }
+  fptype rootterm = MKaon4mTwoMKaon2MPion2pMPion4 + mkp2*(mkp2 - TwoMKaon2pTwoMPion2) ;
+  if (rootterm > 0)
+    return 0.5*SQRT(rootterm)/mkp;
+  else {
+    printf("WARNING! In \"Qmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f  -> returning 0 \n", rootterm, mkp);
+    return 0.;
+  }
 
 }
 
@@ -230,63 +214,61 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
 
 EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angle,fptype cJ)
 {
-
   devcomplex<fptype> imUnit(0.0,1.0);
-  devcomplex<fptype> nullo(0.0,0.0);
+  devcomplex<fptype> result(0.0,0.0);
 
   //printf("imUinit = (%.3f , %.3f) nullo = (%.3f , %.3f) \n",imUnit.real,imUnit.imag,nullo.real,nullo.imag);
 
   if (helJ==M1HEL) {
     if (helDmu==M1HEL){
-      devcomplex<fptype> result = ((+1. + cJ)*exp(imUnit*angle))*.5;
+      result = ((+1. + cJ)*exp(imUnit*angle))*.5;
       //printf("helj = m1 (%.3f) helDmu = (%.3f)  m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",helJ,helDmu,cJ,angle,result.real,result.imag);
-      return result;}
+    }
     else if (helDmu==P1HEL){
-      devcomplex<fptype> result = (-1.0)*((-1. + cJ)*exp(imUnit*angle))*.5;
+      result = (-1.0)*((-1. + cJ)*exp(imUnit*angle))*.5;
       //printf("helj = m1 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
-      return result;}
+    }
     else {
       printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = M1HEL returning 0\n",helDmu);
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
-      return nullo; }
-  } else if (helJ==ZEROHEL) {
+    }
+  }
+  else if (helJ==ZEROHEL) {
     //printf("Helj = zerohel \n");
     if (helDmu==M1HEL){
-      devcomplex<fptype> result = devcomplex<fptype>((-1.0)*(SQRT(1. - POW(cJ,2))/root2),0.0);
+      result = devcomplex<fptype>((-1.0)*(SQRT(1. - POW(cJ,2))/root2),0.0);
       //printf("helj = 0 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
-      return result;
     }
     else if (helDmu==P1HEL){
-    devcomplex<fptype> result = devcomplex<fptype>((SQRT(1. - POW(cJ,2))/root2),0.0);
-    //printf("helj = 0 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
-    return result;}
-       else {
+      result = devcomplex<fptype>((SQRT(1. - POW(cJ,2))/root2),0.0);
+      //printf("helj = 0 helDmu = p1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
+    }
+    else {
       printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = 0 returning 0\n",helDmu);
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
-      return nullo; }
-  } else if(helJ==P1HEL) {
+      }
+  }
+  else if(helJ==P1HEL) {
     if (helDmu==M1HEL)
       {
-        devcomplex<fptype> result = (-1.0)*(-1. + cJ)/(2.*exp(imUnit*angle));
+        result = (-1.0)*(-1. + cJ)/(2.*exp(imUnit*angle));
         //printf("helj = p1 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
-        return result;
-        }
+      }
     else if (helDmu==P1HEL)
       {
-        devcomplex<fptype> result = (+1. + cJ)/(2.*exp(imUnit*angle));
+        result = (+1. + cJ)/(2.*exp(imUnit*angle));
         //printf("helj = p1 helDmu = m1 cJ = %.3f angle(phi) = %.3f -> Wignerd_D = (%.3f,%.3f) \n",cJ,angle,result.real,result.imag);
-        return result;
-        }
+      }
     else {
       printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = P1 returning 0\n",helDmu);
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
-      return nullo; }
+      }
   } else {
     printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = %.2f returning 0\n",helDmu,helJ);
     //cout <<"helJ = " <<helJ <<" not allowed in \"WignerD_J\" functions at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
-    return nullo;
   }
 
+  return result;
 }
 
 
@@ -309,38 +291,35 @@ EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fp
 
 EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma, fptype MomMass, int LminMom, int LminR, fptype DB0, fptype DKs,fptype psi_nS)
 {
-    fptype PmKP = Pmom(mkp,psi_nS);
-    fptype PRMass = Pmom(RMass,psi_nS);
-    fptype QmKP = Qmom(mkp);
-    fptype QRMass = Qmom(RMass);
+  fptype PmKP = Pmom(mkp,psi_nS);
+  fptype PRMass = Pmom(RMass,psi_nS);
+  fptype QmKP = Qmom(mkp);
+  fptype QRMass = Qmom(RMass);
 
-    fptype blatt1 = BlattWeisskopf(LminMom, PmKP, PRMass, DB0);
-    fptype blatt2 = BlattWeisskopf(LminR, QmKP, QRMass, DKs);
-    devcomplex<fptype> bw = BW(mkp,RMass, RGamma, LminR, DKs);
+  fptype blatt1 = BlattWeisskopf(LminMom, PmKP, PRMass, DB0);
+  fptype blatt2 = BlattWeisskopf(LminR, QmKP, QRMass, DKs);
+  devcomplex<fptype> bw = BW(mkp,RMass, RGamma, LminR, DKs);
 
-    fptype pow1 = POW(PmKP/MomMass,LminMom);
-    fptype pow2 = POW(QmKP/mkp,LminR);
+  fptype pow1 = POW(PmKP/MomMass,LminMom);
+  fptype pow2 = POW(QmKP/mkp,LminR);
 
-    //TComplex RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, D) * POW(PmKP/MomMass,LminMom) * BW(RMass, RGamma, LminR, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) * POW(QmKP/RMass,LminR);
-    devcomplex<fptype> RFunc = blatt1 * pow1 * bw * blatt2 * pow2;
-    //cout <<"BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
-    //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) <<endl;
-    //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
-    //cout <<"POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<POW(QmKP/mKP,LminR) <<endl;
-    //cout <<"POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<(POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR)) <<endl;
-    //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
+  //TComplex RFunc = BlattWeisskopf(LminMom, PmKP, PRMass, D) * POW(PmKP/MomMass,LminMom) * BW(RMass, RGamma, LminR, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) * POW(QmKP/RMass,LminR);
+  devcomplex<fptype> RFunc = blatt1 * pow1 * bw * blatt2 * pow2;
+  //cout <<"BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
+  //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) <<endl;
+  //cout <<"BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) for RMass " <<RMass <<" = " <<BlattWeisskopf(LminMom, PmKP, PRMass, D) * BlattWeisskopf(LminR, QmKP, QRMass, D) <<endl;
+  //cout <<"POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<POW(QmKP/mKP,LminR) <<endl;
+  //cout <<"POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR) for RMass " <<RMass <<" = " <<(POW(PmKP/MomMass,LminMom) * POW(QmKP/RMass,LminR)) <<endl;
+  //cout <<"\nRFunction for RMass " <<RMass <<" = " <<RFunc <<"\n\n" <<endl;
 
-    //printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f  \n PmKP  = %.3f PRMass = %.3f    \n QmKP  = %.3f QRMass = %.3f  \n LminMom = %.3f LminR = %.3f    \n DB0 = %.3f DKs = %.3f    \n BlattWeisskopf LminM = %.3f    \n BlattWeisskopf LminR = %.3f    \n Power1  = %.3f    \n Power2  = %.3f    \n BW  = (%.3f ,%.3f)",RFunc.real,RFunc.imag,RMass,mkp,PmKP,PRMass,QmKP,QRMass,LminMom,LminR,DB0,DKs,blatt1,blatt2,pow1,pow2,bw.real,bw.imag);
+  //printf("\n RFunction (%.3f ,%.3f) for RMass = %.3f Mkp = %.3f  \n PmKP  = %.3f PRMass = %.3f    \n QmKP  = %.3f QRMass = %.3f  \n LminMom = %.3f LminR = %.3f    \n DB0 = %.3f DKs = %.3f    \n BlattWeisskopf LminM = %.3f    \n BlattWeisskopf LminR = %.3f    \n Power1  = %.3f    \n Power2  = %.3f    \n BW  = (%.3f ,%.3f)",RFunc.real,RFunc.imag,RMass,mkp,PmKP,PRMass,QmKP,QRMass,LminMom,LminR,DB0,DKs,blatt1,blatt2,pow1,pow2,bw.real,bw.imag);
 
-    return RFunc ;
+  return RFunc ;
 }
 
 EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,unsigned int* indices,fptype helDmu)
 {
-
-  int numParams = indices[0];
   unsigned int nOfKstar = indices[1];
-  fptype MBd = 5.27961;
   //int numberOfKStar = indices[0]/6;
 
 
@@ -352,6 +331,7 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   devcomplex<fptype> matrixElement (0.0,0.0);
 
   // K+ and pi- have 0 spin -> second last argument of K* RFunction is = spin(K*)
+  //int numParams = indices[0];
   //printf("psi_nS = %f dRadB0 = %f dRadKs = %f nKStars = %d numparm = %d \n",psi_nS,dRadB0,dRadKs,nOfKstar,numParams);
 
   for (int iKStar=0; iKStar<nOfKstar; ++iKStar) {
@@ -406,11 +386,11 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
     const fptype psin = psiN;
     fptype p = Pmom(mkp,psin);
     fptype q = Qmom(mkp);
-    fptype phsp = p*q;
+    //fptype phsp = p*q;
     //printf(" Mass KPi = %.3f Phase space = %.3f\n",mkp,phsp);
     //printf("==================");
 
-    return  Pmom(mkp,psiN) * Qmom(mkp);
+    return Pmom(mkp,psiN) * Qmom(mkp);
 }
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
@@ -420,8 +400,6 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   //printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
   //printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
 
-  int numParams = indices[0];
-
   fptype mkp = evt[indices[2 + indices[0]]];
   fptype mPsiP = evt[indices[2 + indices[0]]+2];
   fptype cJ = evt[indices[2 + indices[0]]+1];
@@ -429,51 +407,44 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype phi = evt[indices[2 + indices[0]]+3];
 
   fptype psi_nS = p[indices[2]];
-  fptype dRadB0 = p[indices[3]];
-  fptype dRadKs = p[indices[4]];
-  fptype MKaon = 0.493677; fptype MKaon2 = MKaon*MKaon;
-  fptype MPion = 0.13957018; fptype MPion2 = MPion*MPion;
-  fptype MBd = 5.27961; fptype MBd2 = MBd*MBd;
-
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
-   fptype MPsi_nS = 0.;
+  fptype MPsi_nS = 0.;
 
-   if (psi_nS==1.0)
-     MPsi_nS = 3.096916;
-   else if (psi_nS==2.0)
-     MPsi_nS = 3.686109;
-   else
-      printf("\nMatrix P.d.f not configured for psi_nS = %.2f",psi_nS);
-      //printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
+  if (psi_nS==1.0)
+    MPsi_nS = MJpsi;
+  else if (psi_nS==2.0)
+    MPsi_nS = MPsi2S;
+  else {
+    printf("\nMatrix P.d.f not configured for psi_nS = %.0f",psi_nS);
+    //printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
+  }
 
+  fptype mKP2 = mkp*mkp;
+  fptype mPsiP2 = mPsiP*mPsiP;
+  fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
 
+  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
+    //printf("Returning 0: event out of the Dalitz borders!\n");
+    return 0.; }
 
-    fptype mKP2 = mkp*mkp;
-    fptype mPsiP2 = mPsiP*mPsiP;
-    fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
+  fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
 
-    fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
-
+  //fptype dRadB0 = p[indices[3]];
+  //fptype dRadKs = p[indices[4]];
   //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs,mPsiP);
 
   if (FABS(cKs) > 1) {
-  //printf("\nReturning 0 : ckS > 1 or < -1 ");
-  return 0.;};
-
-
-
-  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)){
-    //printf("Returning 0 : Out of the borders \n");
-    return 0.;}
-  else{
-      fptype MEME = ME2(mkp,cJ,cKs,phi,p,indices);
-      fptype phiPhase = PhiPHSP(mkp,psi_nS);
-      fptype result = MEME * phiPhase;
-      //printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f mPSIP = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi,mPsiP);
-      return ME2(mkp,cJ,cKs,phi,p,indices) * PhiPHSP(mkp,psi_nS);}
-
-
+    //printf("\nReturning 0 : ckS > 1 or < -1 ");
+    return 0.; }
+  else {
+    fptype MEME = ME2(mkp,cJ,cKs,phi,p,indices);
+    fptype phiPhase = PhiPHSP(mkp,psi_nS);
+    fptype result = MEME * phiPhase;
+    //printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f mPSIP = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi,mPsiP);
+    return result;
+  }
+  
 }
 
 /*

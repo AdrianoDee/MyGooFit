@@ -395,8 +395,6 @@ __host__ void GooPdf::evaluateAtPointsInt (Variable* var, std::vector<fptype>& r
   MEMCPY_TO_SYMBOL(normalisationFactors, host_normalisation, totalParams*sizeof(fptype), 0, cudaMemcpyHostToDevice);
   BinnedDataSet tempdata(observables);
 
-  double step = (var->upperlimit - var->lowerlimit) / var->numbins;
-
   for (int i = 1; i <= var->numbins; ++i) {
     tempdata.setBinContent(i,0);
   }
@@ -500,7 +498,6 @@ __host__ fptype GooPdf::getValue () {
 
     fptype binVolume = 1.0;
 
-    int totalBins = 1;
     for (obsConstIter v = obsCBegin(); v != obsCEnd(); ++v) {
       binVolume *= ((*v)->upperlimit - (*v)->lowerlimit)/((fptype)((*v)->numbins));
     }
@@ -623,7 +620,6 @@ __host__ fptype GooPdf::normaliseInt () const {
   thrust::constant_iterator<fptype*> arrayAddress(normRanges);
   thrust::constant_iterator<int> eventSize(observables.size());
   thrust::counting_iterator<int> binIndex(0);
-  int flagIntgr = 1;
 
   fptype sum = thrust::transform_reduce(thrust::make_zip_iterator(thrust::make_tuple(arrayAddress,binIndex, eventSize)),
 					thrust::make_zip_iterator(thrust::make_tuple(arrayAddress,binIndex + totalBins, eventSize)),

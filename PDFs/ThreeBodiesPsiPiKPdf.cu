@@ -4,9 +4,6 @@
 EXEC_TARGET fptype device_ThreeBodiesPsiPiK (fptype* evt, fptype* p, unsigned int* indices) {
 
   fptype x = evt[indices[2 + indices[0]]];
-  fptype mPsiP = evt[indices[2 + indices[0]]+2];
-  fptype cJ = evt[indices[2 + indices[0]]+1];
-  fptype phi = evt[indices[2 + indices[0]]+3];
 
   fptype mP = p[indices[1]];
   fptype m1 = p[indices[2]];

@@ -4,13 +4,14 @@ __device__ fptype device_IndexSelector (fptype* evt, fptype* p, unsigned int* in
 {
   fptype x = evt[indices[2 + indices[0]]];
   unsigned int index_int = FLOOR(0.5 + x);
-  unsigned int ret = indices[1];
   printf("Index Int : %u - x = %.2f \n",index_int,x);
   return index_int;
   // indices[1] should be the number of step points we have
   //printf(" evt 1 %.2f evt 2 %.2f evt 3 %.2f evt 4 %.2f evt 5 %.2f evt 6 %.2f \n ",evt[indices[2 + indices[0]]],evt[indices[2 + indices[0]]+1],evt[indices[2 + indices[0]]+2],evt[indices[2 + indices[0]]+3],evt[indices[2 + indices[0]]+4],evt[indices[2 + indices[0]]+5]);
 
-  /*for(unsigned int i = 0; i < indices[1]; i++)
+  /*
+  unsigned int ret = indices[1];
+  for(unsigned int i = 0; i < indices[1]; i++)
   {
     if(index_int < p[indices[2 + i]])
     {

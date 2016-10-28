@@ -175,15 +175,15 @@ EXEC_TARGET fptype device_AddPdfs_Bin_Mid (fptype* evt, fptype* p, unsigned int*
 
   }
 
-  fptype pdf1 = ret;
   // numParameters does not count itself. So the array structure for two functions is
   // nP | F P w | F P
   // in which nP = 5. Therefore the parameter index for the last function pointer is nP, and the function index is nP-1.
   //fptype last = (*(reinterpret_cast<device_function_ptr>(device_function_table[indices[numParameters-1]])))(evt, p, paramIndices + indices[numParameters]);
   fptype last = callFunction(evt, indices[numParameters - 1], indices[numParameters]);
   ret += (1 - totalWeight) * last * normalisationFactors[indices[numParameters]];
-  fptype pdf2 =  (1 - totalWeight) * last * normalisationFactors[indices[numParameters]];
 
+  //fptype pdf1 = ret;
+  //fptype pdf2 =  (1 - totalWeight) * last * normalisationFactors[indices[numParameters]];
   //printf("pdf1 = %f pdf2 = %f \n",pdf1,pdf2);
 
   //if ((THREADIDX < 50) && (isnan(ret))) printf("NaN final component %f %f\n", last, totalWeight);
