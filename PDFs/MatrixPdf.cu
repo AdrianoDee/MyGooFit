@@ -489,7 +489,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   printf("No. of kStars \t\t\t = %d \n",noOfKStars);
   printf("Amplitudes vector size \t\t\t = %d \n",a.size());
 
-  if(noOfKStars != (int) a.size()) abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
+  //if(noOfKStars != (int) a.size()) abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
 
   registerObservable(_mkp);
   registerObservable(_mJP);
