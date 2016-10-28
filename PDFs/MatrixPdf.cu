@@ -132,12 +132,17 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   if(helJ==P1HEL) whichOfThree = 1;
   if(helJ==M1HEL) whichOfThree = 2;
 
-  fptype a = p[indices[5+(iKStar+whichOfThree)*5+3]];
-  fptype b = p[indices[5+(iKStar+whichOfThree)*5+4]];
+  // psi_ns dRadB0 dRadKs m1 g1 s1 m2 g2 s2 . . . mn  gn  sn   a1          b1             a2 b2 . . . an                  bn                    //
+  //Indeces
+  // 2      3      4      5  6  7  8  9  10        4+n 5+n 6+n  4+nKstars*3 4+nKstars*3+1              4+nKstars*3+(n-1)*2 4+nKstars*3+(n-1)*2+1
 
-  //if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
-  //if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
-  //if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
+
+  fptype a = p[indices[4+p[1]*3+(iKStar+whichOfThree)*2]];
+  fptype b = p[indices[4+p[1]*3+(iKStar+whichOfThree)*2+1]];
+
+  if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
+  if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
+  if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
 
 
   //fptype a = p[indices[7]];
@@ -336,14 +341,14 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
 
   for (int iKStar=0; iKStar<nOfKstar; ++iKStar) {
 
-    fptype Mass = p[indices[4+1+iKStar*5]];
-    fptype Gamma = p[indices[4+2+iKStar*5]];
-    fptype Spin = p[indices[4+3+iKStar*5]];
+    fptype Mass = p[indices[4+1+iKStar*3]];
+    fptype Gamma = p[indices[4+2+iKStar*3]];
+    fptype Spin = p[indices[4+3+iKStar*3]];
 
     // 2) psi_ns 3) DB0 4) DBK 5) M1 6) G1 7) S1 8) A1 9)B1 10)M2
     devcomplex<fptype> matrixElement_R(0.0,0.0);
 
-    //printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
+    printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
 
     if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
       matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin+1, Spin, dRadB0, dRadKs,psi_nS) *
@@ -395,7 +400,7 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
-  //printf("Zero paramater set %d %d %.2f %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]]);
+  printf("Zero paramater set %d %d %.2f %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]]);
   //printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
   //printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
   //printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
@@ -444,7 +449,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
     //printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f mPSIP = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi,mPsiP);
     return result;
   }
-  
+
 }
 
 /*
@@ -475,6 +480,17 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
 {
 
+  unsigned int noOfKStars = 0;
+
+  for (int j = 0 ; j < _Masses.size(); j++) {
+    ++noOfKStars;
+    if(_Spins[j]>0) noOfKStars += 2;
+  }
+  printf("No. of kStars \t\t\t = %d \n",noOfKStars);
+  printf("Amplitudes vector size \t\t\t = %d \n",a.size());
+
+  if(noOfKStars != (int) a.size()) abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
+
   registerObservable(_mkp);
   registerObservable(_mJP);
   registerObservable(_cJ);
@@ -482,20 +498,23 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 
   std::vector<unsigned int> pindices;
 
-  unsigned int noOfKStars = (int) _Masses.size();
-
   pindices.push_back(noOfKStars);
   pindices.push_back(registerParameter(_psi_nS));  // p[indices[1]]
   pindices.push_back(registerParameter(_dRadB0));  // p[indices[2]]
   pindices.push_back(registerParameter(_dRadKs));  // p[indices[3]]
 
-  printf("No. of kStars = %d \n",noOfKStars);
-
-  for (int j = 0 ; j < noOfKStars; j++) {
+  //Parameter vector
+  // psi_ns dRadB0 dRadKs m1 g1 s1 m2 g2 s2 . . . mn  gn  sn   a1          b1             a2 b2 . . . an                  bn                    //
+  //Indeces
+  // 2      3      4      5  6  7  8  9  10        4+n 5+n 6+n  4+nKstars*3 4+nKstars*3+1              4+nKstars*3+(n-1)*2 4+nKstars*3+(n-1)*2+1
+  for (int j = 0 ; j < _Masses.size(); j++) {
 
     pindices.push_back(registerParameter(_Masses[j]));  // p[indices[4]]
     pindices.push_back(registerParameter(_Gammas[j]));  // p[indices[5]]
     pindices.push_back(registerParameter(_Spins[j]));
+  }
+
+  for (int j = 0 ; j < noOfKStars; j++) {
     //pindices.push_back(registerParameter(_helj[j]));   // p[indices[6]]
     pindices.push_back(registerParameter(_a[j]));  // p[indices[7]]
     pindices.push_back(registerParameter(_b[j]));  // p[indices[8]]
