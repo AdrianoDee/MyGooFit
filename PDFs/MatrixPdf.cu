@@ -136,9 +136,9 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   //Indeces
   // 2      3      4      5  6  7  8  9  10        4+n 5+n 6+n  4+nKstars*3 4+nKstars*3+1              4+nKstars*3+(n-1)*2 4+nKstars*3+(n-1)*2+1
 
-
-  fptype a = p[indices[4+p[1]*3+(iKStar+whichOfThree)*2]];
-  fptype b = p[indices[4+p[1]*3+(iKStar+whichOfThree)*2+1]];
+  int noKstars = (int)p[indices[1]];
+  fptype a = p[indices[4+noKstars*3+(iKStar+whichOfThree)*2]];
+  fptype b = p[indices[4+noKstars*3+(iKStar+whichOfThree)*2+1]];
 
   if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
   if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",whichOfThree,4+(iKStar+whichOfThree)*5+3,a,b,helJ);
