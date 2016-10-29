@@ -136,7 +136,7 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   //Indeces
   // 2      3      4      5  6  7  8  9  10        4+n 5+n 6+n  4+nKstars*3 4+nKstars*3+1              4+nKstars*3+(n-1)*2 4+nKstars*3+(n-1)*2+1
 
-  int noKstars = (int)p[indices[1]];
+  int noOfMasses = (int)p[indices[1]];
   fptype a = p[indices[4+noKstars*3+(iKStar+whichOfThree)*2]];
   fptype b = p[indices[4+noKstars*3+(iKStar+whichOfThree)*2+1]];
 
@@ -487,7 +487,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
     if(_Spins[j]>0) noOfKStars += 2;
   }
   printf("No. of kStars \t\t\t = %d \n",noOfKStars);
-  printf("Amplitudes vector size \t\t\t = %d \n",_a.size());
+  printf("Amplitudes vector size \t\t = %d \n",_a.size());
 
   if(noOfKStars != (int) _a.size()) abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
 
@@ -498,7 +498,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 
   std::vector<unsigned int> pindices;
 
-  pindices.push_back(noOfKStars);
+  pindices.push_back(_Masses.size());
   pindices.push_back(registerParameter(_psi_nS));  // p[indices[1]]
   pindices.push_back(registerParameter(_dRadB0));  // p[indices[2]]
   pindices.push_back(registerParameter(_dRadKs));  // p[indices[3]]
