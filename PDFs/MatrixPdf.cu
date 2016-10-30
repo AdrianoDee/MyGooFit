@@ -401,7 +401,7 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
-  printf("Zero paramater set %d %d %.2f %.2f %.2f %.2f  %.2f \n",indices[0],indices[1],p[indices[0]],p[indices[1]],p[indices[2]],p[indices[3]],p[indices[4]]);
+  printf("Zero paramater set %d %d %d %d %.2f %.2f %.2f %.2f  %.2f \n",indices[0],indices[1],indices[2],indices[3],p[indices[0]],p[indices[1]],p[indices[2]],p[indices[3]],p[indices[4]]);
   printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
   printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
   printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
