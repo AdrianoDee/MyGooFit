@@ -484,8 +484,9 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   unsigned int noOfMasses = (int) _Masses.size();
 
   for (int j = 0 ; j < _Masses.size(); j++) {
-    ++noOfKStars;
-    if(_Spins[j]>0) noOfKStars += 2;
+
+    if(_Spins[j]>0.0) {noOfKStars += 3; printf("\n Spin != 0 - Three K*");};
+    else {++noOfKStars;printf("\n Spin == 0 - One K*");}
   }
   printf("Number of K* \t\t\t = %d\n", noOfKStars);
   printf("Number of masses \t\t\t = %d\n", noOfMasses);
