@@ -481,7 +481,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 {
 
   unsigned int noOfKStars = 0;
-  unsideng int noOfMasses = (int) _Masses.size();
+  unsigned int noOfMasses = (int) _Masses.size();
 
   for (int j = 0 ; j < _Masses.size(); j++) {
     ++noOfKStars;
