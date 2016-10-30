@@ -141,9 +141,9 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   fptype a = p[indices[5+noOfMasses*3+(iKStar+whichOfThree)*2]];
   fptype b = p[indices[5+noOfMasses*3+(iKStar+whichOfThree)*2+1]];
 
-  if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) noOfMasses = %d \n",5+noOfMasses*3+(iKStar+whichOfThree)*2,a,b,helJ,noOfMasses);
-  if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) noOfMasses = %d \n",5+noOfMasses*3+(iKStar+whichOfThree)*2,a,b,helJ,noOfMasses);
-  if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) noOfMasses = %d \n",5+noOfMasses*3+(iKStar+whichOfThree)*2,a,b,helJ,noOfMasses);
+  if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) noOfMasses = %d \n",whichOfThree,5+noOfMasses*3+(iKStar+whichOfThree)*2,a,b,helJ,noOfMasses);
+  if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) noOfMasses = %d \n",whichOfThree,5+noOfMasses*3+(iKStar+whichOfThree)*2,a,b,helJ,noOfMasses);
+  if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) noOfMasses = %d \n",whichOfThree,5+noOfMasses*3+(iKStar+whichOfThree)*2,a,b,helJ,noOfMasses);
 
 
   //fptype a = p[indices[7]];
@@ -401,7 +401,7 @@ EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 
 EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
 
-  printf("Zero paramater set %d %d %.2f %.2f  %.2f \n",indices[0],indices[1],p[indices[2]],p[indices[3]],p[indices[4]]);
+  printf("Zero paramater set %d %d %.2f %.2f %.2f %.2f  %.2f \n",indices[0],indices[1],p[indices[0]],p[indices[1]],p[indices[2]],p[indices[3]],p[indices[4]]);
   printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
   printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
   printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
@@ -501,9 +501,9 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   std::vector<unsigned int> pindices;
 
   pindices.push_back(noOfMasses);
-  pindices.push_back(registerParameter(_psi_nS));  // p[indices[1]]
-  pindices.push_back(registerParameter(_dRadB0));  // p[indices[2]]
-  pindices.push_back(registerParameter(_dRadKs));  // p[indices[3]]
+  pindices.push_back(registerParameter(_psi_nS));  // p[indices[2]]
+  pindices.push_back(registerParameter(_dRadB0));  // p[indices[3]]
+  pindices.push_back(registerParameter(_dRadKs));  // p[indices[4]]
 
   //Parameter vector
   // psi_ns dRadB0 dRadKs m1 g1 s1 m2 g2 s2 . . . mn  gn  sn   a1          b1             a2 b2 . . . an                  bn                    //
@@ -511,15 +511,15 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   // 2      3      4      5  6  7  8  9  10        4+n 5+n 6+n  4+nKstars*3 4+nKstars*3+1              4+nKstars*3+(n-1)*2 4+nKstars*3+(n-1)*2+1
   for (int j = 0 ; j < _Masses.size(); j++) {
 
-    pindices.push_back(registerParameter(_Masses[j]));  // p[indices[4]]
-    pindices.push_back(registerParameter(_Gammas[j]));  // p[indices[5]]
+    pindices.push_back(registerParameter(_Masses[j]));  // p[indices[5]]
+    pindices.push_back(registerParameter(_Gammas[j]));  // p[indices[6]]
     pindices.push_back(registerParameter(_Spins[j]));
   }
 
   for (int j = 0 ; j < noOfKStars; j++) {
-    //pindices.push_back(registerParameter(_helj[j]));   // p[indices[6]]
-    pindices.push_back(registerParameter(_a[j]));  // p[indices[7]]
-    pindices.push_back(registerParameter(_b[j]));  // p[indices[8]]
+    //pindices.push_back(registerParameter(_helj[j]));
+    pindices.push_back(registerParameter(_a[j]));
+    pindices.push_back(registerParameter(_b[j]));
 
   }
 
