@@ -20,6 +20,7 @@ EXEC_TARGET fptype cosTheta_FromMasses(const fptype sameSideM2, const fptype opp
   fptype denom2 = ((1./4.)*POW(motherM2 - psi_nSM2 + sameSideM2,2) - sameSideM2*motherM2) * ((1./4.)*POW(sameSideM2 - otherM2 + refM2,2) - sameSideM2*refM2) ;
 
   return (num / SQRT(denom2)) ;
+
 }
 
 EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
@@ -86,10 +87,10 @@ EXEC_TARGET fptype Qmom(fptype mkp)
   fptype mkp2 = mkp*mkp;
 
   fptype rootterm = MKaon4mTwoMKaon2MPion2pMPion4 + mkp2*(mkp2 - TwoMKaon2pTwoMPion2) ;
-  if (rootterm > 0)
+  if (rootterm >= 0)
     return 0.5*SQRT(rootterm)/mkp;
   else {
-    printf("WARNING! In \"Qmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f  -> returning 0 \n", rootterm, mkp);
+    printf("WARNING! In \"Qmom\" function: rootterm (%f) < 0 for mkp = %f  -> returning 0 \n", rootterm, mkp);
     return 0.;
   }
 
@@ -415,7 +416,6 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
   fptype MPsi_nS = 0.;
-
   if (psi_nS==1.0)
     MPsi_nS = MJpsi;
   else if (psi_nS==2.0)
@@ -430,7 +430,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
 
   if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
-    //printf("Returning 0: event out of the Dalitz borders!\n");
+    //printf("Returning 0: point out of the Dalitz borders!\n");
     return 0.; }
 
   fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
@@ -486,7 +486,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
     ++noOfKStars;
     if(_Spins[j]>0) noOfKStars += 2;
   }
-  printf("No. of kStars \t\t\t = %d \n",noOfKStars);
+  printf("Number of K* \t\t\t = %d\n", noOfKStars);
   printf("Amplitudes vector size \t\t = %d \n",_a.size());
 
   if(noOfKStars != (int) _a.size()) abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
