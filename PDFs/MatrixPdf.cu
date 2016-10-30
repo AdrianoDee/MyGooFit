@@ -500,7 +500,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 
   std::vector<unsigned int> pindices;
 
-  pindices.push_back();
+  pindices.push_back(noOfMasses);
   pindices.push_back(registerParameter(_psi_nS));  // p[indices[1]]
   pindices.push_back(registerParameter(_dRadB0));  // p[indices[2]]
   pindices.push_back(registerParameter(_dRadKs));  // p[indices[3]]
