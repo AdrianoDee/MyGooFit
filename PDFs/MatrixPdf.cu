@@ -137,7 +137,7 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   //Indeces
   // 2      3      4      5  6  7  8  9  10        4+n 5+n 6+n  4+nKstars*3 4+nKstars*3+1              4+nKstars*3+(n-1)*2 4+nKstars*3+(n-1)*2+1
 
-  int noOfMasses = (int)p[indices[1]];
+  int noOfMasses = indices[1];
   fptype a = p[indices[5+noOfMasses*3+(iKStar+whichOfThree)*2]];
   fptype b = p[indices[5+noOfMasses*3+(iKStar+whichOfThree)*2+1]];
 
