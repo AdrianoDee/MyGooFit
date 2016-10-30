@@ -481,12 +481,14 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 {
 
   unsigned int noOfKStars = 0;
+  unsideng int noOfMasses = (int) _Masses.size();
 
   for (int j = 0 ; j < _Masses.size(); j++) {
     ++noOfKStars;
     if(_Spins[j]>0) noOfKStars += 2;
   }
   printf("Number of K* \t\t\t = %d\n", noOfKStars);
+  printf("Number of masses \t\t\t = %d\n", noOfMasses);
   printf("Amplitudes vector size \t\t = %d \n",_a.size());
 
   if(noOfKStars != (int) _a.size()) abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
@@ -498,7 +500,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 
   std::vector<unsigned int> pindices;
 
-  pindices.push_back(_Masses.size());
+  pindices.push_back();
   pindices.push_back(registerParameter(_psi_nS));  // p[indices[1]]
   pindices.push_back(registerParameter(_dRadB0));  // p[indices[2]]
   pindices.push_back(registerParameter(_dRadKs));  // p[indices[3]]
