@@ -143,9 +143,9 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   fptype b = p[indices[5+noOfMasses*3+lA*2+whichOfThree*2+1]];
 
   #ifdef MDEBUGGING
-  if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) noOfMasses = %d \n",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses);
-  if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) noOfMasses = %d \n",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses);
-  if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) noOfMasses = %d \n",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses);
+  if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) noOfMasses = %d lA = %d \n ",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses,lA);
+  if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) noOfMasses = %d lA = %d \n",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses,lA);
+  if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) noOfMasses = %d lA = %d \n",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses,lA);
   #endif
 
   //fptype a = p[indices[7]];
@@ -532,7 +532,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
     pindices.push_back(registerParameter(_Spins[j]));
   }
 
-  for (int j = 0 ; j < noOfKStars; j++) {
+  for (int j = 0 ; j < (int)a.size(); j++) {
     //pindices.push_back(registerParameter(_helj[j]));
     pindices.push_back(registerParameter(_a[j]));
     pindices.push_back(registerParameter(_b[j]));
