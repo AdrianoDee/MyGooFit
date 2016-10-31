@@ -158,9 +158,9 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   result *= a;
 
   #ifdef MDEBUGGING
-  if(helJ==ZEROHEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",result.real,result.imag,a,b,helJ);
-  if(helJ==M1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",result.real,result.imag,a,b,helJ);
-  if(helJ==P1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = P1(%.2f) \n",result.real,result.imag,a,b,helJ);
+  // if(helJ==ZEROHEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",result.real,result.imag,a,b,helJ);
+  // if(helJ==M1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",result.real,result.imag,a,b,helJ);
+  // if(helJ==P1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = P1(%.2f) \n",result.real,result.imag,a,b,helJ);
   #endif
 
   return result ;
@@ -294,7 +294,7 @@ EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fp
   result = HH * WR * cWR ;
 
   #ifdef MDEBUGGING
-  printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
+  //printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
   #endif
 
   return result;
