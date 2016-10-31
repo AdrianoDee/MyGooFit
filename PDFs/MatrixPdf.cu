@@ -13,7 +13,7 @@
 #include "MatrixPdf.hh"
 #include "devcomplex.hh"
 
-// #define MDEBUGGING 1
+//#define MDEBUGGING 1
 
 EXEC_TARGET fptype cosTheta_FromMasses(const fptype sameSideM2, const fptype oppositeSideM2, const fptype psi_nSM2, const fptype motherM2, const fptype refM2, const fptype otherM2) {
 
@@ -122,7 +122,7 @@ EXEC_TARGET devcomplex<fptype> BW(fptype mkp,fptype RMass, fptype RGamma, int Lm
 
 }
 
-EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,int iKStar)
+EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,int lA)
 {
 
   devcomplex<fptype> result(0.0,0.0);
@@ -139,13 +139,13 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   // 2      3      4      5  6  7  8  9  10        4+n 5+n 6+n  4+nKstars*3 4+nKstars*3+1              4+nKstars*3+(n-1)*2 4+nKstars*3+(n-1)*2+1
 
   int noOfMasses = indices[1];
-  fptype a = p[indices[5+noOfMasses*3+(iKStar+whichOfThree)*2]];
-  fptype b = p[indices[5+noOfMasses*3+(iKStar+whichOfThree)*2+1]];
+  fptype a = p[indices[5+noOfMasses*3+lA*2+whichOfThree*2]];
+  fptype b = p[indices[5+noOfMasses*3+lA*2+whichOfThree*2+1]];
 
   #ifdef MDEBUGGING
-  if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) noOfMasses = %d \n",whichOfThree,5+noOfMasses*3+(iKStar+whichOfThree)*2,a,b,helJ,noOfMasses);
-  if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) noOfMasses = %d \n",whichOfThree,5+noOfMasses*3+(iKStar+whichOfThree)*2,a,b,helJ,noOfMasses);
-  if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) noOfMasses = %d \n",whichOfThree,5+noOfMasses*3+(iKStar+whichOfThree)*2,a,b,helJ,noOfMasses);
+  if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) noOfMasses = %d lA = %d \n ",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses,lA);
+  if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) noOfMasses = %d lA = %d \n",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses,lA);
+  if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) noOfMasses = %d lA = %d \n",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses,lA);
   #endif
 
   //fptype a = p[indices[7]];
@@ -158,9 +158,9 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   result *= a;
 
   #ifdef MDEBUGGING
-  if(helJ==ZEROHEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",result.real,result.imag,a,b,helJ);
-  if(helJ==M1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",result.real,result.imag,a,b,helJ);
-  if(helJ==P1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = P1(%.2f) \n",result.real,result.imag,a,b,helJ);
+  // if(helJ==ZEROHEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",result.real,result.imag,a,b,helJ);
+  // if(helJ==M1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",result.real,result.imag,a,b,helJ);
+  // if(helJ==P1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = P1(%.2f) \n",result.real,result.imag,a,b,helJ);
   #endif
 
   return result ;
@@ -294,9 +294,7 @@ EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fp
   result = HH * WR * cWR ;
 
   #ifdef MDEBUGGING
-  cout <<"\nAngularTerm for K* " <<R <<" and helDmu = " <<helDmu <<" and helJ = " <<helJ <<" is made of Wignerd_R(spinR, helJ) * cWignerD_J(helJ, helDmu, phi) = " <<Wignerd_R(spinR, helJ) <<" * " <<cWignerD_J( WignerD_J(helJ, helDmu, phi) ) <<endl;
-  cout <<"It is multiplied by H(R,helJ) = H(" <<R <<"," <<helJ <<") = " <<H(R,helJ) <<endl;
-  printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
+  //printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
   #endif
 
   return result;
@@ -347,6 +345,8 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
   //int numParams = indices[0];
   //printf("psi_nS = %f dRadB0 = %f dRadKs = %f nKStars = %d numparm = %d \n",psi_nS,dRadB0,dRadKs,nOfKstar,numParams);
 
+  int lastAmplitude = 0;
+
   for (int iKStar=0; iKStar<nOfKstar; ++iKStar) {
 
     fptype Mass = p[indices[4+1+iKStar*3]];
@@ -359,16 +359,17 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
     #ifdef MDEBUGGING
     printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
     #endif
-    
+
     if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
       matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin+1, Spin, dRadB0, dRadKs,psi_nS) *
-      AngularTerm(cJ,cKs,phi,p,indices,Spin, ZEROHEL, helDmu,iKStar) ;
+      AngularTerm(cJ,cKs,phi,p,indices,Spin, ZEROHEL, helDmu,lastAmplitude) ;
+      ++lastAmplitude;
     }
        else
               {
                 matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin-1, Spin,dRadB0,dRadKs,psi_nS) *
-	               ( AngularTerm(cJ,cKs,phi,p,indices,Spin, M1HEL, helDmu,iKStar) + AngularTerm(cJ,cKs,phi,p,indices, Spin, ZEROHEL, helDmu,iKStar) + AngularTerm(cJ,cKs,phi,p,indices,Spin, P1HEL, helDmu,iKStar) ) ;
-                   iKStar +=2;
+	               ( AngularTerm(cJ,cKs,phi,p,indices,Spin, M1HEL, helDmu,lastAmplitude) + AngularTerm(cJ,cKs,phi,p,indices, Spin, ZEROHEL, helDmu,lastAmplitude) + AngularTerm(cJ,cKs,phi,p,indices,Spin, P1HEL, helDmu,lastAmplitude) ) ;
+                   lastAmplitude +=3;
                }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
     //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
@@ -531,7 +532,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
     pindices.push_back(registerParameter(_Spins[j]));
   }
 
-  for (int j = 0 ; j < noOfKStars; j++) {
+  for (int j = 0 ; j < (int)_a.size(); j++) {
     //pindices.push_back(registerParameter(_helj[j]));
     pindices.push_back(registerParameter(_a[j]));
     pindices.push_back(registerParameter(_b[j]));
