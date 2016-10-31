@@ -13,7 +13,7 @@
 #include "MatrixPdf.hh"
 #include "devcomplex.hh"
 
-#define MDEBUGGING 1
+//#define MDEBUGGING 1
 
 EXEC_TARGET fptype cosTheta_FromMasses(const fptype sameSideM2, const fptype oppositeSideM2, const fptype psi_nSM2, const fptype motherM2, const fptype refM2, const fptype otherM2) {
 
