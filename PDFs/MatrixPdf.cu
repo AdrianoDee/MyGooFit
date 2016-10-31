@@ -532,7 +532,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
     pindices.push_back(registerParameter(_Spins[j]));
   }
 
-  for (int j = 0 ; j < (int)a.size(); j++) {
+  for (int j = 0 ; j < (int)_a.size(); j++) {
     //pindices.push_back(registerParameter(_helj[j]));
     pindices.push_back(registerParameter(_a[j]));
     pindices.push_back(registerParameter(_b[j]));
