@@ -67,14 +67,14 @@ void FitManager::fitOrdered (std::vector< std::string > algos) {
 
    setupMinuit();
 
-   std::cout<<" ===================== Setting Up Minimisation Algos "<<std::endl;
+   std::cout<<" ******************** Setting Up Minimisation Algos "<<std::endl;
+   std::cout<<" ********** Running : ";
    for (size_t i = 0; i < algos.size(); i++) {
-     std::cout<<" Running : "<<std::endl;
-     if(algos[i] == "MIGRAD") std::cout<<"\t\t - Migrad"<<std::endl;
-     else if(algos[i] == "HESSE") std::cout<<"\t\t - Migrad"<<std::endl;
-     else if(algos[i] == "MINOS") std::cout<<"\t\t - Migrad"<<std::endl;
+     if(algos[i] == "MIGRAD") std::cout<<"\t\t ** Migrad";
+     else if(algos[i] == "HESSE") std::cout<<"\t\t ** Hesse";
+     else if(algos[i] == "MINOS") std::cout<<"\t\t ** Minos";
      else {
-       std::cout<<" INVALID ALGO INPUT ================================= "<<std::endl;
+       std::cout<<" INVALID ALGO INPUT ****************************** "<<std::endl;
        std::cout<<" Options: \"MIGRAD\" - \"HESSE\" - \"MINOS\" "<<std::endl;
        exit(0);
      }
@@ -84,10 +84,6 @@ void FitManager::fitOrdered (std::vector< std::string > algos) {
      if(algos[i] == "MIGRAD") runMigrad();
      else if(algos[i] == "HESSE") runHesse();
      else if(algos[i] == "MINOS") runMinos();
-     else {
-       std::cout<<" INVALID ALGO INPUT ================================= "<<std::endl;
-       std::cout<<" Options: \"MIGRAD\" - \"HESSE\" - \"MINOS\" "<<std::endl;
-     }
    }
 
 }
