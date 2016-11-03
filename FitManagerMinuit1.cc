@@ -67,7 +67,7 @@ void FitManager::fitOrdered (std::vector< std::string > algos) {
 
    setupMinuit();
 
-   std::cout<<" ===================== Setting Up Minimisation Algos "<<st::endl;
+   std::cout<<" ===================== Setting Up Minimisation Algos "<<std::endl;
    for (size_t i = 0; i < algos.size(); i++) {
      std::cout<<" Running : "<<std::endl;
      if(algos[i] == "MIGRAD") std::cout<<"\t\t - Migrad"<<std::endl;
@@ -76,7 +76,7 @@ void FitManager::fitOrdered (std::vector< std::string > algos) {
      else {
        std::cout<<" INVALID ALGO INPUT ================================= "<<std::endl;
        std::cout<<" Options: \"MIGRAD\" - \"HESSE\" - \"MINOS\" "std::endl;
-       exit;
+       exit();
      }
    }
 
