@@ -63,16 +63,6 @@ void FitManager::fit () {
 
 }
 
-void FitManager::fit () {
-
-   setupMinuit();
-   runMigrad();
-
-   if(runhesse) runHesse();
-   if(runminos) runMinos();
-
-}
-
 void FitManager::runMigrad () {
   //printf("Run Migrad %d \n",fitMan); fitMan++;
   assert(minuit);
@@ -99,27 +89,6 @@ void FitManager::runMigrad () {
 
 void FitManager::runHesse () {
   //printf("Run Migrad %d \n",fitMan); fitMan++;
-  assert(minuit);
-  host_callnumber = 0;
-  if (0 < overrideCallLimit) {
-    std::cout << "Calling HESSE with call limit " << overrideCallLimit << std::endl;
-    double plist[1];
-    plist[0] = overrideCallLimit;
-    int err = 0;
-    minuit->mnexcm("HESSE", plist, 1, err);
-  }
-  else{
-    int err;
-    double tmp[1];
-    tmp[0] = 0;
-    minuit->mnexcm("HESSE", tmp, 1, err);
-
-  }
-
-}
-
-void FitManager::runHesse () {
-  //printf("Run Hesse %d \n",fitMan); fitMan++;
   assert(minuit);
   host_callnumber = 0;
   if (0 < overrideCallLimit) {
