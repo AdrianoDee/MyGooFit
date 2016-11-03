@@ -63,6 +63,35 @@ void FitManager::fit () {
 
 }
 
+void FitManager::fitOrderd (std::vector< std::string > algos) {
+
+   setupMinuit();
+
+   std::cout<<" ===================== Setting Up Minimisation Algos "<<st::endl;
+   for (size_t i = 0; i < algos.size(); i++) {
+     std::cout<<" Running : "<<std::endl;
+     if(algos[i] == "MIGRAD") std::cout<<"\t\t - Migrad"<<std::endl;
+     else if(algos[i] == "MIGRAD") std::cout<<"\t\t - Migrad"<<std::endl;
+     else if(algos[i] == "MIGRAD") std::cout<<"\t\t - Migrad"<<std::endl;
+     else {
+       std::cout<<" INVALID ALGO INPUT ================================= "<<std::endl;
+       std::cout<<" Options: \"MIGRAD\" - \"HESSE\" - \"MINOS\" "std::endl;
+       exit;
+     }
+   }
+
+   for (size_t i = 0; i < algos.size(); i++) {
+     if(algos[i] == "MIGRAD") runMigrad();
+     else if(algos[i] == "MIGRAD") runHesse();
+     else if(algos[i] == "MIGRAD") runMinos();
+     else {
+       std::cout<<" INVALID ALGO INPUT ================================= "<<std::endl;
+       std::cout<<" Options: \"MIGRAD\" - \"HESSE\" - \"MINOS\" "std::endl;
+     }
+   }
+
+}
+
 void FitManager::runMigrad () {
   //printf("Run Migrad %d \n",fitMan); fitMan++;
   assert(minuit);

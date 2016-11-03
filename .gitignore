@@ -16,3 +16,5 @@ html/
 *.out
 *.toc
 .DS_Store
+
+rootstuff/.DS_Store
