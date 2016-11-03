@@ -10,7 +10,7 @@ CXXFLAGS=-mmic -x c++
 endif
 
 CXXFLAGS += -O3
-DEFINEFLAGS = -DDUMMY=dummy 
+DEFINEFLAGS = -DDUMMY=dummy
 
 UNAME=$(shell uname)
 ifeq ($(UNAME), Darwin)
@@ -19,15 +19,15 @@ endif
 
 ifneq ($(CUDAPRINT),)
 DEFINEFLAGS += -DCUDAPRINT=yes
-endif 
+endif
 
 ifneq ($(PRINTCALLS),)
 DEFINEFLAGS += -DPRINTCALLS=yes
-endif 
+endif
 
 ifneq ($(PROFILE),)
 DEFINEFLAGS += -DPROFILING=yes
-endif 
+endif
 
 ifeq ($(TARGET_OMP),)
 # nvcc (CUDA)
@@ -42,7 +42,7 @@ else
 # Intel C++ Compiler (ICC)
 DEFINEFLAGS += -openmp
 endif
-endif 
+endif
 
 ifeq ($(CUDALOCATION), )
 CUDALOCATION = /usr/local/cuda-7.5/bin
@@ -53,7 +53,7 @@ CUDAHEADERS = $(CUDALOCATION)/include/
 PWD = $(shell /bin/pwd)
 SRCDIR = $(PWD)/PDFs
 
-INCLUDES += -I$(SRCDIR) -I$(PWD) -I$(CUDAHEADERS) -I$(PWD)/rootstuff 
+INCLUDES += -I$(SRCDIR) -I$(PWD) -I$(CUDAHEADERS) -I$(ROOTSYS)/include -I$(PWD)/rootstuff 
 
 # GooPdf must be first in CUDAglob, as it defines global variables.
 FUNCTORLIST    = $(SRCDIR)/GooPdf.cu
@@ -66,50 +66,50 @@ WRKFUNCTORLIST = $(patsubst $(SRCDIR)/%.cu,wrkdir/%.cu,$(FUNCTORLIST))
 
 THRUSTO		= wrkdir/Variable.o wrkdir/FitManager.o wrkdir/GooPdfCUDA.o wrkdir/Faddeeva.o wrkdir/FitControl.o wrkdir/PdfBase.o wrkdir/DataSet.o wrkdir/BinnedDataSet.o wrkdir/UnbinnedDataSet.o wrkdir/FunctorWriter.o
 ROOTRIPDIR	= $(PWD)/rootstuff
-ROOTRIPOBJS	= $(ROOTRIPDIR)/TMinuit.o $(ROOTRIPDIR)/TRandom.o $(ROOTRIPDIR)/TRandom3.o #$(ROOTRIPDIR)/TVirtualFitter.o 
-ROOTUTILLIB	= $(ROOTRIPDIR)/libRootUtils.so 
+ROOTRIPOBJS	= $(ROOTRIPDIR)/TMinuit.o $(ROOTRIPDIR)/TRandom.o $(ROOTRIPDIR)/TRandom3.o #$(ROOTRIPDIR)/TVirtualFitter.o
+ROOTUTILLIB	= $(ROOTRIPDIR)/libRootUtils.so
 
-.SUFFIXES: 
-.PHONY:		goofit clean 
+.SUFFIXES:
+.PHONY:		goofit clean
 
-goofit:		$(THRUSTO) $(ROOTUTILLIB) 
-		@echo "Built GooFit objects" 
+goofit:		$(THRUSTO) $(ROOTUTILLIB)
+		@echo "Built GooFit objects"
 
 # One rule for GooFit objects.
-wrkdir/%.o:	%.cc %.hh 
-		@mkdir -p wrkdir 
+wrkdir/%.o:	%.cc %.hh
+		@mkdir -p wrkdir
 		$(CXX) $(INCLUDES) $(CXXFLAGS) $(DEFINEFLAGS) -c -o $@ $<
 
-# A different rule for user-level objects. Notice ROOT_INCLUDES. 
+# A different rule for user-level objects. Notice ROOT_INCLUDES.
 %.o:	%.cu
 	$(CXX) $(INCLUDES) $(ROOT_INCLUDES) $(DEFINEFLAGS) $(CXXFLAGS) -c -o $@ $<
 
-# Still a third rule for the ROOT objects - these have their own Makefile. 
-$(ROOTRIPDIR)/%.o:	$(ROOTRIPDIR)/%.cc 
-			rm -f $@ 
-			@echo "Postponing $@ for separate Makefile" 
+# Still a third rule for the ROOT objects - these have their own Makefile.
+$(ROOTRIPDIR)/%.o:	$(ROOTRIPDIR)/%.cc
+			rm -f $@
+			@echo "Postponing $@ for separate Makefile"
 
 $(ROOTUTILLIB):	$(ROOTRIPOBJS)
-		@cd rootstuff; $(MAKE) 
+		@cd rootstuff; $(MAKE)
 
-include $(SRCDIR)/Makefile 
+include $(SRCDIR)/Makefile
 
-FitManager.o:		FitManager.cc FitManager.hh wrkdir/ThrustFitManagerCUDA.o Variable.o 
+FitManager.o:		FitManager.cc FitManager.hh wrkdir/ThrustFitManagerCUDA.o Variable.o
 			$(CXX) $(DEFINEFLAGS) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 
 ##FitManager1.o:	FitManager1.cc FitManager1.hh wrkdir/ThrustFitManagerCUDA.o Variable.o
 ##	$(CXX) $(DEFINEFLAGS) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 
-wrkdir/GooPdfCUDA.o:	wrkdir/CUDAglob.cu PdfBase.cu 
-			$(CXX) $(CXXFLAGS) $(INCLUDES) -I. $(DEFINEFLAGS) -c $< -o $@ 
+wrkdir/GooPdfCUDA.o:	wrkdir/CUDAglob.cu PdfBase.cu
+			$(CXX) $(CXXFLAGS) $(INCLUDES) -I. $(DEFINEFLAGS) -c $< -o $@
 			@echo "$@ done"
 
-##wrkdir/GooPdfCUDA1.o:	wrkdir/CUDAglob1.cu PdfBase1.cu  
-##			$(CXX) $(CXXFLAGS) $(INCLUDES) -I. $(DEFINEFLAGS) -c $< -o $@ 
+##wrkdir/GooPdfCUDA1.o:	wrkdir/CUDAglob1.cu PdfBase1.cu
+##			$(CXX) $(CXXFLAGS) $(INCLUDES) -I. $(DEFINEFLAGS) -c $< -o $@
 ##			@echo "$@ done"
 
 
 
 clean:
 		@rm -f *.o wrkdir/*
-		cd rootstuff; $(MAKE) clean 
+		cd rootstuff; $(MAKE) clean
