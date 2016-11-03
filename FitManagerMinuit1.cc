@@ -63,7 +63,7 @@ void FitManager::fit () {
 
 }
 
-void FitManager::fitOrderd (std::vector< std::string > algos) {
+void FitManager::fitOrdered (std::vector< std::string > algos) {
 
    setupMinuit();
 
