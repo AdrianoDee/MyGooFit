@@ -75,7 +75,7 @@ void FitManager::fitOrdered (std::vector< std::string > algos) {
      else if(algos[i] == "MINOS") std::cout<<"\t\t - Migrad"<<std::endl;
      else {
        std::cout<<" INVALID ALGO INPUT ================================= "<<std::endl;
-       std::cout<<" Options: MIGRAD - HESSE - MINOS "std::endl;
+       std::cout<<" Options: \"MIGRAD\" - \"HESSE\" - \"MINOS\" "<<std::endl;
        exit(0);
      }
    }
@@ -86,7 +86,7 @@ void FitManager::fitOrdered (std::vector< std::string > algos) {
      else if(algos[i] == "MINOS") runMinos();
      else {
        std::cout<<" INVALID ALGO INPUT ================================= "<<std::endl;
-       std::cout<<" Options: MIGRAD - HESSE - MINOS "std::endl;
+       std::cout<<" Options: \"MIGRAD\" - \"HESSE\" - \"MINOS\" "<<std::endl;
      }
    }
 
