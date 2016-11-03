@@ -2,6 +2,9 @@
 #define FITMANAGER_MINUIT1_HH
 
 #include "TMinuit.hh"
+#include <string>
+#include <vector>
+
 extern PdfBase* pdfPointer;
 extern int numPars;
 
