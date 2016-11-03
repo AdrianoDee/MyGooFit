@@ -69,6 +69,7 @@ void FitManager::fit () {
    runMigrad();
 
    if(runhesse) runHesse();
+   if(runminos) runMinos();
 
 }
 
