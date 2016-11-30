@@ -50,7 +50,8 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     globalBin      += previous * localBin;
     previous       *= indices[lowerBoundIdx + 2];
 
-    printf("Variable %i at bin %d is %.2f with binDi %.2f globalBin %d  previous %d \n", i,localBin, holdcurrVariable, binDistances[i], globalBin, previous);
+    printf("Variable %i at bin %d is %.2f with binDi %.2f globalBin %d
+    previous %d \n", i,localBin, holdcurrVariable, binDistances[i], globalBin, previous);
 
     if (0 == THREADIDX + BLOCKIDX)
       printf("Variable %i: %f %f %i\n", i, currVariable, currVariable*step + lowerBound, localBin);
@@ -94,7 +95,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
       currDist -= offset;
       currentWeight += currDist*currDist;
       if (0 == THREADIDX + BLOCKIDX)
-	printf("%i, %i: %f %f %f %i %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
+      printf("%i, %i: %f %f %f %i %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
     }
 
     // Only interpolate the four closest boxes (in two dimensions; more in three dimensions).
@@ -103,11 +104,11 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     ret += currentWeight * currentEntry;
     totalWeight += currentWeight;
 
-    // if (0 == THREADIDX + BLOCKIDX)
+    if (0 == THREADIDX + BLOCKIDX)
       printf("Adding bin content %i %f with weight %f for total %f.\n", currBin, currentEntry, currentWeight, ret);
   }
 
-  // if (0 == THREADIDX + BLOCKIDX)
+  if (0 == THREADIDX + BLOCKIDX)
     printf("%f %f %f %i %f\n", ret, totalWeight, evt[0], indices[6], p[indices[6]]);
 
   ret /= totalWeight;
