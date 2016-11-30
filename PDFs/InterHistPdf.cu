@@ -40,6 +40,8 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
     fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
 
+    fptype holdcurrVariable = currVariable;
+
     currVariable   -= lowerBound;
     currVariable   /= step;
 
@@ -47,6 +49,8 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     binDistances[i] = currVariable - localBin - fptype(0.5);
     globalBin      += previous * localBin;
     previous       *= indices[lowerBoundIdx + 2];
+
+    printf("Variable %i at bin %d is %.2f with binDi %.2f globalBin %d  previous %d \n", i,localBin, holdcurrVariable, binDistances[i], globalBin, previous);
 
     if (0 == THREADIDX + BLOCKIDX)
       printf("Variable %i: %f %f %i\n", i, currVariable, currVariable*step + lowerBound, localBin);
