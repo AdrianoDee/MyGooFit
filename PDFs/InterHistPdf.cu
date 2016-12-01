@@ -172,7 +172,7 @@ __host__ InterHistPdf::InterHistPdf (std::string n,
   initialise(pindices);
 
   for (unsigned int i = 0; i < numbins; ++i) {
-    std::cout<<"Bin "<<i<<" content = "<<dev_base_histogram[i]<<std::endl;
+    std::cout<<"Bin "<<i<<" content = "<<host_histogram[i]<<std::endl;
   }
 
   totalHistograms++;
