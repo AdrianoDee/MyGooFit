@@ -1,4 +1,4 @@
-#include "InterHistPdf.hh"
+#include "HistoLinInterPdf.hh"
 
 MEM_CONSTANT fptype* dev_base_interhists[100]; // Multiple histograms for the case of multiple PDFs
 #define OBS_CODE 4242424242
@@ -8,7 +8,7 @@ MEM_CONSTANT fptype* dev_base_interhists[100]; // Multiple histograms for the ca
 
 // dev_powi is implemented in SmoothHistogramPdf.cu.
 
-EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* indices) {
+EXEC_TARGET fptype device_HistoLinearInterpolation (fptype* evt, fptype* p, unsigned int* indices) {
   // Structure is
   // nP totalHistograms (idx1 limit1 step1 bins1) (idx2 limit2 step2 bins2) nO o1 o2
   // where limit and step are indices into functorConstants.
@@ -117,11 +117,10 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
   return ret;
 }
 
-MEM_DEVICE device_function_ptr ptr_to_InterHistogram = device_InterHistogram;
+MEM_DEVICE device_function_ptr ptr_to_InterHistogram = device_HistoLinearInterpolation;
 
-__host__ InterHistPdf::InterHistPdf (std::string n,
+__host__ HistoLinInterPdf::HistoLinInterPdf (std::string n,
 							 BinnedDataSet* x,
-							 std::vector<Variable*> params,
 							 std::vector<Variable*> obses)
   : GooPdf(0, n)
   , numVars(x->numVariables())
@@ -170,10 +169,6 @@ __host__ InterHistPdf::InterHistPdf (std::string n,
   MEMCPY_TO_SYMBOL(dev_base_interhists, dev_address, sizeof(fptype*), totalHistograms*sizeof(fptype*), cudaMemcpyHostToDevice);
   GET_FUNCTION_ADDR(ptr_to_InterHistogram);
   initialise(pindices);
-
-  for (unsigned int i = 0; i < numbins; ++i) {
-    std::cout<<"Bin "<<i<<" content = "<<dev_base_histogram[i]<<std::endl;
-  }
 
   totalHistograms++;
 }
