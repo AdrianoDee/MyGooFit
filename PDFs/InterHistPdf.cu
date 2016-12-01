@@ -93,6 +93,9 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
       fptype currDist = binDistances[v];
       currDist -= offset;
       currentWeight += currDist*currDist;
+      printf("index = %i v = %i : localPrevious = %d localNumBins = %d ", i, v, localPrevious, localNumBins);
+      printf("index = %i v = %i : currVarBin = %d currBin = %d trackingBin = %d", i, v, currVarBin,currBin,trackingBin);
+      printf("index = %i v = %i : currDist = %.4f binDistances[v] = %.4f currentWeight = %.4f offset = %i offSomeAxis = %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
       if (0 == THREADIDX + BLOCKIDX)
       printf("%i, %i: %f %f %f %i %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
     }
@@ -107,7 +110,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
       printf("Adding bin content %i %f with weight %f for total %f.\n", currBin, currentEntry, currentWeight, ret);
   }
 
-  if (0 == THREADIDX + BLOCKIDX)
+  //if (0 == THREADIDX + BLOCKIDX)
     printf("%f %f %f %i %f\n", ret, totalWeight, evt[0], indices[6], p[indices[6]]);
 
   ret /= totalWeight;
