@@ -25,16 +25,19 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     fptype currVariable = 0;
     unsigned int varIndex = indices[2 + 4*i];
     if (varIndex == OBS_CODE) {
+
+      fptype one = evt[indices[indices[0] + holdObs]];
+      fptype two = evt[indices[indices[0] + 1 + holdObs]];
+      fptype three = evt[indices[indices[0] + 2 + holdObs]];
+      printf("Evt : %.3f  %.3f  %.3f  \n",one,two,three);
+      
       // Interpret this number as observable index.
       // Notice that this if does not cause a fork
       // - all threads will hit the same index and
       // make the same decision.
       int holdObs = observablesSeen;
       currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
-      fptype one = evt[indices[indices[0] + holdObs]];
-      fptype two = evt[indices[indices[0] + 1 + holdObs]];
-      fptype three = evt[indices[indices[0] + 2 + holdObs]];
-      printf("Evt : %.3f  %.3f  %.3f  \n",one,two,three);
+
     }
     else {
       // Interpret as parameter index.
@@ -102,7 +105,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
       printf("index = %i v = %i : currVarBin = %d currBin = %d trackingBin = %d \n", i, v, currVarBin,currBin,trackingBin);
       printf("index = %i v = %i : currDist = %.4f binDistances[v] = %.4f currentWeight = %.4f offset = %i offSomeAxis = %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
       if (0 == THREADIDX + BLOCKIDX)
-      printf("%i, %i: %f %f %f %i %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
+        printf("%i, %i: %f %f %f %i %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
     }
 
     // Only interpolate the four closest boxes (in two dimensions; more in three dimensions).
@@ -180,4 +183,3 @@ __host__ InterHistPdf::InterHistPdf (std::string n,
 }
 //
 //
-
