@@ -20,6 +20,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
   fptype binDistances[10]; // Ten dimensions should be more than enough!
   // Distance from bin center in units of bin width in each dimension.
   int holdObs;
+  fptype one,two,three;
 
   unsigned int observablesSeen = 0;
   for (int i = 0; i < numVars; ++i) {
