@@ -171,9 +171,5 @@ __host__ InterHistPdf::InterHistPdf (std::string n,
   GET_FUNCTION_ADDR(ptr_to_InterHistogram);
   initialise(pindices);
 
-  for (unsigned int i = 0; i < numbins; ++i) {
-    std::cout<<"Bin "<<i<<" content = "<<host_histogram[i]<<std::endl;
-  }
-
   totalHistograms++;
 }
