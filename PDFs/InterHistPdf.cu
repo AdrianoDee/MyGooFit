@@ -34,7 +34,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
       fptype one = evt[indices[indices[0] + holdObs]];
       fptype two = evt[indices[indices[0] + 1 + holdObs]];
       fptype three = evt[indices[indices[0] + 2 + holdObs]];
-      printf("Evt : %.3f  %.3f  %.3f  \n",one,two,three);
+      printf("Evt : %.3f  %.3f  %.3f  ",one,two,three);
     }
     else {
       // Interpret as parameter index.
@@ -178,6 +178,3 @@ __host__ InterHistPdf::InterHistPdf (std::string n,
 
   totalHistograms++;
 }
-//
-//
-
