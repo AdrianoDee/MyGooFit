@@ -20,23 +20,32 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
   fptype binDistances[10]; // Ten dimensions should be more than enough!
   // Distance from bin center in units of bin width in each dimension.
   int holdObs;
+
+  fptype one,two;
   unsigned int observablesSeen = 0;
   for (int i = 0; i < numVars; ++i) {
     fptype currVariable = 0;
     unsigned int varIndex = indices[2 + 4*i];
-    if (varIndex == OBS_CODE) {
-      // Interpret this number as observable index.
-      // Notice that this if does not cause a fork
-      // - all threads will hit the same index and
-      // make the same decision.
-      holdObs = observablesSeen;
-      currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
-      printf("Evt : %d",currVariable);
-    }
-    else {
-      // Interpret as parameter index.
-      currVariable = p[varIndex];
-    }
+    // if (varIndex == OBS_CODE) {
+    //   // Interpret this number as observable index.
+    //   // Notice that this if does not cause a fork
+    //   // - all threads will hit the same index and
+    //   // make the same decision.
+    //   holdObs = observablesSeen;
+    //   currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
+    //   printf("Evt : %d",currVariable);
+    // }
+    // else {
+    //   // Interpret as parameter index.
+    //   currVariable = p[varIndex];
+    // }
+    holdObs = observablesSeen;
+    currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
+
+    one = evt[indices[indices[0] + 0 + holdObs]];
+    two = evt[indices[indices[0] + 1 + holdObs]];
+
+    printf("Evt : %.3f - %.3f -%.3f ",currVariable,one,two);
 
     int lowerBoundIdx   = 3 + 4*i;
     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
