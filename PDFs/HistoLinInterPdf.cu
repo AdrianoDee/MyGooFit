@@ -30,6 +30,7 @@ EXEC_TARGET fptype device_HistoLinearInterpolation (fptype* evt, fptype* p, unsi
       // - all threads will hit the same index and
       // make the same decision.
       currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
+      printf("currVariable = %.3f \n",currVariable);
     }
     else {
       // Interpret as parameter index.
@@ -46,7 +47,7 @@ EXEC_TARGET fptype device_HistoLinearInterpolation (fptype* evt, fptype* p, unsi
     currVariable   /= step;
 
     int localBin    = (int) FLOOR(currVariable);
-    binDistances[i] = currVariable - localBin - fptype(0.5);
+    binDistances[i] = (currVariable - (fptype)localBin) - fptype(0.5);
     globalBin      += previous * localBin;
     previous       *= indices[lowerBoundIdx + 2];
 
