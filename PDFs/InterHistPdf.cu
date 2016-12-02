@@ -45,7 +45,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     one = evt[indices[indices[0] + 0 + holdObs]];
     two = evt[indices[indices[0] + 1 + holdObs]];
 
-    printf("Evt : %.3f - %.3f -%.3f ",currVariable,one,two);
+    printf("Var %i Evt : %.3f - %.3f -%.3f \n",i,currVariable,one,two);
 
     int lowerBoundIdx   = 3 + 4*i;
     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
