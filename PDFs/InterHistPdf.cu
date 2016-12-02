@@ -26,25 +26,26 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
   for (int i = 0; i < numVars; ++i) {
     fptype currVariable = 0;
     unsigned int varIndex = indices[2 + 4*i];
-    // if (varIndex == OBS_CODE) {
-    //   // Interpret this number as observable index.
-    //   // Notice that this if does not cause a fork
-    //   // - all threads will hit the same index and
-    //   // make the same decision.
-    //   holdObs = observablesSeen;
-    //   currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
-    //   printf("Evt : %d",currVariable);
-    // }
-    // else {
-    //   // Interpret as parameter index.
-    //   currVariable = p[varIndex];
-    // }
-    holdObs = observablesSeen;
-    currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
+    if (varIndex == OBS_CODE) {
+      // Interpret this number as observable index.
+      // Notice that this if does not cause a fork
+      // - all threads will hit the same index and
+      // make the same decision.
+      holdObs = observablesSeen;
+      currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
+      printf("Evt : %d",currVariable);
+    }
+    else {
+      // Interpret as parameter index.
+      currVariable = p[varIndex];
+    }
+    // holdObs = observablesSeen;
+    // currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
 
     one = evt[indices[indices[0] + 0 + holdObs]];
     two = evt[indices[indices[0] + 1 + holdObs]];
 
+    printf("Var %i Evt : %.3f - %.3f -%.3f \n",i,currVariable,one,two);
     printf("Var %i Evt : %.3f - %.3f -%.3f \n",i,currVariable,one,two);
 
     int lowerBoundIdx   = 3 + 4*i;
@@ -117,7 +118,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     ret += currentWeight * currentEntry;
     totalWeight += currentWeight;
 
-    if (0 == THREADIDX + BLOCKIDX)
+    //if (0 == THREADIDX + BLOCKIDX)
       printf("Adding bin content %i %f with weight %f for total %f.\n", currBin, currentEntry, currentWeight, ret);
   }
 
