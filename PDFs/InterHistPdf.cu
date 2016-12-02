@@ -29,7 +29,9 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
       // Notice that this if does not cause a fork
       // - all threads will hit the same index and
       // make the same decision.
+      int holdObs = observablesSeen;
       currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
+      printf("Evt : %.3f  %.3f  %.3f  ",evt[indices[indices[0] + holdObs]],evt[indices[indices[0] + 1 + holdObs]],evt[indices[indices[0] + 2 + holdObs]])
     }
     else {
       // Interpret as parameter index.
@@ -153,7 +155,7 @@ __host__ InterHistPdf::InterHistPdf (std::string n,
     host_constants[2*varIndex + 0] = (*var)->lowerlimit;
     host_constants[2*varIndex + 1] = ((*var)->upperlimit - (*var)->lowerlimit) / (*var)->numbins;
     varIndex++;
-  }
+
 
   unsigned int numbins = x->getNumBins();
   thrust::host_vector<fptype> host_histogram;
