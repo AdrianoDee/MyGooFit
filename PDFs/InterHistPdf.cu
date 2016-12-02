@@ -19,7 +19,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
   int myHistogramIndex = indices[1];
   fptype binDistances[10]; // Ten dimensions should be more than enough!
   // Distance from bin center in units of bin width in each dimension.
-
+  int holdObs;
   unsigned int observablesSeen = 0;
   for (int i = 0; i < numVars; ++i) {
     fptype currVariable = 0;
@@ -29,7 +29,9 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
       // Notice that this if does not cause a fork
       // - all threads will hit the same index and
       // make the same decision.
+      holdObs = observablesSeen;
       currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
+      printf("Evt : %d",currVariable);
     }
     else {
       // Interpret as parameter index.
