@@ -19,9 +19,9 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
   int myHistogramIndex = indices[1];
   fptype binDistances[10]; // Ten dimensions should be more than enough!
   // Distance from bin center in units of bin width in each dimension.
-  int holdObs;
+  //int holdObs;
 
-  fptype one,two;
+  //fptype one,two;
   unsigned int observablesSeen = 0;
   for (int i = 0; i < numVars; ++i) {
     fptype currVariable = 0;
@@ -33,7 +33,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
       // make the same decision.
       holdObs = observablesSeen;
       currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
-      printf("Evt : %d",currVariable);
+      //printf("Evt : %d",currVariable);
     }
     else {
       // Interpret as parameter index.
@@ -42,11 +42,11 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     // holdObs = observablesSeen;
     // currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
 
-    one = evt[indices[indices[0] + 0 + holdObs]];
-    two = evt[indices[indices[0] + 1 + holdObs]];
+    //one = evt[indices[indices[0] + 0 + holdObs]];
+    //two = evt[indices[indices[0] + 1 + holdObs]];
 
-    printf("Var %i Evt : %.3f - %.3f -%.3f \n",i,currVariable,one,two);
-    printf("Var %i Evt : %.3f - %.3f -%.3f \n",i,currVariable,one,two);
+    // printf("Var %i Evt : %.3f - %.3f -%.3f \n",i,currVariable,one,two);
+    // printf("Var %i Evt : %.3f - %.3f -%.3f \n",i,currVariable,one,two);
 
     int lowerBoundIdx   = 3 + 4*i;
     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
@@ -105,9 +105,9 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
       fptype currDist = binDistances[v];
       currDist -= offset;
       currentWeight += currDist*currDist;
-      printf("index = %i v = %i : localPrevious = %d localNumBins = %d \n", i, v, localPrevious, localNumBins);
-      printf("index = %i v = %i : currVarBin = %d currBin = %d trackingBin = %d \n", i, v, currVarBin,currBin,trackingBin);
-      printf("index = %i v = %i : currDist = %.4f binDistances[v] = %.4f currentWeight = %.4f offset = %i offSomeAxis = %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
+      // printf("index = %i v = %i : localPrevious = %d localNumBins = %d \n", i, v, localPrevious, localNumBins);
+      // printf("index = %i v = %i : currVarBin = %d currBin = %d trackingBin = %d \n", i, v, currVarBin,currBin,trackingBin);
+      // printf("index = %i v = %i : currDist = %.4f binDistances[v] = %.4f currentWeight = %.4f offset = %i offSomeAxis = %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
       if (0 == THREADIDX + BLOCKIDX)
       printf("%i, %i: %f %f %f %i %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
     }
@@ -119,11 +119,11 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     totalWeight += currentWeight;
 
     //if (0 == THREADIDX + BLOCKIDX)
-      printf("Adding bin content %i %f with weight %f for total %f.\n", currBin, currentEntry, currentWeight, ret);
+      // printf("Adding bin content %i %f with weight %f for total %f.\n", currBin, currentEntry, currentWeight, ret);
   }
 
   //if (0 == THREADIDX + BLOCKIDX)
-    printf("%f %f %f %i %f\n", ret, totalWeight, evt[0], indices[6], p[indices[6]]);
+    printf("%.3f %.3f %.3f %i %.3f\n", ret,holdcurrVariable,totalWeight, evt[0], indices[6], p[indices[6]]);
 
   ret /= totalWeight;
   return ret;
