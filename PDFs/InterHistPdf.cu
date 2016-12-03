@@ -21,6 +21,8 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
   // Distance from bin center in units of bin width in each dimension.
   //int holdObs;
 
+  fptype holdcurrVariable;
+
   //fptype one,two;
   unsigned int observablesSeen = 0;
   for (int i = 0; i < numVars; ++i) {
@@ -31,7 +33,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
       // Notice that this if does not cause a fork
       // - all threads will hit the same index and
       // make the same decision.
-      holdObs = observablesSeen;
+      //holdObs = observablesSeen;
       currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
       //printf("Evt : %d",currVariable);
     }
@@ -52,7 +54,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
     fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
 
-    fptype holdcurrVariable = currVariable;
+    holdcurrVariable = currVariable;
 
     currVariable   -= lowerBound;
     currVariable   /= step;
