@@ -101,7 +101,8 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
 
     // Only interpolate the four closest boxes (in two dimensions; more in three dimensions).
     //currentWeight = currentWeight > 0 ? (currentWeight <= SQRT((fptype) numVars) ? 1 / SQRT(currentWeight) : 0) : 0;
-    fptype currentEntry = offSomeAxis ? 0 : myHistogram[globalBin];
+    //fptype currentEntry = offSomeAxis ? 0 : myHistogram[globalBin];
+    fptype currentEntry = myHistogram[globalBin];
     ret = currentEntry;
     //printf("Pdf = %.3f at %d bin %d \n", ret,currBin,globalBin);
 
