@@ -17,7 +17,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
   int globalBin = 0;
   int previous = 1;
   int myHistogramIndex = indices[1];
-  fptype binDistances[10]; // Ten dimensions should be more than enough!
+  //fptype binDistances[10]; // Ten dimensions should be more than enough!
   // Distance from bin center in units of bin width in each dimension.
   //int holdObs;
 
@@ -98,6 +98,8 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     //currentWeight = currentWeight > 0 ? (currentWeight <= SQRT((fptype) numVars) ? 1 / SQRT(currentWeight) : 0) : 0;
     fptype currentEntry = offSomeAxis ? 0 : myHistogram[currBin];
     ret = currentEntry;
+    //printf("Qui : %.3f %.3f %.3f %i %.3f\n", ret,totalWeight, evt[0], indices[6], p[indices[6]]);
+
     // totalWeight += currentWeight;
 
     //if (0 == THREADIDX + BLOCKIDX)
@@ -105,7 +107,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
   }
 
   //if (0 == THREADIDX + BLOCKIDX)
-    printf("Qui : %.3f %.3f %.3f %i %.3f\n", ret,holdcurrVariable,totalWeight, evt[0], indices[6], p[indices[6]]);
+    //printf("Qui : %.3f %.3f %.3f %i %.3f\n", ret,holdcurrVariable,totalWeight, evt[0], indices[6], p[indices[6]]);
 
   return ret;
 }
