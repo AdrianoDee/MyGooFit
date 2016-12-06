@@ -98,7 +98,16 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     //currentWeight = currentWeight > 0 ? (currentWeight <= SQRT((fptype) numVars) ? 1 / SQRT(currentWeight) : 0) : 0;
     fptype currentEntry = offSomeAxis ? 0 : myHistogram[currBin];
     ret = currentEntry;
-    //printf("Qui : %.3f %.3f %.3f %i %.3f\n", ret,totalWeight, evt[0], indices[6], p[indices[6]]);
+
+    observablesSeen = 0;
+    fptype variable[4];
+
+    for (int i = 0; i < 4; ++i) {
+
+      variable[i] = evt[indices[indices[0] + 2 + observablesSeen++]];
+
+    }
+    printf("Pdf = %.3f at %.3f %.3f %.3f\n", ret,variable[0], variable[1], variable[2],variable[3]);
 
     // totalWeight += currentWeight;
 
