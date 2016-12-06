@@ -48,9 +48,12 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     globalBin      += previous * localBin;
     previous       *= indices[lowerBoundIdx + 2];
 
-    // printf("Curr Variable = %.2f ");
+    printf("Curr Variable %d = %.2f (%.2f %.2f %.2f %.2f)numVars %d globalBin %d localBin %f ",i,currVariable,evt[indices[indices[0] + 2],evt[indices[indices[0] + 2 + 1],evt[indices[indices[0] + 2 + 2],evt[indices[indices[0] + 2 + 3],numVars,globalBin,localBin);
 
   }
+
+  //printf("Bin =  %d at $.3f %.3f %.3f \n", globalBin,variable[0], variable[1], variable[2],variable[3]);
+
 
   fptype* myHistogram = dev_bas_flathists[myHistogramIndex];
   fptype ret = 0;
