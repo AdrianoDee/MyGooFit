@@ -66,8 +66,8 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
   //------------------
 
 
-  int totalBins = dev_powi(3, numVars);
-  for (int i = 0; i < totalBins; ++i) {
+  //int totalBins = dev_powi(3, numVars);
+  //for (int i = 0; i < totalBins; ++i) {
     int currBin = globalBin; //
     int localPrevious = 1; //
     int trackingBin = globalBin; //
@@ -76,7 +76,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     // Loop over vars to get offset for each one.
     for (int v = 0; v < numVars; ++v) {
       int localNumBins = indices[4*(v+1) + 1]; //
-      int offset = ((i / dev_powi(3, v)) % 3) - 1; //
+      int offset = ((1 / dev_powi(3, v)) % 3) - 1; //
 
       currBin += offset * localPrevious; //
       localPrevious *= localNumBins; //
@@ -100,7 +100,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     //currentWeight = currentWeight > 0 ? (currentWeight <= SQRT((fptype) numVars) ? 1 / SQRT(currentWeight) : 0) : 0;
     fptype currentEntry = offSomeAxis ? 0 : myHistogram[globalBin];
     ret = currentEntry;
-    printf("Pdf = %.3f at %d bin %d \n", ret,currBin,globalBin);
+    //printf("Pdf = %.3f at %d bin %d \n", ret,currBin,globalBin);
 
 
 
@@ -108,7 +108,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
 
     //if (0 == THREADIDX + BLOCKIDX)
       // printf("Adding bin content %i %f with weight %f for total %f.\n", currBin, currentEntry, currentWeight, ret);
-  }
+  //}
 
   //if (0 == THREADIDX + BLOCKIDX)
     observablesSeen = 0;
@@ -120,7 +120,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
 
     }
 
-    printf("Pdf = %.3f at %.3f %.3f %.3f\n", ret,variable[0], variable[1], variable[2],variable[3]);
+    printf("Pdf = %.3f at %.3f %.3f %.3f bin : %d \n", ret,variable[0], variable[1], variable[2],variable[3],globalBin);
 
   return ret;
 }
