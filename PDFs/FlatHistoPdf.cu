@@ -48,6 +48,8 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     globalBin      += previous * localBin;
     previous       *= indices[lowerBoundIdx + 2];
 
+    printf("Curr Variable = %.2f ")
+
   }
 
   fptype* myHistogram = dev_bas_flathists[myHistogramIndex];
@@ -64,7 +66,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
   //------------------
 
 
-  int totalBins = dev_powi(3, numVars);
+  /*int totalBins = dev_powi(3, numVars);
   for (int i = 0; i < totalBins; ++i) {
     int currBin = globalBin; //
     int localPrevious = 1; //
@@ -92,13 +94,13 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
       // printf("index = %i v = %i : currDist = %.4f binDistances[v] = %.4f currentWeight = %.4f offset = %i offSomeAxis = %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
       //if (0 == THREADIDX + BLOCKIDX)
       //printf("%i, %i: %f %f %f %i %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
-    }
+    }*/
 
     // Only interpolate the four closest boxes (in two dimensions; more in three dimensions).
     //currentWeight = currentWeight > 0 ? (currentWeight <= SQRT((fptype) numVars) ? 1 / SQRT(currentWeight) : 0) : 0;
-    fptype currentEntry = offSomeAxis ? 0 : myHistogram[currBin];
+    fptype currentEntry = offSomeAxis ? 0 : myHistogram[globalBin];
     ret = currentEntry;
-    printf("Pdf = %.3f at %d \n", ret,currBin);
+    printf("Pdf = %.3f at %d bin %d \n", ret,currBin,localToGlobal);
 
 
 
