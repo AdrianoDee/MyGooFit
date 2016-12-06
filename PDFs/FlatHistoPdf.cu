@@ -67,7 +67,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
   //  0  |  1  |  2  |
   //     |     |     |
   //------------------
-  // 
+  //
   //
   // //int totalBins = dev_powi(3, numVars);
   // //for (int i = 0; i < totalBins; ++i) {
@@ -123,7 +123,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
 
     }
 
-    //printf("Pdf = %.3f at %.3f %.3f %.3f bin : %d %d \n", ret,variable[0], variable[1], variable[2],variable[3],globalBin,currBin);
+    printf("Pdf = %.3f at %.3f %.3f %.3f bin : %d %d \n", ret,variable[0], variable[1], variable[2],variable[3],globalBin);//,currBin);
 
   return ret;
 }
