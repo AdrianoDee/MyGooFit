@@ -19,11 +19,11 @@ EXEC_TARGET fptype device_ProdPdfs (fptype* evt, fptype* p, unsigned int* indice
     curr *= normalisationFactors[parIdx];
     //if ((isnan(ret)) || (isnan(curr)) || (isnan(normalisationFactors[parIdx])) || (isinf(ret)) || (isinf(curr)))
     //printf("device_Prod 2: (%f %f %f %f %f) %f %f %f %i %i %i\n", evt[0], evt[1], evt[2], evt[3], evt[4], curr, ret, normalisationFactors[parIdx], i, parIdx, numParams);
-    singleRet[funcCounter] = curr;
+    //singleRet[funcCounter] = curr;
     ++funcCounter;
     ret *= curr;
-    evt[paramIndices[2+paramIndices[0]+parIdx]];
-    printf("Evt : %.3f %.3f %.3f %.3f %.3f \n",evt[paramIndices[2+paramIndices[0]]],evt[paramIndices[2+paramIndices[0]+1]],evt[paramIndices[2+paramIndices[0]+2]],evt[paramIndices[2+paramIndices[0]+3]],evt[paramIndices[2+paramIndices[0]+parIdx]]);
+
+    //printf("Evt : %.3f %.3f %.3f %.3f %.3f \n",evt[paramIndices[2+paramIndices[0]]],evt[paramIndices[2+paramIndices[0]+1]],evt[paramIndices[2+paramIndices[0]+2]],evt[paramIndices[2+paramIndices[0]+3]],evt[paramIndices[2+paramIndices[0]+parIdx]]);
     printf("ParamIndices : %d %d \n",paramIndices[0],indices[0]);
 
     //if ((0 == THREADIDX) && (0 == BLOCKIDX) && (gpuDebug & 1) && (paramIndices + debugParamIndex == indices))
