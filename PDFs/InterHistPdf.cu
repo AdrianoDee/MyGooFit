@@ -10,7 +10,7 @@ MEM_CONSTANT fptype* dev_base_interhists[100]; // Multiple histograms for the ca
 
 EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* indices) {
   // Structure is
-  // nP totalHistograms (idx1 limit1 step1 bins1) (idx2 limit2 step2 bins2) nO o1 o2
+  // nP totalHis./tograms (idx1 limit1 step1 bins1) (idx2 limit2 step2 bins2) nO o1 o2
   // where limit and step are indices into functorConstants.
 
   int numVars = (indices[0] - 1) / 4;
@@ -59,10 +59,11 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
     currVariable   -= lowerBound;
     currVariable   /= step;
 
+    int localNumBins = indices[4*(i+1) + 1];
     int localBin    = (int) FLOOR(currVariable);
     binDistances[i] = currVariable - localBin - fptype(0.5);
     globalBin      += previous * localBin;
-    previous       *= indices[lowerBoundIdx + 2];
+    previous       *= localNumBins;
 
     printf("Variable %i at bin %d is %.2f with binDi %.2f globalBin %d previous %d \n", i,localBin, holdcurrVariable, binDistances[i], globalBin, previous);
 
@@ -125,7 +126,7 @@ EXEC_TARGET fptype device_InterHistogram (fptype* evt, fptype* p, unsigned int* 
   }
 
   //if (0 == THREADIDX + BLOCKIDX)
-    printf("Qui : %.3f %.3f %.3f %i %.3f\n", ret,holdcurrVariable,totalWeight, evt[0], indices[6], p[indices[6]]);
+    printf("%.3f %.3f %.3f %i %.3f\n", ret,holdcurrVariable,totalWeight, evt[0], indices[6], p[indices[6]]);
 
   ret /= totalWeight;
   return ret;

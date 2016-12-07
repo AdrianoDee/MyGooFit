@@ -22,6 +22,9 @@ EXEC_TARGET fptype device_ProdPdfs (fptype* evt, fptype* p, unsigned int* indice
     singleRet[funcCounter] = curr;
     ++funcCounter;
     ret *= curr;
+    evt[paramIndices[2+paramIndices[0]+parIdx]];
+    printf("Evt : %.3f %.3f %.3f %.3f %.3f \n",evt[paramIndices[2+paramIndices[0]]],evt[paramIndices[2+paramIndices[0]+1]],evt[paramIndices[2+paramIndices[0]+2]],evt[paramIndices[2+paramIndices[0]+3]],evt[paramIndices[2+paramIndices[0]+parIdx]]);
+    printf("ParamIndices : %d %d \n",paramIndices[0],indices[0]);
 
     //if ((0 == THREADIDX) && (0 == BLOCKIDX) && (gpuDebug & 1) && (paramIndices + debugParamIndex == indices))
     //if ((1 > (int) floor(0.5 + evt[8])) && (gpuDebug & 1) && (paramIndices + debugParamIndex == indices))
