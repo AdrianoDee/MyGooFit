@@ -5,10 +5,10 @@ MEM_CONSTANT fptype* dev_bas_flathists[100]; // Multiple histograms for the case
 
 EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* indices) {
   // Structure is
-  // nP totalHistograms (idx1 limit1 step1 bins1) (idx2 limit2 step2 bins2) nO o1 o2
+  // nP totalHistograms (limit1 step1 bins1) (limit2 step2 bins2) nO o1 o2
   // where limit and step are indices into functorConstants.
 
-  int numVars = (indices[0] - 1) / 4;
+  int numVars = (indices[0] - 1) / 3;
   int globalBin = 0;
   int previousNofBins = 1;
   int myHistogramIndex = indices[1];
@@ -22,8 +22,8 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
   unsigned int observablesSeen = 0;
   for (int i = 0; i < numVars; ++i) {
 
-    int localNumBins = indices[4*(i+1) + 1];
-    int lowerBoundIdx   = 3 + 4*i;
+    int localNumBins = indices[3*(i+1) + 1];
+    int lowerBoundIdx   = 3 + 3*i;
     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
     fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
 
