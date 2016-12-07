@@ -494,14 +494,6 @@ __host__ fptype GooPdf::getValue () {
   return results[0];
 }
 
-__host__ BinnedDataSet generateBinned (unsigned int nevents){
-
-  copyParams();
-  normalise();
-
-};
-__host__ UnbinnedDataSet generateUnbinned(unsigned int nevents);
-
   __host__ fptype GooPdf::doIntegral (){
 
     fptype binVolume = 1.0;

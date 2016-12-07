@@ -15,8 +15,6 @@
 #include <set>
 
 #include "PdfBase.hh"
-#include "BinnedDataSet.hh"
-#include "UnbinnedDataSet.hh"
 
 EXEC_TARGET int dev_powi (int base, int exp); // Implemented in SmoothHistogramPdf.
 
@@ -54,8 +52,6 @@ public:
   __host__ virtual void setMetrics ();
   __host__ virtual void setMetricsInt();
   __host__ void setParameterConstantness (bool constant = true);
-  __host__ BinnedDataSet generateBinned (unsigned int nevents);
-  __host__ UnbinnedDataSet generateUnbinned(unsigned int nevents);
 
   __host__ virtual void transformGrid (fptype* host_output);
   static __host__ int findFunctionIdx (void* dev_functionPtr);
