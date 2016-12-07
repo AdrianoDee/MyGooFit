@@ -121,7 +121,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
 
     }
 
-    //printf("Pdf = %.3f at %.3f %.3f %.3f %.3f bin : %d \n", ret,variable[0], variable[1], variable[2],variable[3],globalBin);//,currBin);
+    printf("Pdf = %.3f at %.3f %.3f %.3f %.3f bin : %d \n", ret,variable[0], variable[1], variable[2],variable[3],globalBin);//,currBin);
 
   return ret;
 }
