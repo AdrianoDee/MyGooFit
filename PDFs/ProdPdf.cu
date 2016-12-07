@@ -42,7 +42,7 @@ EXEC_TARGET fptype device_ProdPdfs (fptype* evt, fptype* p, unsigned int* indice
   fptype var3 = evt[indices[2 + indices[0]]+2];
   fptype var4 = evt[indices[2 + indices[0]]+3];
 
-  printf("Prod function at (%.2f %.2f %.2f %.2f) comp [ %.3f %.3f %.3f ] tot = %.3f\n",var1,var2,var3,var4,singleRet[0],singleRet[1],singleRet[2],ret);
+  //printf("Prod function at (%.2f %.2f %.2f %.2f) comp [ %.3f %.3f %.3f ] tot = %.3f\n",var1,var2,var3,var4,singleRet[0],singleRet[1],singleRet[2],ret);
 
   return ret;
 }
