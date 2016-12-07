@@ -7,7 +7,7 @@ EXEC_TARGET fptype device_ProdPdfs (fptype* evt, fptype* p, unsigned int* indice
   int numParams = indices[0];
   fptype ret = 1;
 
-  fpype singleRet[100];
+  fptype singleRet[100];
   int funcCounter = 0;
 
   for (int i = 1; i < numParams; i += 2) {
