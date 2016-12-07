@@ -7,7 +7,7 @@ EXEC_TARGET fptype device_ProdPdfs (fptype* evt, fptype* p, unsigned int* indice
   int numParams = indices[0];
   fptype ret = 1;
 
-  fptype singleRet[100];
+  //fptype singleRet[100];
   int funcCounter = 0;
 
   for (int i = 1; i < numParams; i += 2) {
@@ -18,8 +18,8 @@ EXEC_TARGET fptype device_ProdPdfs (fptype* evt, fptype* p, unsigned int* indice
     fptype curr = callFunction(evt, fcnIdx, parIdx);
     curr *= normalisationFactors[parIdx];
     //if ((isnan(ret)) || (isnan(curr)) || (isnan(normalisationFactors[parIdx])) || (isinf(ret)) || (isinf(curr)))
-    //printf("device_Prod 2: (%f %f %f %f %f) %f %f %f %i %i %i\n", evt[0], evt[1], evt[2], evt[3], evt[4], curr, ret, normalisationFactors[parIdx], i, parIdx, numParams);
-    singleRet[funcCounter] = curr;
+    printf("device_Prod 2: (%f %f %f %f %f) %f %f %f %i %i %i\n", evt[0], evt[1], evt[2], evt[3], evt[4], curr, ret, normalisationFactors[parIdx], i, parIdx, numParams);
+    //singleRet[funcCounter] = curr;
     ++funcCounter;
     ret *= curr;
 
