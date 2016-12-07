@@ -1,12 +1,7 @@
 #include "FlatHistoPdf.hh"
 
 MEM_CONSTANT fptype* dev_bas_flathists[100]; // Multiple histograms for the case of multiple PDFs
-#define OBS_CODE 4242424242
-// This number is presumably so high that it will never collide
-// with an actual parameter index. It indicates that this dimension
-// is an event observable.
 
-// dev_powi is implemented in SmoothHistogramPdf.cu.
 
 EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* indices) {
   // Structure is
@@ -150,13 +145,12 @@ __host__ FlatHistoPdf::FlatHistoPdf (std::string n,
   for (varConstIt var = x->varsBegin(); var != x->varsEnd(); ++var) {
     if (std::find(obses.begin(), obses.end(), *var) != obses.end()) {
       registerObservable(*var);
-      pindices.push_back(OBS_CODE);
     }
     else {
-      pindices.push_back(registerParameter(*var));
+      abortWithCudaPrintFlush(__FILE__, __LINE__, "The BinnedDataSet provided variables are different from p.d.f. observables \n");
     }
 
-    pindices.push_back(cIndex + 2*varIndex + 0);
+    pindices.push_back(cIndex + 2*varIndex + 0); //cIndex is no. of constants index
     pindices.push_back(cIndex + 2*varIndex + 1);
     pindices.push_back((*var)->numbins);
 
