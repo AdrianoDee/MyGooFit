@@ -23,11 +23,11 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
   for (int i = 0; i < numVars; ++i) {
 
     int localNumBins = indices[3*(i+1) + 1];
-    int lowerBoundIdx   = 3 + 3*i;
+    int lowerBoundIdx   = 2 + 3*i;
     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
     fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
 
-
+    fptype holdcurrent = evt[indices[indices[0] + 2 + observablesSeen++]];
 
     currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
 
@@ -42,7 +42,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     globalBin      += previousNofBins * localBin;
     previousNofBins       *= localNumBins;
 
-    printf("Curr Variable %d = %.2f [m = %.2f s = %.2f n = %d ] (%.2f %.2f %.2f %.2f)numVars %d globalBin %d localBin %d \n",i,currVariable,lowerBound,step,localNumBins,evt[indices[indices[0] + 2]],evt[indices[indices[0] + 2 + 1]],evt[indices[indices[0] + 2 + 2]],evt[indices[indices[0] + 2 + 3]],numVars,globalBin,localBin);
+    printf("Curr Variable %d = %.2f [m = %.2f s = %.2f n = %d ] (%.2f %.2f %.2f %.2f)numVars %d globalBin %d localBin %d \n",i,holdcurrent,lowerBound,step,localNumBins,evt[indices[indices[0] + 2]],evt[indices[indices[0] + 2 + 1]],evt[indices[indices[0] + 2 + 2]],evt[indices[indices[0] + 2 + 3]],numVars,globalBin,localBin);
 
 
     if(currVariable<lowerBound || currVariable>lowerBound+(step)*((fptype)localNumBins)) return 0.0;
