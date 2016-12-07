@@ -27,12 +27,13 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     int lowerBoundIdx   = 2 + 3*i;
     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
     fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
-
-    fptype holdcurrent = evt[indices[indices[0] + 2 + obsindex++]];
+    fptype upperBound   = lowerBound + step*localNumBins;
+    //fptype holdcurrent = evt[indices[indices[0] + 2 + obsindex++]];
 
     currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
 
     //Check for boundaries
+    if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
 
     //Find the local bin number
     currVariable   -= lowerBound;
@@ -44,9 +45,6 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     previousNofBins       *= localNumBins;
 
     //printf("Curr Variable %d = %.2f Hold var = %.2f [m = %.2f s = %.2f n = %d ] (%.2f %.2f %.2f %.2f)numVars %d globalBin %d localBin %d previous %d\n",i,currVariable,holdcurrent,lowerBound,step,localNumBins,evt[indices[indices[0] + 2]],evt[indices[indices[0] + 2 + 1]],evt[indices[indices[0] + 2 + 2]],evt[indices[indices[0] + 2 + 3]],numVars,globalBin,localBin,previousNofBins);
-
-
-    if(currVariable<lowerBound || currVariable>lowerBound+(step)*((fptype)localNumBins)) return 0.0;
 
 
   }
