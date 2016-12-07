@@ -10,13 +10,13 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
 
   int numVars = (indices[0] - 1) / 4;
   int globalBin = 0;
-  int previous = 1;
+  int previousNofBins = 1;
   int myHistogramIndex = indices[1];
   //fptype binDistances[10]; // Ten dimensions should be more than enough!
   // Distance from bin center in units of bin width in each dimension.
   //int holdObs;
 
-  fptype holdcurrVariable;
+  fptype currVariable = 0.0;
 
   //fptype one,two;
   unsigned int observablesSeen = 0;
@@ -27,21 +27,21 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
     fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
 
-    fptype currVariable = 0;
+
 
     currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
 
     //Check for boundaries
-    if(currVariable<lowerBound) return 0.0;
-    if(currVariable>lowerBound+(step)*((fptype)localNumBins)) return 0.0;
+    if(currVariable<lowerBound || currVariable>lowerBound+(step)*((fptype)localNumBins)) return 0.0;
 
+    //Find the local bin number
     currVariable   -= lowerBound;
     currVariable   /= step;
 
     int localBin    = (int) FLOOR(currVariable);
 
-    globalBin      += previous * localBin;
-    previous       *= indices[lowerBoundIdx + 2];
+    globalBin      += previousNofBins * localBin;
+    previousNofBins       *= previousNofBins;
 
     //printf("Curr Variable %d = %.2f (%.2f %.2f %.2f %.2f)numVars %d globalBin %d localBin %f \n",i,currVariable,evt[indices[indices[0] + 2]],evt[indices[indices[0] + 2 + 1]],evt[indices[indices[0] + 2 + 2]],evt[indices[indices[0] + 2 + 3]],numVars,globalBin,localBin);
 
