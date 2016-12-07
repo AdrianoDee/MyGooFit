@@ -41,7 +41,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
     int localBin    = (int) FLOOR(currVariable);
 
     globalBin      += previousNofBins * localBin;
-    previousNofBins       *= previousNofBins;
+    previousNofBins       *= localNumBins;
 
     //printf("Curr Variable %d = %.2f (%.2f %.2f %.2f %.2f)numVars %d globalBin %d localBin %f \n",i,currVariable,evt[indices[indices[0] + 2]],evt[indices[indices[0] + 2 + 1]],evt[indices[indices[0] + 2 + 2]],evt[indices[indices[0] + 2 + 3]],numVars,globalBin,localBin);
 
