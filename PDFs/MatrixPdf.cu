@@ -449,7 +449,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
   //fptype dRadB0 = p[indices[3]];
   //fptype dRadKs = p[indices[4]];
-  //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f dRadB0 = %.2f dRadKs = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,dRadB0,dRadKs,mPsiP);
+  //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,mPsiP);
 
   if (FABS(cKs) > 1) {
     //printf("\nReturning 0 : ckS > 1 or < -1 ");

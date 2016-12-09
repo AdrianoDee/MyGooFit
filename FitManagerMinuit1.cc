@@ -12,15 +12,15 @@ void specialTddpPrint (double fun);
 
 FitManager::FitManager (PdfBase* dat)
   : minuit(0)
-  , overrideCallLimit(-1),runhesse(false)
+  , overrideCallLimit(-1),runhesse(false),runminos(false)
 {
   pdfPointer = dat;
   currGlue = this;
 }
 
-FitManager::FitManager (PdfBase* dat,bool hesse)
+FitManager::FitManager (PdfBase* dat,bool hesse,bool minos)
   : minuit(0)
-  , overrideCallLimit(-1),runhesse(hesse)
+  , overrideCallLimit(-1),runhesse(hesse),runminos(minos)
 {
   pdfPointer = dat;
   currGlue = this;
@@ -59,6 +59,32 @@ void FitManager::fit () {
    runMigrad();
 
    if(runhesse) runHesse();
+   if(runminos) runMinos();
+
+}
+
+void FitManager::fitOrdered (std::vector< std::string > algos) {
+
+   setupMinuit();
+
+   std::cout<<" ******************** Setting Up Minimisation Algos "<<std::endl;
+   std::cout<<" ********** Running : ";
+   for (size_t i = 0; i < algos.size(); i++) {
+     if(algos[i] == "MIGRAD") std::cout<<"\t\t ** Migrad";
+     else if(algos[i] == "HESSE") std::cout<<"\t\t ** Hesse";
+     else if(algos[i] == "MINOS") std::cout<<"\t\t ** Minos";
+     else {
+       std::cout<<" INVALID ALGO INPUT ****************************** "<<std::endl;
+       std::cout<<" Options: \"MIGRAD\" - \"HESSE\" - \"MINOS\" "<<std::endl;
+       exit(0);
+     }
+   }
+
+   for (size_t i = 0; i < algos.size(); i++) {
+     if(algos[i] == "MIGRAD") runMigrad();
+     else if(algos[i] == "HESSE") runHesse();
+     else if(algos[i] == "MINOS") runMinos();
+   }
 
 }
 
@@ -102,6 +128,27 @@ void FitManager::runHesse () {
     double tmp[1];
     tmp[0] = 0;
     minuit->mnexcm("HESSE", tmp, 1, err);
+
+  }
+
+}
+
+void FitManager::runMinos () {
+  //printf("Run Minos %d \n",fitMan); fitMan++;
+  assert(minuit);
+  host_callnumber = 0;
+  if (0 < overrideCallLimit) {
+    std::cout << "Calling HESSE with call limit " << overrideCallLimit << std::endl;
+    double plist[1];
+    plist[0] = overrideCallLimit;
+    int err = 0;
+    minuit->mnexcm("MINOS", plist, 1, err);
+  }
+  else{
+    int err;
+    double tmp[1];
+    tmp[0] = 0;
+    minuit->mnexcm("MINOS", tmp, 1, err);
 
   }
 

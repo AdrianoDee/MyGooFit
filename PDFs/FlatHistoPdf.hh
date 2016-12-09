@@ -1,15 +1,14 @@
-#ifndef INTERHIST_PDF_HH
-#define INTERHIST_PDF_HH
+#ifndef FLATHISTO_PDF_HH
+#define FLATHISTO_PDF_HH
 
 #include "GooPdf.hh"
 #include "BinnedDataSet.hh"
 
-class InterHistPdf : public GooPdf {
+class FlatHistoPdf : public GooPdf {
 public:
-  InterHistPdf (std::string n,
+  FlatHistoPdf (std::string n,
 			  BinnedDataSet* x,
-			  std::vector<Variable*> params,
-			  std::vector<Variable*> obses);
+        std::vector<Variable*> obses);
   //__host__ virtual fptype normalise () const;
 
 private:
