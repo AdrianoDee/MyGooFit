@@ -109,8 +109,6 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        return y;
      }
 
-     }
-
 MEM_DEVICE device_function_ptr ptr_to_BiDimHistogram = device_BiDimHistoPdf;
 
 // __host__ InterHistPdf::InterHistPdf (std::string n,
