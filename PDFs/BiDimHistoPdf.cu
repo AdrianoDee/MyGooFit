@@ -181,7 +181,7 @@ MEM_DEVICE device_function_ptr ptr_to_BiDimHistogram = device_BiDimHistoPdf;
 
 __host__ BiDimHistoPdf::BiDimHistoPdf (std::string n,
 							 BinnedDataSet* x,
-							 std::vector<Variable*> obses,int interDegree = 1)
+							 std::vector<Variable*> obses)
   : GooPdf(0, n)
   , numVars(x->numVariables())
 {
