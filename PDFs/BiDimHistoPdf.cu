@@ -41,7 +41,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      fptype* myHistogram = dev_base_bidimhisto[myHistogramIndex];
 
      fptype xarr[10];
-     fpytpe yarr[10];
+     fptype yarr[10];
 
      int index = 0;
 
@@ -87,10 +87,10 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      for(m=1 ; m<intOrder+1; m++)
      {
-       for(intexInter=1 ; intexInter<=n-m ; intexInter++)
+       for(intexInter=1 ; intexInter<=intOrder+1-m ; intexInter++)
        {
-         ho=xarr[intexInter-1]-x ;
-         hp=xarr[intexInter-1+m]-x ;
+         ho=xarr[intexInter-1]-xval ;
+         hp=xarr[intexInter-1+m]-xval ;
          w=coeffC[intexInter+1]-coeffD[intexInter] ;
          den=ho-hp ;
          if (den==0.)
