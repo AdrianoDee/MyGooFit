@@ -101,7 +101,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          coeffD[intexInter]=hp*den ;
          coeffC[i]=ho*den;
          }
-         dy = (2*ns)<(n-m) ? coeffC[ns+1] : coeffD[ns--] ;
+         dy = (2*ns)<(intOrder+1-m) ? coeffC[ns+1] : coeffD[ns--] ;
          y += dy ;
 
        }
