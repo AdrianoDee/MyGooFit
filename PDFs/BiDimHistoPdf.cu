@@ -25,20 +25,20 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
      fptype upperBound   = lowerBound + step*localNumBins;
 
-     fptype currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
+     fptype currVariable = evt[indices[indices[0] + 2]];
 
      fptype xval = currVariable;
      currVariable   -= lowerBound;
      currVariable   /= step;
 
      int localBin    = (int) FLOOR(currVariable); // Int_t fbinC = dim.getBin(*binning) ;
-     fpytpe binCenter = (fptype)localBin*step+lowerBound;
+     fptype binCenter = (fptype)localBin*step+lowerBound;
      int binOffset = (xval<binCenter)? 1 : 0;
      int fbinLo  = localBin - intOrder/2 - binCenter;//Int_t fbinLo = fbinC-intOrder/2 - ((xval<binning->binCenter(fbinC))?1:0) ;
 
      if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
 
-     fptype* myHistogram = dev_bas_flathists[myHistogramIndex];
+     fptype* myHistogram = dev_base_bidimhisto[myHistogramIndex];
 
      fptype xarr[10];
      fpytpe yarr[10];
@@ -47,7 +47,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      for (index=fbinLo ; index<=intOrder+fbinLo ; ++index)
      {
-       Int_t ibin ;
+       int ibin ;
        if (index>=0 && index<localNumBins) {
          ibin = index ;
          xarr[index-fbinLo] = lowerBound+ibin*step;
@@ -66,7 +66,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      fptype den,dif,dift,ho,hp,w,y,dy;
      fptype coeffC[20], coeffD[20];
 
-     dif = fabs(xvak-xarr[0]) ;
+     dif = fabs(xval-xarr[0]) ;
 
      int intexInter,m,ns=1 ;
 
@@ -85,23 +85,23 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      y=yarr[--ns] ;
 
-     for(m=1 ; m<n; m++)
+     for(m=1 ; m<intOrder+1; m++)
      {
        for(intexInter=1 ; intexInter<=n-m ; intexInter++)
        {
-         ho=xa[intexInter-1]-x ;
-         hp=xa[intexInter-1+m]-x ;
-         w=c[intexInter+1]-d[intexInter] ;
+         ho=xarr[intexInter-1]-x ;
+         hp=xarr[intexInter-1+m]-x ;
+         w=coeffC[intexInter+1]-coeffD[intexInter] ;
          den=ho-hp ;
          if (den==0.)
          {
            return 0. ;
          }
          den = w/den ;
-         d[intexInter]=hp*den ;
-         c[i]=ho*den;
+         coeffD[intexInter]=hp*den ;
+         coeffC[i]=ho*den;
          }
-         dy = (2*ns)<(n-m) ? c[ns+1] : d[ns--] ;
+         dy = (2*ns)<(n-m) ? coeffC[ns+1] : coeffD[ns--] ;
          y += dy ;
 
        }
