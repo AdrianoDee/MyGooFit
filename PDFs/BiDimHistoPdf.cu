@@ -207,6 +207,12 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        for (yIndex=ybinLo ; yIndex<=interpolationOrder+ybinLo ; ++yIndex)
        {
          int iBin;
+
+         if (yIndex>=0 && yIndex<bins[1])
+         {
+           iBin = yIndex;
+           xarr[yIndex-ybinLo] = lowerBound[1] + iBin*step[1];
+         }
        }
 
 
