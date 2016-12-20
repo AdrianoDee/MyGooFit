@@ -52,7 +52,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        int ibin ;
        if (index>=0 && index<localNumBins) {
          ibin = index ;
-         xarr[index-fbinLo] = lowerBound+ibin*step;
+         xarr[index-fbinLo] = lowerBound+ibin*step-step*0.5;
          yarr[index-fbinLo] = myHistogram[ibin] ;
          printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],myHistogram[ibin]);
        } else if (i>=localNumBins) {
@@ -75,7 +75,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      for(intexInter =1 ; intexInter<=intOrder+1 ; ++intexInter)
      {
-       if ((dift=fabs(xval-xarr[intexInter-1]))<dif)
+       dift=fabs(xval-xarr[intexInter-1]);
+       if (dift<dif)
        {
           ns = intexInter;
           dif = dift ;
@@ -102,7 +103,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          }
          den = w/den ;
          coeffD[intexInter]=hp*den ;
-         coeffC[i]=ho*den;
+         coeffC[intexInter]=ho*den;
          }
          dy = (2*ns)<(intOrder+1-m) ? coeffC[ns+1] : coeffD[ns--] ;
          y += dy ;
