@@ -198,7 +198,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
        }
 
-       int ybinLo = localBin[1]-interpolationOrder/2 - binOffset[i] ;
+       int ybinLo = localBin[1]-interpolationOrder/2 - binOffset[1] ;
 
        int yIndex;
        fptype yarr[20];
@@ -209,24 +209,27 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          int ibin;
          if (yIndex>=0 && yIndex<bins[1])
          {
-           // In range
-           ibin = index;
+           ibin = yIndex;
            xarr[yIndex-ybinLo] = lowerBound[1]+ibin*step[1]-step[1]*0.5;
          } else if (yIndex>=bins[1]) {
-           // Overflow: mirror
-           ibin = 2*bins[1]-yIndex-1 ;
+           ibin = 2*bins[1]-yIndex-1 ;
            xarr[yIndex-ybinLo] = 2*upperBound[1]-(lowerBound[1]+ibin*step[1]-step[1]*0.5);
          } else {
            ibin = -yIndex -1;
            xarr[yIndex-ybinLo] = 2*lowerBound[1]-(lowerBound[1]+ibin*step[1]-step[1]*0.5);
          }
 
-         yarr[yIndex-ybinLo] = interSingleDimensionMulti(ibin,bins[0],bins[1],step[0],lowerBound[0],var[0],interpolationOrder,fptype* histogram);
+         yarr[yIndex-ybinLo] = interSingleDimensionMulti(ibin,bins[0],bins[1],step[0],lowerBound[0],var[0],interpolationOrder,myHistogram);
 
       }
 
+        fptype ret = interpolateArrays(xarr,yarr,interpolationOrder+1,var[1]);
+
+        return ret
+
 
      }
+     else return 0.0;
 
 
      //
