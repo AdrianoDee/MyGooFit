@@ -181,8 +181,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      }
      if(numVars==2)
      {
-       fptype var[2],lowerBound[2],step[2],upperBound[2];
-       int bins[2];
+       fptype var[2],lowerBound[2],step[2],upperBound[2],binCenter[2];
+       int bins[2],localBin[2],binOffset[2];
 
        for (int i = 0; i < numVars; ++i) {
 
@@ -191,9 +191,14 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          int lowerBoundIdx   = 2 + 3*i + 1;
          lowerBound[i]   = functorConstants[indices[lowerBoundIdx + 0]];
          step[i]         = functorConstants[indices[lowerBoundIdx + 1]];
-         upperBound[i]   = lowerBound + step[i]*bins[i];
+         upperBound[i]   = lowerBound[i] + step[i]*bins[i];
+         localBin[i]     = (int) FLOOR((var[i]-lowerBound[i])/step[i]);;
+         binCenter[i]    = (fptype)localBin[i]*step[i]+lowerBound[i]-0.5*step[i];
+         binOffset[i]   = (var[i]<binCenter[i])? 1 : 0;
 
        }
+
+       int ybinLo = localBin[1]-intOrder/2 - binOffset[i] ;
 
        int yIndex;
        fptype yarr[20];
