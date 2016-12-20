@@ -8,7 +8,7 @@ class BiDimHistoPdf : public GooPdf {
 public:
   BiDimHistoPdf (std::string n,
 			  BinnedDataSet* x,
-        std::vector<Variable*> obses);
+        std::vector<Variable*> obses,unsigned int interOrder);
   //__host__ virtual fptype normalise () const;
 
 private:
