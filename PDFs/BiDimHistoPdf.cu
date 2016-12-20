@@ -54,6 +54,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          ibin = index ;
          xarr[index-fbinLo] = lowerBound+ibin*step;
          yarr[index-fbinLo] = myHistogram[ibin] ;
+         printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],myHistogram[ibin]);
        } else if (i>=localNumBins) {
         //  ibin = 2*localNumBins-index-1 ;
          xarr[index-fbinLo] = upperBound+(1e-10)*(index-localNumBins+1);
