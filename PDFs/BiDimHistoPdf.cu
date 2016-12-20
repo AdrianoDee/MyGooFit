@@ -45,6 +45,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      int index = 0;
 
+     printf("%.3f %d %.3f %d %.3f %.3f %.3f \n",xval,localBin,binCenter,fbinLo,lowerBound,step,upperBound);
+
      for (index=fbinLo ; index<=intOrder+fbinLo ; ++index)
      {
        int ibin ;
