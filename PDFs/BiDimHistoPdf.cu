@@ -138,7 +138,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
     //  int binOffset = (xval<binCenter)? 1 : 0;
     //  int fbinLo  = localBin - intOrder/2 - binOffset;//Int_t fbinLo = fbinC-intOrder/2 - ((xval<binning->binCenter(fbinC))?1:0) ;
 
-     if(xval<lowerBound || xval >upperBound) return 0.0;
+     if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
 
      fptype* myHistogram = dev_base_bidimhisto[myHistogramIndex];
 
