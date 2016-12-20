@@ -117,7 +117,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      fptype xarr[20];
      fptype yarr[20];
 
-     printf("Bin histo pdf 1 = %.3f %d %.3f %d %.3f %.3f %.3f %d \n",xval,localBin,binCenter,fbinLo,lowerBound,step,upperBound,intOrder);
+     printf("Bin histo Multi pdf 1 = %.3f %d %.3f %d %.3f %.3f %.3f %d \n",xval,localBin,binCenter,fbinLo,lowerBound,step,upperBound,intOrder);
 
      for (int index=fbinLo ; index<=intOrder+fbinLo ; ++index)
      {
@@ -129,7 +129,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          xarr[index-fbinLo] = lowerBound+ibin*step-step*0.5;
          globalBin = otherBin + otherNumBins*ibin;
          yarr[index-fbinLo] = histogram[globalBin];
-         printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
+         printf("Bin histo Multi pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
        } else if (index>=localNumBins) {
         //  ibin = 2*localNumBins-index-1 ;
          xarr[index-fbinLo] = upperBound+(1e-10)*(index-localNumBins+1);
@@ -223,8 +223,6 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
            xarr[yIndex-ybinLo] = lowerBound[1];
          }
        }
-
-
 
         fptype ret = interpolateArrays(xarr,yarr,interpolationOrder+1,var[1]);
 
@@ -392,7 +390,7 @@ __host__ BiDimHistoPdf::BiDimHistoPdf (std::string n,
   : GooPdf(0, n)
   , numVars(x->numVariables())
 {
-  if(numVars>2) abortWithCudaPrintFlush(__FILE__, __LINE__, "By now only one or two variables !\n");
+  if(numVars>2) abortWithCudaPrintFlush(__FILE__, __LINE__, "Only the first two variables will be taken into account !\n");
   if(interOrder>20) abortWithCudaPrintFlush(__FILE__, __LINE__, "Interpolation order must be smaller than 20! \n");
 
   int numConstants = 2*numVars+1;
