@@ -32,9 +32,9 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      currVariable   /= step;
 
      int localBin    = (int) FLOOR(currVariable); // Int_t fbinC = dim.getBin(*binning) ;
-     fptype binCenter = (fptype)localBin*step+lowerBound;
+     fptype binCenter = (fptype)localBin*step+lowerBound-0.5*step;
      int binOffset = (xval<binCenter)? 1 : 0;
-     int fbinLo  = localBin - intOrder/2 - binCenter;//Int_t fbinLo = fbinC-intOrder/2 - ((xval<binning->binCenter(fbinC))?1:0) ;
+     int fbinLo  = localBin - intOrder/2 - binOffset;//Int_t fbinLo = fbinC-intOrder/2 - ((xval<binning->binCenter(fbinC))?1:0) ;
 
      if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
 
@@ -45,7 +45,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      int index = 0;
 
-     printf("%.3f %d %.3f %d %.3f %.3f %.3f \n",xval,localBin,binCenter,fbinLo,lowerBound,step,upperBound);
+     printf("Bin histo pdf 1 = %.3f %d %.3f %d %.3f %.3f %.3f \n",xval,localBin,binCenter,fbinLo,lowerBound,step,upperBound);
 
      for (index=fbinLo ; index<=intOrder+fbinLo ; ++index)
      {
