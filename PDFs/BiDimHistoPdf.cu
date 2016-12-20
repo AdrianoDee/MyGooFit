@@ -82,8 +82,11 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
           dif = dift ;
        }
 
-       coeffC[i] = yarr[intexInter-1];
-       coeffD[i] = yarr[intexInter-1];
+       coeffC[intexInter] = yarr[intexInter-1];
+       coeffD[intexInter] = yarr[intexInter-1];
+
+       printf("Bin histo pdf 3 = %.3f %d %.3f %.3f %.3f %.3f \n",xval,intexInter,dift,dif,localNumBins,xarr[index-fbinLo],myHistogram[ibin]);
+
 
      }
 
