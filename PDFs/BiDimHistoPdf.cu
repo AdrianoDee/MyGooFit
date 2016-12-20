@@ -207,17 +207,17 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        for (yIndex=ybinLo ; yIndex<=interpolationOrder+ybinLo ; ++yIndex)
        {
          int ibin;
-         fptype thisBinCenter = lowerBound[1]+ibin*step[1]-step[1]*0.5;
+
          if (yIndex>=0 && yIndex<bins[1])
          {
            ibin = yIndex;
-           xarr[yIndex-ybinLo] = thisBinCenter;
+           xarr[yIndex-ybinLo] = lowerBound[1]+ibin*step[1]-step[1]*0.5;;
          } else if (yIndex>=bins[1]) {
            ibin = 2*bins[1]-yIndex-1;
-           //xarr[yIndex-ybinLo] = 2*upperBound[1]-thisBinCenter;
+           //xarr[yIndex-ybinLo] = lowerBound[1]+ibin*step[1]-step[1]*0.5;
          } else {
            ibin = -yIndex -1;
-           //xarr[yIndex-ybinLo] = 2*lowerBound[1]-thisBinCenter;
+           //xarr[yIndex-ybinLo] = lowerBound[1]+ibin*step[1]-step[1]*0.5;
          }
 
          yarr[yIndex-ybinLo] = interSingleDimensionMulti(ibin,bins[0],bins[1],step[0],lowerBound[0],var[0],interpolationOrder,myHistogram);
