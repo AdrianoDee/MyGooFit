@@ -82,9 +82,53 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      {
        int ibin ;
        if (index>=0 && index<localNumBins) {
-         ibin = index ;
+         ibin = index;
          xarr[index-fbinLo] = lowerBound+ibin*step-step*0.5;
-         yarr[index-fbinLo] = histogram[ibin] ;
+         yarr[index-fbinLo] = histogram[ibin];
+         printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
+       } else if (index>=localNumBins) {
+        //  ibin = 2*localNumBins-index-1 ;
+         xarr[index-fbinLo] = upperBound+(1e-10)*(index-localNumBins+1);
+         yarr[index-fbinLo] = 0.0 ;
+       } else {
+         ibin = -index - 1 ;
+         xarr[index-fbinLo] = lowerBound-ibin*(1e-10);
+         yarr[index-fbinLo] = 0.0 ;
+       }
+     }
+
+     fptype ret = interpolateArrays(xarr,yarr,intOrder+1,xval);
+
+     return ret;
+
+   }
+
+   EXEC_TARGET fptype interSingleDimensionMulti (int otherBin, int localNumBins,int otherNumBins, fptype step, fptype lowerBound, fptype xval, int intOrder,fptype* histogram)
+   {
+
+     int localBin    = (int) FLOOR((xval-lowerBound)/step); // Int_t fbinC = dim.getBin(*binning) ;
+
+     fptype binCenter = (fptype)localBin*step+lowerBound-0.5*step;
+     fptype upperBound   = lowerBound + step*localNumBins;
+
+     int binOffset = (xval<binCenter)? 1 : 0;
+     int fbinLo  = localBin - intOrder/2 - binOffset;//Int_t fbinLo = fbinC-intOrder/2 - ((xval<binning->binCenter(fbinC))?1:0) ;
+
+     fptype xarr[20];
+     fptype yarr[20];
+
+     printf("Bin histo pdf 1 = %.3f %d %.3f %d %.3f %.3f %.3f %d \n",xval,localBin,binCenter,fbinLo,lowerBound,step,upperBound,intOrder);
+
+     for (int index=fbinLo ; index<=intOrder+fbinLo ; ++index)
+     {
+       int ibin ;
+       int globalBin;
+
+       if (index>=0 && index<localNumBins) {
+         ibin = index;
+         xarr[index-fbinLo] = lowerBound+ibin*step-step*0.5;
+         globalBin = otherBin + otherNumBins*ibin;
+         yarr[index-fbinLo] = histogram[globalBin];
          printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
        } else if (index>=localNumBins) {
         //  ibin = 2*localNumBins-index-1 ;
@@ -113,37 +157,72 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      int previousNofBins = 1;
      int myHistogramIndex = indices[1];
      int interpolationOrder = indices[2];
-     //fptype binDistances[10]; // Ten dimensions should be more than enough!
-     // Distance from bin center in units of bin width in each dimension.
-     //int holdObs;
 
-     int i = 0;
+     if(numVars==1)
+     {
+       int i = 0;
 
-     int localNumBins = indices[3*(i+1) + 1 + 1];
+       int localNumBins = indices[3*(i+1) + 1 + 1];
+       int lowerBoundIdx   = 2 + 3*i + 1;
+       fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
+       fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
+       fptype upperBound   = lowerBound + step*localNumBins;
 
-     int lowerBoundIdx   = 2 + 3*i + 1;
-     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
-     fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
-     fptype upperBound   = lowerBound + step*localNumBins;
+       fptype currVariable = evt[indices[indices[0] + 2]];
 
-     fptype currVariable = evt[indices[indices[0] + 2]];
+       if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
 
-    //  fptype xval = currVariable;
-    //  currVariable   -= lowerBound;
-    //  currVariable   /= step;
-     //
-    //  int localBin    = (int) FLOOR(currVariable); // Int_t fbinC = dim.getBin(*binning) ;
-    //  fptype binCenter = (fptype)localBin*step+lowerBound-0.5*step;
-    //  int binOffset = (xval<binCenter)? 1 : 0;
-    //  int fbinLo  = localBin - intOrder/2 - binOffset;//Int_t fbinLo = fbinC-intOrder/2 - ((xval<binning->binCenter(fbinC))?1:0) ;
+       fptype* myHistogram = dev_base_bidimhisto[myHistogramIndex];
 
-     if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
+       fptype ret = interSingleDimension(localNumBins, step, lowerBound, currVariable, interpolationOrder, myHistogram);
 
-     fptype* myHistogram = dev_base_bidimhisto[myHistogramIndex];
+       return ret;
 
-     fptype ret = interSingleDimension(localNumBins, step, lowerBound, currVariable, interpolationOrder, myHistogram);
+     }
+     if(numVars==2)
+     {
+       fptype var[2],lowerBound[2],step[2],upperBound[2];
+       int bins[2];
 
-     return ret;
+       for (int i = 0; i < numVars; ++i) {
+
+         var[i] = evt[indices[indices[0] + 2] + i];
+         bins[i] = indices[3*(i+1) + 1 + 1];
+         int lowerBoundIdx   = 2 + 3*i + 1;
+         lowerBound[i]   = functorConstants[indices[lowerBoundIdx + 0]];
+         step[i]         = functorConstants[indices[lowerBoundIdx + 1]];
+         upperBound[i]   = lowerBound + step[i]*bins[i];
+
+       }
+
+       int yIndex;
+       fptype yarr[20];
+       fptype xarr[20];
+
+       for (yIndex=ybinLo ; yIndex<=intOrder+ybinLo ; ++yIndex)
+       {
+         int ibin;
+         if (yIndex>=0 && yIndex<bins[1])
+         {
+           // In range
+           ibin = index;
+           xarr[yIndex-ybinLo] = lowerBound[1]+ibin*step[1]-step[1]*0.5;
+         } else if (yIndex>=bins[1]) {
+           // Overflow: mirror
+           ibin = 2*bins[1]-yIndex-1 ;
+           xarr[yIndex-ybinLo] = 2*upperBound[1]-(lowerBound[1]+ibin*step[1]-step[1]*0.5);
+         } else {
+           ibin = -yIndex -1;
+           xarr[yIndex-ybinLo] = 2*lowerBound[1]-(lowerBound[1]+ibin*step[1]-step[1]*0.5);
+         }
+
+         yarr[yIndex-ybinLo] = interSingleDimensionMulti(ibin,bins[0],bins[1],step[0],lowerBound[0],var[0],interpolationOrder,fptype* histogram);
+
+      }
+
+
+     }
+
 
      //
      //
