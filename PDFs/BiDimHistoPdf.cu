@@ -192,9 +192,9 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          lowerBound[i]   = functorConstants[indices[lowerBoundIdx + 0]];
          step[i]         = functorConstants[indices[lowerBoundIdx + 1]];
          upperBound[i]   = lowerBound[i] + step[i]*bins[i];
-         localBin[i]     = (int) FLOOR((var[i]-lowerBound[i])/step[i]);;
+         localBin[i]     = (int) FLOOR((var[i]-lowerBound[i])/step[i]);
          binCenter[i]    = (fptype)localBin[i]*step[i]+lowerBound[i]-0.5*step[i];
-         binOffset[i]   = (var[i]<binCenter[i])? 1 : 0;
+         binOffset[i]    = (var[i]<binCenter[i])? 1 : 0;
 
        }
 
@@ -213,11 +213,11 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
            ibin = yIndex;
            xarr[yIndex-ybinLo] = thisBinCenter;
          } else if (yIndex>=bins[1]) {
-           ibin = 2*bins[1]-yIndex-1 ;
-           xarr[yIndex-ybinLo] = 2*upperBound[1]-thisBinCenter;
+           ibin = 2*bins[1]-yIndex-1;
+           //xarr[yIndex-ybinLo] = 2*upperBound[1]-thisBinCenter;
          } else {
            ibin = -yIndex -1;
-           xarr[yIndex-ybinLo] = 2*lowerBound[1]-thisBinCenter;
+           //xarr[yIndex-ybinLo] = 2*lowerBound[1]-thisBinCenter;
          }
 
          yarr[yIndex-ybinLo] = interSingleDimensionMulti(ibin,bins[0],bins[1],step[0],lowerBound[0],var[0],interpolationOrder,myHistogram);
