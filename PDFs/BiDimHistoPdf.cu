@@ -198,7 +198,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
        }
 
-       int ybinLo = localBin[1]-intOrder/2 - binOffset[i] ;
+       int ybinLo = localBin[1]-interpolationOrder/2 - binOffset[i] ;
 
        int yIndex;
        fptype yarr[20];
