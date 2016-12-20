@@ -10,23 +10,23 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
       fptype den,dif,dift,ho,hp,w,y,dy;
       fptype coeffC[20], coeffD[20];
 
-      dif = fabs(xval-xarr[0]) ;
+      dif = fabs(xvalue-xArray[0]) ;
 
       int ns=1;
 
       for(int intexInter =1 ; intexInter<=intOrder+1 ; ++intexInter)
       {
-        dift=fabs(xval-xarr[intexInter-1]);
+        dift=fabs(xvalue-xArray[intexInter-1]);
         if (dift<dif)
         {
            ns = intexInter;
            dif = dift ;
         }
 
-        coeffC[intexInter] = yarr[intexInter-1];
-        coeffD[intexInter] = yarr[intexInter-1];
+        coeffC[intexInter] = yArray[intexInter-1];
+        coeffD[intexInter] = yArray[intexInter-1];
 
-        printf("Bin histo pdf 3 = %.3f %d %.3f %.3f %.3f %.3f \n",xval,intexInter,dift,dif,xarr[intexInter-1],coeffC[intexInter],coeffD[intexInter]);
+        printf("Bin histo pdf 3 = %.3f %d %.3f %.3f %.3f %.3f \n",xvalue,intexInter,dift,dif,xArray[intexInter-1],coeffC[intexInter],coeffD[intexInter]);
 
 
       }
@@ -37,8 +37,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
       {
         for(int intexInter=1 ; intexInter<=intOrder+1-m ; intexInter++)
         {
-          ho=xarr[intexInter-1]-xval ;
-          hp=xarr[intexInter-1+m]-xval ;
+          ho=xArray[intexInter-1]-xvalue ;
+          hp=xArray[intexInter-1+m]-xvalue ;
           w=coeffC[intexInter+1]-coeffD[intexInter] ;
           den=ho-hp ;
           if (den==0.)
@@ -52,7 +52,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
           dy = (2*ns)<(intOrder+1-m) ? coeffC[ns+1] : coeffD[ns--] ;
           y += dy ;
 
-          printf("Bin histo pdf 4 = %.3f %d %d %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n",xval,intexInter,m,ho,hp,w,den,coeffC[intexInter],coeffD[intexInter],dy);
+          printf("Bin histo pdf 4 = %.3f %d %d %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n",xvalue,intexInter,m,ho,hp,w,den,coeffC[intexInter],coeffD[intexInter],dy);
 
 
         }
