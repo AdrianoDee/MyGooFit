@@ -52,7 +52,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
           dy = (2*ns)<(intOrder+1-m) ? coeffC[ns+1] : coeffD[ns--] ;
           y += dy ;
 
-          printf("Bin histo pdf 4 = %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n",xvalue,ho,hp,w,den,coeffC[intexInter],coeffD[intexInter],dy);
+          printf("Bin histo pdf 4 = %.3f %.3f %.3f %.3f %.3f %.3f\n",xvalue,ho,hp,w,den,dy);
 
 
         }
@@ -86,7 +86,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          xarr[index-fbinLo] = lowerBound+ibin*step-step*0.5;
          yarr[index-fbinLo] = histogram[ibin] ;
          printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
-       } else if (i>=localNumBins) {
+       } else if (index>=localNumBins) {
         //  ibin = 2*localNumBins-index-1 ;
          xarr[index-fbinLo] = upperBound+(1e-10)*(index-localNumBins+1);
          yarr[index-fbinLo] = 0.0 ;
