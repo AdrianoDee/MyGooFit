@@ -117,7 +117,6 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      // Distance from bin center in units of bin width in each dimension.
      //int holdObs;
 
-     int intOrder = 1;
      int i = 0;
 
      int localNumBins = indices[3*(i+1) + 1 + 1];
@@ -142,7 +141,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      fptype* myHistogram = dev_base_bidimhisto[myHistogramIndex];
 
-     fptype ret = interSingleDimension(localNumBins, step, lowerBound, currVariable, intOrder, myHistogram);
+     fptype ret = interSingleDimension(localNumBins, step, lowerBound, currVariable, interpolationOrder, myHistogram);
 
      return ret;
 
