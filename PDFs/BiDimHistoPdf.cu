@@ -158,6 +158,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      int myHistogramIndex = indices[1];
      int interpolationOrder = indices[2];
 
+     fptype* myHistogram = dev_base_bidimhisto[myHistogramIndex];
+
      if(numVars==1)
      {
        int i = 0;
@@ -171,8 +173,6 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        fptype currVariable = evt[indices[indices[0] + 2]];
 
        if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
-
-       fptype* myHistogram = dev_base_bidimhisto[myHistogramIndex];
 
        fptype ret = interSingleDimension(localNumBins, step, lowerBound, currVariable, interpolationOrder, myHistogram);
 
