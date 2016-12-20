@@ -316,7 +316,7 @@ __host__ BiDimHistoPdf::BiDimHistoPdf (std::string n,
 
   host_constants[0] = interOrder;
 
-  pindices.push_back(cIndex);
+  pindices.push_back(interOrder);
 
   int varIndex = 0;
   for (varConstIt var = x->varsBegin(); var != x->varsEnd(); ++var) {
