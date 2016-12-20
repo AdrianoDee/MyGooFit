@@ -31,7 +31,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
       }
 
-      y=yarr[--ns] ;
+      y=yArray[--ns] ;
 
       for(int m=1 ; m<intOrder+1; m++)
       {
@@ -52,7 +52,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
           dy = (2*ns)<(intOrder+1-m) ? coeffC[ns+1] : coeffD[ns--] ;
           y += dy ;
 
-          printf("Bin histo pdf 4 = %.3f %d %d %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n",xvalue,intexInter,m,ho,hp,w,den,coeffC[intexInter],coeffD[intexInter],dy);
+          printf("Bin histo pdf 4 = %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n",xvalue,ho,hp,w,den,coeffC[intexInter],coeffD[intexInter],dy);
 
 
         }
@@ -66,7 +66,10 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
    {
 
      int localBin    = (int) FLOOR((xval-lowerBound)/step); // Int_t fbinC = dim.getBin(*binning) ;
+
      fptype binCenter = (fptype)localBin*step+lowerBound-0.5*step;
+     fptype upperBound   = lowerBound + step*localNumBins;
+
      int binOffset = (xval<binCenter)? 1 : 0;
      int fbinLo  = localBin - intOrder/2 - binOffset;//Int_t fbinLo = fbinC-intOrder/2 - ((xval<binning->binCenter(fbinC))?1:0) ;
 
@@ -81,8 +84,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        if (index>=0 && index<localNumBins) {
          ibin = index ;
          xarr[index-fbinLo] = lowerBound+ibin*step-step*0.5;
-         yarr[index-fbinLo] = myHistogram[ibin] ;
-         printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],myHistogram[ibin]);
+         yarr[index-fbinLo] = histogram[ibin] ;
+         printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
        } else if (i>=localNumBins) {
         //  ibin = 2*localNumBins-index-1 ;
          xarr[index-fbinLo] = upperBound+(1e-10)*(index-localNumBins+1);
@@ -94,7 +97,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        }
      }
 
-     fptype ret = interpolateArrays(xarr,yarr,intOrder+1,xval)
+     fptype ret = interpolateArrays(xarr,yarr,intOrder+1,xval);
 
      return ret;
 
