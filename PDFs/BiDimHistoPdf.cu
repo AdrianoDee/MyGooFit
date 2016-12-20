@@ -204,7 +204,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        fptype yarr[20];
        fptype xarr[20];
 
-       for (yIndex=ybinLo ; yIndex<=intOrder+ybinLo ; ++yIndex)
+       for (yIndex=ybinLo ; yIndex<=interpolationOrder+ybinLo ; ++yIndex)
        {
          int ibin;
          if (yIndex>=0 && yIndex<bins[1])
