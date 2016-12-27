@@ -7,6 +7,9 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
    EXEC_TARGET fptype interpolateArrays (fptype* xArray, fptype* yArray, int intOrder,fptype xvalue)
    {
 
+      printf("Bin histo pdf 3.0 = %.3f %d \n",xvalue,intOrder);
+
+
       fptype den,dif,dift,ho,hp,w,y,dy;
       fptype coeffC[20], coeffD[20];
 
