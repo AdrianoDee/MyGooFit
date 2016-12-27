@@ -102,6 +102,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        }
      }
 
+     printf("Bin histo pdf 2.1 = %.3f %d %d %d \n",xval,localBin,index,localNumBins);
+
      fptype ret = interpolateArrays(xarr,yarr,intOrder+1,xval);
 
      return ret;
