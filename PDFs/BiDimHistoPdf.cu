@@ -240,7 +240,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          }
        }
 
-        fptype ret = interpolateArrays(var[1],xarr,yarr,interpolationOrder+1);
+        fptype ret = interArrays(var[1],xarr,yarr,interpolationOrder+1);
 
         return ret;
 
