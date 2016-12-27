@@ -115,6 +115,12 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      printf("Bin histo pdf 3.0 = %.3f %d \n",xvalue,intOrder);
 
+     printf("y 0 = %.3f \n",yarr[0]);
+     printf("y 1 = %.3f \n",yarr[1]);
+     printf("y 2 = %.3f \n",yarr[2]);
+     printf("y 3 = %.3f \n",yarr[3]);
+     printf("y 4 = %.3f \n",yarr[4]);
+
      for (size_t i = 0; i < 20; i++) {
        printf("y % d = %.3f \n",i,yarr[i]);
      }
