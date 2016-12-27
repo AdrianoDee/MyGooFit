@@ -4,7 +4,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
 
 
-   EXEC_TARGET fptype interpolateArrays (fptype xvalue,fptype* xArray, fptype* yArray, int intOrder)
+   EXEC_TARGET fptype interArrays (fptype* xvalue,fptype* xArray, fptype* yArray, int intOrder)
    {
 
       printf("Bin histo pdf 3.0 = %.3f %d \n",xvalue,intOrder);
@@ -65,12 +65,12 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
    }
 
 
-   EXEC_TARGET fptype interSingleDimension (int localNumBins, fptype step, fptype lowerBound, fptype xval, int intOrder,fptype* histogram)
+   EXEC_TARGET fptype interSingleDimension (int localNumBins, fptype step, fptype lowerBound, fptype* x, int intOrder,fptype* histogram)
    {
 
-     int localBin    = (int) FLOOR((xval-lowerBound)/step); // Int_t fbinC = dim.getBin(*binning) ;
+     fptype xval = *(x);
 
-     fptype x = xval;
+     int localBin    = (int) FLOOR((xval-lowerBound)/step); // Int_t fbinC = dim.getBin(*binning) ;
 
      fptype binCenter = (fptype)localBin*step+lowerBound-0.5*step;
      fptype upperBound   = lowerBound + step*localNumBins;
@@ -90,7 +90,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          ibin = index;
          xarr[index-fbinLo] = lowerBound+ibin*step-step*0.5;
          yarr[index-fbinLo] = histogram[ibin];
-         printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",x,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
+         printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
        } else if (index>=localNumBins) {
         //  ibin = 2*localNumBins-index-1 ;
          printf("Over binning 2 \n");
@@ -106,7 +106,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      printf("Bin histo pdf 2.1 = %.3f %d %d \n",xval,localBin,localNumBins);
 
-     fptype ret = interpolateArrays(x,xarr,yarr,intOrder+1);
+     fptype ret = interArrays(x,xarr,yarr,intOrder+1);
 
      return ret;
 
@@ -185,10 +185,11 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        fptype upperBound   = lowerBound + step*localNumBins;
 
        fptype currVariable = evt[indices[indices[0] + 2]];
+       fptype* value  = &currVariable;
 
        if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
 
-       fptype ret = interSingleDimension(localNumBins, step, lowerBound, currVariable, interpolationOrder, myHistogram);
+       fptype ret = interSingleDimension(localNumBins, step, lowerBound, value, interpolationOrder, myHistogram);
 
        return ret;
 
