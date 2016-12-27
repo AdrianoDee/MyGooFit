@@ -400,8 +400,8 @@ __host__ BiDimHistoPdf::BiDimHistoPdf (std::string n,
   if(numVars>2) abortWithCudaPrintFlush(__FILE__, __LINE__, "Only the first two variables will be taken into account !\n");
   if(interOrder>20) abortWithCudaPrintFlush(__FILE__, __LINE__, "Interpolation order must be smaller than 20! \n");
 
-  printf("NumVars = %d \n",numVars);
-  
+  printf("NumVars Declaration = %d \n",numVars);
+
   int numConstants = 2*numVars+1;
   registerConstants(numConstants);
   static unsigned int totalHistograms = 0;
