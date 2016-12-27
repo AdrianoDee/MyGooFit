@@ -241,7 +241,11 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          }
        }
 
-        fptype ret = interArrays(var[1],xarr,yarr,interpolationOrder+1);
+        fptype varone =  var[1];
+
+        fptype* varr = &varone
+
+        fptype ret = interArrays(varr,xarr,yarr,interpolationOrder+1);
 
         return ret;
 
