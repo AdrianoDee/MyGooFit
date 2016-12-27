@@ -279,63 +279,62 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        return ret;
 
      }
-     if(numVars==2)
-     {
-       printf("NumVars = 2\n");
-       fptype var[2],lowerBound[2],step[2],upperBound[2],binCenter[2];
-       int bins[2],localBin[2],binOffset[2];
-
-       for (int i = 0; i < numVars; ++i) {
-
-         var[i] = evt[indices[indices[0] + 2] + i];
-         bins[i] = indices[3*(i+1) + 1 + 1];
-         int lowerBoundIdx   = 2 + 3*i + 1;
-         lowerBound[i]   = functorConstants[indices[lowerBoundIdx + 0]];
-         step[i]         = functorConstants[indices[lowerBoundIdx + 1]];
-         upperBound[i]   = lowerBound[i] + step[i]*bins[i];
-         localBin[i]     = (int) FLOOR((var[i]-lowerBound[i])/step[i]);
-         binCenter[i]    = (fptype)localBin[i]*step[i]+lowerBound[i]-0.5*step[i];
-         binOffset[i]    = (var[i]<binCenter[i])? 1 : 0;
-
-       }
-
-       int ybinLo = localBin[1]-interpolationOrder/2 - binOffset[1];
-
-       int yIndex;
-       fptype yarr[20];
-       fptype xarr[20];
-
-       for (yIndex=ybinLo ; yIndex<=interpolationOrder+ybinLo ; ++yIndex)
-       {
-         int iBin;
-
-         if (yIndex>=0 && yIndex<bins[1])
-         {
-           iBin = yIndex;
-           xarr[yIndex-ybinLo] = lowerBound[1] + iBin*step[1]-step[1]*0.5;
-         }
-         else if(yIndex>bins[1])
-         {
-           iBin = 2*bins[1]-yIndex-1;
-           xarr[yIndex-ybinLo] = upperBound[1];
-         }else
-         {
-           iBin = -yIndex-1;
-           xarr[yIndex-ybinLo] = lowerBound[1];
-         }
-       }
-
-        fptype varone =  var[1];
-
-        fptype* varr = &varone;
-
-        fptype ret = interArrays(varr,xarr,yarr,interpolationOrder+1);
-
-        return ret;
-
-
-     }
-
+    //  if(numVars==2)
+    //  {
+    //    printf("NumVars = 2\n");
+    //    fptype var[2],lowerBound[2],step[2],upperBound[2],binCenter[2];
+    //    int bins[2],localBin[2],binOffset[2];
+     //
+    //    for (int i = 0; i < numVars; ++i) {
+     //
+    //      var[i] = evt[indices[indices[0] + 2] + i];
+    //      bins[i] = indices[3*(i+1) + 1 + 1];
+    //      int lowerBoundIdx   = 2 + 3*i + 1;
+    //      lowerBound[i]   = functorConstants[indices[lowerBoundIdx + 0]];
+    //      step[i]         = functorConstants[indices[lowerBoundIdx + 1]];
+    //      upperBound[i]   = lowerBound[i] + step[i]*bins[i];
+    //      localBin[i]     = (int) FLOOR((var[i]-lowerBound[i])/step[i]);
+    //      binCenter[i]    = (fptype)localBin[i]*step[i]+lowerBound[i]-0.5*step[i];
+    //      binOffset[i]    = (var[i]<binCenter[i])? 1 : 0;
+     //
+    //    }
+     //
+    //    int ybinLo = localBin[1]-interpolationOrder/2 - binOffset[1];
+     //
+    //    int yIndex;
+    //    fptype yarr[20];
+    //    fptype xarr[20];
+     //
+    //    for (yIndex=ybinLo ; yIndex<=interpolationOrder+ybinLo ; ++yIndex)
+    //    {
+    //      int iBin;
+     //
+    //      if (yIndex>=0 && yIndex<bins[1])
+    //      {
+    //        iBin = yIndex;
+    //        xarr[yIndex-ybinLo] = lowerBound[1] + iBin*step[1]-step[1]*0.5;
+    //      }
+    //      else if(yIndex>bins[1])
+    //      {
+    //        iBin = 2*bins[1]-yIndex-1;
+    //        xarr[yIndex-ybinLo] = upperBound[1];
+    //      }else
+    //      {
+    //        iBin = -yIndex-1;
+    //        xarr[yIndex-ybinLo] = lowerBound[1];
+    //      }
+    //    }
+     //
+    //     fptype varone =  var[1];
+     //
+    //     fptype* varr = &varone;
+     //
+    //     fptype ret = interArrays(varr,xarr,yarr,interpolationOrder+1);
+     //
+    //     return ret;
+     //
+     //
+    //  }
      else return 0.0;
 
 
