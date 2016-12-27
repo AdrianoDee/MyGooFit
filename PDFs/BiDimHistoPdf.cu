@@ -151,7 +151,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        coeffC[intexInter] = yarr[intexInter-1];
        coeffD[intexInter] = yarr[intexInter-1];
 
-       printf("Bin histo pdf 3 = %.3f %d %.3f %.3f %.3f %.3f \n",xvalue,intexInter,dift,dif,xarr[intexInter-1],coeffC[intexInter],coeffD[intexInter]);
+       printf("Bin histo pdf 3 = %.3f %d %.3f %.3f %.3f %.3f %d \n",xvalue,intexInter,dift,dif,xarr[intexInter-1],coeffC[intexInter],coeffD[intexInter],ns);
 
 
      }
