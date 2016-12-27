@@ -105,6 +105,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        }
      }
 
+
+
      printf("Bin histo pdf 2.1 = %.3f %d %d \n",xval,localBin,localNumBins);
 
      //fptype ret = interArrays(x,xarr,yarr,intOrder+1);
@@ -112,6 +114,14 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      fptype xvalue = xval;
 
      printf("Bin histo pdf 3.0 = %.3f %d \n",xvalue,intOrder);
+
+     for (size_t i = 0; i < 20; i++) {
+       printf("y % d = %.3f \n",i,yarr[i]);
+     }
+
+     for (size_t i = 0; i < 20; i++) {
+       printf("y % d = %.3f \n",i,xarr[i]);
+     }
 
 
      fptype den,dif,dift,ho,hp,w,y,dy;
