@@ -153,6 +153,9 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      // where limit and step are indices into functorConstants.
 
      int numVars = (indices[0] - 1) / 3;
+
+     printf("NumVars = %d \n",numVars);
+
      int globalBin = 0;
      int previousNofBins = 1;
      int myHistogramIndex = indices[1];
@@ -163,7 +166,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      if(numVars==1)
      {
        printf("NumVars = 1\n");
-       
+
        int i = 0;
 
        int localNumBins = indices[3*(i+1) + 1 + 1];
@@ -233,6 +236,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
 
      }
+
      else return 0.0;
 
 
@@ -396,6 +400,8 @@ __host__ BiDimHistoPdf::BiDimHistoPdf (std::string n,
   if(numVars>2) abortWithCudaPrintFlush(__FILE__, __LINE__, "Only the first two variables will be taken into account !\n");
   if(interOrder>20) abortWithCudaPrintFlush(__FILE__, __LINE__, "Interpolation order must be smaller than 20! \n");
 
+  printf("NumVars = %d \n",numVars);
+  
   int numConstants = 2*numVars+1;
   registerConstants(numConstants);
   static unsigned int totalHistograms = 0;
