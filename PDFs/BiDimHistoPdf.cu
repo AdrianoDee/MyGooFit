@@ -144,6 +144,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      {
        for(int intexInter=1 ; intexInter<=intOrder+1-m ; intexInter++)
        {
+         printf("Bin histo pdf 4 %d %d %d\n"intexInter,intexInter-1,intexInter-1+m);
          ho=xarr[intexInter-1]-xvalue ;
          hp=xarr[intexInter-1+m]-xvalue ;
          w=coeffC[intexInter+1]-coeffD[intexInter] ;
