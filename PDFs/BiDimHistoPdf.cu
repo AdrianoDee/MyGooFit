@@ -70,6 +70,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      int localBin    = (int) FLOOR((xval-lowerBound)/step); // Int_t fbinC = dim.getBin(*binning) ;
 
+     fptype x = xval;
+
      fptype binCenter = (fptype)localBin*step+lowerBound-0.5*step;
      fptype upperBound   = lowerBound + step*localNumBins;
 
@@ -88,7 +90,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          ibin = index;
          xarr[index-fbinLo] = lowerBound+ibin*step-step*0.5;
          yarr[index-fbinLo] = histogram[ibin];
-         printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
+         printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",x,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
        } else if (index>=localNumBins) {
         //  ibin = 2*localNumBins-index-1 ;
          printf("Over binning 2 \n");
@@ -102,9 +104,9 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
        }
      }
 
-     printf("Bin histo pdf 2.1 = %.3f %d %d %d \n",xval,localBin,index,localNumBins);
+     printf("Bin histo pdf 2.1 = %.3f %d %d \n",xval,localBin,localNumBins);
 
-     fptype ret = interpolateArrays(xarr,yarr,intOrder+1,xval);
+     fptype ret = interpolateArrays(xarr,yarr,intOrder+1,x);
 
      return ret;
 
