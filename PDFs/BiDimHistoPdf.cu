@@ -88,9 +88,11 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
          printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
        } else if (index>=localNumBins) {
         //  ibin = 2*localNumBins-index-1 ;
+         printf("Over binning 2 \n");
          xarr[index-fbinLo] = upperBound+(1e-10)*(index-localNumBins+1);
          yarr[index-fbinLo] = 0.0 ;
        } else {
+         printf("Under binning 2 \n");
          ibin = -index - 1 ;
          xarr[index-fbinLo] = lowerBound-ibin*(1e-10);
          yarr[index-fbinLo] = 0.0 ;
