@@ -79,8 +79,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      int binOffset = (xval<binCenter)? 1 : 0;
      int fbinLo  = localBin - intOrder/2 - binOffset;//Int_t fbinLo = fbinC-intOrder/2 - ((xval<binning->binCenter(fbinC))?1:0) ;
 
-     fptype xarr[20];
-     fptype yarr[20];
+     fptype xarr[50];
+     fptype yarr[50];
 
      printf("Bin histo pdf 1 = %.3f %d %.3f %d %.3f %.3f %.3f %d \n",xval,localBin,binCenter,fbinLo,lowerBound,step,upperBound,intOrder);
 
@@ -115,20 +115,20 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      fptype xvalue = xval;
 
-     printf("Bin histo pdf 3.0 = %.3f %d \n",xvalue,intOrder);
-
-     printf("y 0 = %.3f \n",yarr[0]);
-     printf("y 1 = %.3f \n",yarr[1]);
-     printf("y 2 = %.3f \n",yarr[2]);
-     printf("y 3 = %.3f \n",yarr[3]);
-     printf("y 4 = %.3f \n",yarr[4]);
+    //  printf("Bin histo pdf 3.0 = %.3f %d \n",xvalue,intOrder);
+     //
+    //  printf("y 0 = %.3f \n",yarr[0]);
+    //  printf("y 1 = %.3f \n",yarr[1]);
+    //  printf("y 2 = %.3f \n",yarr[2]);
+    //  printf("y 3 = %.3f \n",yarr[3]);
+    //  printf("y 4 = %.3f \n",yarr[4]);
 
      for (size_t i = 0; i < 20; i++) {
        printf("y % d = %.3f \n",i,yarr[i]);
      }
 
      for (size_t i = 0; i < 20; i++) {
-       printf("y % d = %.3f \n",i,xarr[i]);
+       printf("x % d = %.3f \n",i,xarr[i]);
      }
 
 
