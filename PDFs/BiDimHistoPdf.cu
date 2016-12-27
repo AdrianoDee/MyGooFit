@@ -162,6 +162,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      if(numVars==1)
      {
+       printf("NumVars = 1\n");
+       
        int i = 0;
 
        int localNumBins = indices[3*(i+1) + 1 + 1];
@@ -181,6 +183,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      }
      if(numVars==2)
      {
+       printf("NumVars = 2\n");
        fptype var[2],lowerBound[2],step[2],upperBound[2],binCenter[2];
        int bins[2],localBin[2],binOffset[2];
 
