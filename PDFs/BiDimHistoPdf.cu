@@ -153,13 +153,13 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
      fptype den,dif,dift,ho,hp,w,y,dy;
      fptype coeffC[20], coeffD[20];
 
-     dif = fabs(xvalue-xarr[0]) ;
+     dif = fabs(xval-xarr[0]) ;
 
      int ns=1;
 
      for(int intexInter =1 ; intexInter<=intOrder+1 ; ++intexInter)
      {
-       dift=fabs(xvalue-xarr[intexInter-1]);
+       dift=fabs(xval-xarr[intexInter-1]);
        if (dift<dif)
        {
           ns = intexInter;
@@ -169,7 +169,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
        coeffC[intexInter] = yarr[intexInter-1];
        coeffD[intexInter] = yarr[intexInter-1];
 
-       printf("Bin histo pdf 3 = %.3f %d %.3f %.3f %.3f %.3f \n",xvalue,intexInter,dift,dif,xarr[intexInter-1],coeffC[intexInter],coeffD[intexInter]);
+       printf("Bin histo pdf 3 = %.3f %d %.3f %.3f %.3f %.3f \n",xval,intexInter,dift,dif,xarr[intexInter-1],coeffC[intexInter],coeffD[intexInter]);
 
 
      }
@@ -180,8 +180,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
      {
        for(int intexInter=1 ; intexInter<=intOrder+1-m ; intexInter++)
        {
-         ho=xarr[intexInter-1]-xvalue ;
-         hp=xarr[intexInter-1+m]-xvalue ;
+         ho=xarr[intexInter-1]-xval ;
+         hp=xarr[intexInter-1+m]-xval ;
          w=coeffC[intexInter+1]-coeffD[intexInter] ;
          den=ho-hp ;
          if (den==0.)
@@ -195,7 +195,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
          dy = (2*ns)<(intOrder+1-m) ? coeffC[ns+1] : coeffD[ns--] ;
          y += dy ;
 
-         printf("Bin histo pdf 4 = %.3f %.3f %.3f %.3f %.3f %.3f\n",xvalue,ho,hp,w,den,dy);
+         printf("Bin histo pdf 4 = %.3f %.3f %.3f %.3f %.3f %.3f\n",xval,ho,hp,w,den,dy);
 
 
        }
