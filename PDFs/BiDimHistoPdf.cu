@@ -122,9 +122,9 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
      fptype xarr[20];
      fptype yarr[20];
 
-     int gB = otherBin + otherNumBins*fbinLo;
+     int gB = fbinLo + otherNumBins*otherBin;
 
-     printf("Bin histo Multi pdf 1 = %.3f %.3f %d %.3f %d %.3f %.3f %.3f %d %d %d %d %.3f\n",xval,yval,localBin,binCenter,fbinLo,lowerBound,step,upperBound,intOrder,otherBin,otherNumBins,gB,histogram[gB]);
+     //printf("Bin histo Multi pdf 1 = %.3f %.3f %d %.3f %d %.3f %.3f %.3f %d %d %d %d %.3f\n",xval,yval,localBin,binCenter,fbinLo,lowerBound,step,upperBound,intOrder,otherBin,otherNumBins,gB,histogram[gB]);
 
      for (int index=fbinLo ; index<=intOrder+fbinLo ; ++index)
      {
@@ -148,9 +148,61 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
        }
      }
 
-     fptype ret = interpolateArrays(xarr,yarr,intOrder+1,xval);
+     //fptype ret = interpolateArrays(xarr,yarr,intOrder+1,xval);
 
-     return ret;
+     fptype den,dif,dift,ho,hp,w,y,dy;
+     fptype coeffC[20], coeffD[20];
+
+     dif = fabs(xvalue-xarr[0]) ;
+
+     int ns=1;
+
+     for(int intexInter =1 ; intexInter<=intOrder+1 ; ++intexInter)
+     {
+       dift=fabs(xvalue-xarr[intexInter-1]);
+       if (dift<dif)
+       {
+          ns = intexInter;
+          dif = dift ;
+       }
+
+       coeffC[intexInter] = yarr[intexInter-1];
+       coeffD[intexInter] = yarr[intexInter-1];
+
+       printf("Bin histo pdf 3 = %.3f %d %.3f %.3f %.3f %.3f \n",xvalue,intexInter,dift,dif,xarr[intexInter-1],coeffC[intexInter],coeffD[intexInter]);
+
+
+     }
+
+     y=yarr[--ns] ;
+
+     for(int m=1 ; m<intOrder+1; m++)
+     {
+       for(int intexInter=1 ; intexInter<=intOrder+1-m ; intexInter++)
+       {
+         ho=xarr[intexInter-1]-xvalue ;
+         hp=xarr[intexInter-1+m]-xvalue ;
+         w=coeffC[intexInter+1]-coeffD[intexInter] ;
+         den=ho-hp ;
+         if (den==0.)
+         {
+           return 0. ;
+         }
+         den = w/den ;
+         coeffD[intexInter]=hp*den ;
+         coeffC[intexInter]=ho*den;
+         }
+         dy = (2*ns)<(intOrder+1-m) ? coeffC[ns+1] : coeffD[ns--] ;
+         y += dy ;
+
+         printf("Bin histo pdf 4 = %.3f %.3f %.3f %.3f %.3f %.3f\n",xvalue,ho,hp,w,den,dy);
+
+
+       }
+
+       return y;
+
+     //return ret;
 
    }
 
