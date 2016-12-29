@@ -190,10 +190,10 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
 
        }
 
-       printf("Bin histo Multi pdf var0 = %.3f %d %.3f %.3f %.3f %d %.3f %.3f %d \n",var[0],bins[0],lowerBound[0],step[0],upperBound[0],localBin[0],binCenter[0],binOffset[0],interpolationOrder);
-       printf("Bin histo Multi pdf var1 = %.3f %d %.3f %.3f %.3f %d %.3f %.3f %d \n",var[1],bins[1],lowerBound[1],step[1],upperBound[1],localBin[1],binCenter[1],binOffset[1],interpolationOrder);
+       printf("Bin histo Multi pdf var0 = %.3f %d %.3f %.3f %.3f %d %.3f %.3f %d \n",var[0],bins[0],lowerBound[0],step[0],upperBound[0],localBin[0],binCenter[0],binOffset[0],indices[2]);
+       printf("Bin histo Multi pdf var1 = %.3f %d %.3f %.3f %.3f %d %.3f %.3f %d \n",var[1],bins[1],lowerBound[1],step[1],upperBound[1],localBin[1],binCenter[1],binOffset[1],indices[2]);
 
-       int ybinLo = localBin[1]-interpolationOrder/2 - binOffset[1];
+       int ybinLo = localBin[1]-indices[2]/2 - binOffset[1];
 
        fptype yarr[20];
        fptype xarr[20];
@@ -218,7 +218,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
            xarr[yIndex-ybinLo] = lowerBound[1];
          }
 
-         yarr[yIndex-ybinLo] = interSingleDimension(bins[0], step[0], lowerBound[0], var[0], interpolationOrder, myHistogram);
+         yarr[yIndex-ybinLo] = interSingleDimensionMulti(iBin, bins[1], step[0], lowerBound[0], var[0], indices[2], myHistogram);
 
          printf("Interpolation : %d %d %.3f %.3f \n",iBin,yIndex,xarr[yIndex-ybinLo],yarr[yIndex-ybinLo]);
 
