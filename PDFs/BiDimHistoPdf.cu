@@ -122,7 +122,9 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
      fptype xarr[20];
      fptype yarr[20];
 
-     printf("Bin histo Multi pdf 1 = %.3f %.3f %d %.3f %d %.3f %.3f %.3f %d %d %d \n",xval,yval,localBin,binCenter,fbinLo,lowerBound,step,upperBound,intOrder,otherBin,otherNumBins);
+     int gB = otherBin + otherNumBins*fbinLo;
+
+     printf("Bin histo Multi pdf 1 = %.3f %.3f %d %.3f %d %.3f %.3f %.3f %d %d %d %.3f\n",xval,yval,localBin,binCenter,fbinLo,lowerBound,step,upperBound,intOrder,otherBin,otherNumBins,histogram[gB]);
 
      for (int index=fbinLo ; index<=intOrder+fbinLo ; ++index)
      {
