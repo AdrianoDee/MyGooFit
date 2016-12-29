@@ -134,7 +134,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
        if (index>=0 && index<localNumBins) {
          ibin = index;
          xarr[index-fbinLo] = lowerBound+ibin*step+step*0.5;
-         globalBin = otherBin + otherNumBins*ibin;
+         globalBin = ibin + localNumBins*otherBin;
          yarr[index-fbinLo] = histogram[globalBin];
          printf("Bin histo Multi pdf 2 = %.3f %.3f %d %d %d %d %d %d %d %.3f %.3f \n",xval,yval,localBin, otherBin, otherNumBins,globalBin, index,ibin,localNumBins,xarr[index-fbinLo],histogram[globalBin]);
        } else if (index>=localNumBins) {
