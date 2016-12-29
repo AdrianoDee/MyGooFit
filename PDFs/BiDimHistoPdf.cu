@@ -204,7 +204,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
          {
            iBin = yIndex;
            xarr[yIndex-ybinLo] = lowerBound[1] + iBin*step[1]+step[1]*0.5;
-           printf("iBin 1 : %d %d %d %.3f ",iBin,yIndex,ybinLo,xarr[yIndex-ybinLo])
+           printf("iBin 1 : %d %d %d %.3f ",iBin,yIndex,ybinLo,xarr[yIndex-ybinLo]);
          }
          else if(yIndex>bins[1])
          {
