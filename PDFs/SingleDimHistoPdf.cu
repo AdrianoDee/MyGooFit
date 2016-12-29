@@ -1,6 +1,6 @@
 #include "SingleDimHistoPdf.hh"
 
-MEM_CONSTANT fptype* dev_base_sidimhisto[100]; // Multiple histograms for the case of multiple PDFs
+MEM_CONSTANT fptype* dev_base_sidimhisto[20]; // Multiple histograms for the case of multiple PDFs
 
 
 
