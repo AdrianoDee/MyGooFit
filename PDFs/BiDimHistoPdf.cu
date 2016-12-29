@@ -218,7 +218,9 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
            xarr[yIndex-ybinLo] = lowerBound[1];
          }
 
-         yarr[yIndex-ybinLo] = interSingleDimensionMulti(iBin, bins[1], step[0], lowerBound[0], var[0], indices[2], myHistogram);
+         //EXEC_TARGET fptype interSingleDimensionMulti (int otherBin, int localNumBins,int otherNumBins, fptype step, fptype lowerBound, fptype xval, int intOrder,fptype* histogram)
+
+         yarr[yIndex-ybinLo] = interSingleDimensionMulti(iBin, bins[0], bins[1], step[0], lowerBound[0], var[0], indices[2], myHistogram);
 
          printf("Interpolation : %d %d %.3f %.3f \n",iBin,yIndex,xarr[yIndex-ybinLo],yarr[yIndex-ybinLo]);
 
