@@ -166,6 +166,8 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
      int myHistogramIndex = indices[1];
      int interpolationOrder = indices[2];
 
+     printf("Indices %d %d %d %d %d %d %d %d %d \n",indices[0],indices[1],indices[2],indices[3],indices[4],indices[5],indices[6],indices[7],indices[8]);
+
      fptype* myHistogram = dev_base_bidimhisto[myHistogramIndex];
 
      if(numVars==2)
@@ -218,7 +220,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
 
          yarr[yIndex-ybinLo] = interSingleDimension(bins[0], step[0], lowerBound[0], var[0], interpolationOrder, myHistogram);
 
-         printf("Interpolation : %d %d %d %.3f \n",iBin,yIndex,xarr[yIndex-ybinLo],yarr[yIndex-ybinLo]);
+         printf("Interpolation : %d %d %.3f %.3f \n",iBin,yIndex,xarr[yIndex-ybinLo],yarr[yIndex-ybinLo]);
 
        }
 
