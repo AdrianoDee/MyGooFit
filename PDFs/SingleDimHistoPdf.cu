@@ -4,109 +4,109 @@ MEM_CONSTANT fptype* dev_base_sidimhisto[100]; // Multiple histograms for the ca
 
 
 
-   EXEC_TARGET fptype interpolateArrays (fptype* xArray, fptype* yArray, int intOrder,fptype xvalue)
-   {
+  //  EXEC_TARGET fptype interpolateArrays (fptype* xArray, fptype* yArray, int intOrder,fptype xvalue)
+  //  {
+   //
+  //     printf("Bin histo pdf 3.0 = %.3f %d \n",xvalue,intOrder);
+   //
+   //
+  //     fptype den,dif,dift,ho,hp,w,y,dy;
+  //     fptype coeffC[20], coeffD[20];
+   //
+  //     dif = fabs(xvalue-xArray[0]) ;
+   //
+  //     int ns=1;
+   //
+  //     for(int intexInter =1 ; intexInter<=intOrder+1 ; ++intexInter)
+  //     {
+  //       dift=fabs(xvalue-xArray[intexInter-1]);
+  //       if (dift<dif)
+  //       {
+  //          ns = intexInter;
+  //          dif = dift ;
+  //       }
+   //
+  //       coeffC[intexInter] = yArray[intexInter-1];
+  //       coeffD[intexInter] = yArray[intexInter-1];
+   //
+  //       printf("Bin histo pdf 3 = %.3f %d %.3f %.3f %.3f %.3f \n",xvalue,intexInter,dift,dif,xArray[intexInter-1],coeffC[intexInter],coeffD[intexInter]);
+   //
+   //
+  //     }
+   //
+  //     y=yArray[--ns] ;
+   //
+  //     for(int m=1 ; m<intOrder+1; m++)
+  //     {
+  //       for(int intexInter=1 ; intexInter<=intOrder+1-m ; intexInter++)
+  //       {
+  //         ho=xArray[intexInter-1]-xvalue ;
+  //         hp=xArray[intexInter-1+m]-xvalue ;
+  //         w=coeffC[intexInter+1]-coeffD[intexInter] ;
+  //         den=ho-hp ;
+  //         if (den==0.)
+  //         {
+  //           return 0. ;
+  //         }
+  //         den = w/den ;
+  //         coeffD[intexInter]=hp*den ;
+  //         coeffC[intexInter]=ho*den;
+  //         }
+  //         dy = (2*ns)<(intOrder+1-m) ? coeffC[ns+1] : coeffD[ns--] ;
+  //         y += dy ;
+   //
+  //         printf("Bin histo pdf 4 = %.3f %.3f %.3f %.3f %.3f %.3f\n",xvalue,ho,hp,w,den,dy);
+   //
+   //
+  //       }
+   //
+  //       return y;
+   //
+  //  }
 
-      printf("Bin histo pdf 3.0 = %.3f %d \n",xvalue,intOrder);
 
-
-      fptype den,dif,dift,ho,hp,w,y,dy;
-      fptype coeffC[20], coeffD[20];
-
-      dif = fabs(xvalue-xArray[0]) ;
-
-      int ns=1;
-
-      for(int intexInter =1 ; intexInter<=intOrder+1 ; ++intexInter)
-      {
-        dift=fabs(xvalue-xArray[intexInter-1]);
-        if (dift<dif)
-        {
-           ns = intexInter;
-           dif = dift ;
-        }
-
-        coeffC[intexInter] = yArray[intexInter-1];
-        coeffD[intexInter] = yArray[intexInter-1];
-
-        printf("Bin histo pdf 3 = %.3f %d %.3f %.3f %.3f %.3f \n",xvalue,intexInter,dift,dif,xArray[intexInter-1],coeffC[intexInter],coeffD[intexInter]);
-
-
-      }
-
-      y=yArray[--ns] ;
-
-      for(int m=1 ; m<intOrder+1; m++)
-      {
-        for(int intexInter=1 ; intexInter<=intOrder+1-m ; intexInter++)
-        {
-          ho=xArray[intexInter-1]-xvalue ;
-          hp=xArray[intexInter-1+m]-xvalue ;
-          w=coeffC[intexInter+1]-coeffD[intexInter] ;
-          den=ho-hp ;
-          if (den==0.)
-          {
-            return 0. ;
-          }
-          den = w/den ;
-          coeffD[intexInter]=hp*den ;
-          coeffC[intexInter]=ho*den;
-          }
-          dy = (2*ns)<(intOrder+1-m) ? coeffC[ns+1] : coeffD[ns--] ;
-          y += dy ;
-
-          printf("Bin histo pdf 4 = %.3f %.3f %.3f %.3f %.3f %.3f\n",xvalue,ho,hp,w,den,dy);
-
-
-        }
-
-        return y;
-
-   }
-
-
-   EXEC_TARGET fptype interSingleDimension (int localNumBins, fptype step, fptype lowerBound, fptype xval, int intOrder,fptype* histogram)
-   {
-
-     int localBin    = (int) FLOOR((xval-lowerBound)/step); // Int_t fbinC = dim.getBin(*binning) ;
-
-     fptype binCenter = (fptype)localBin*step+lowerBound-0.5*step;
-     fptype upperBound   = lowerBound + step*localNumBins;
-
-     int binOffset = (xval<binCenter)? 1 : 0;
-     int fbinLo  = localBin - intOrder/2 - binOffset;//Int_t fbinLo = fbinC-intOrder/2 - ((xval<binning->binCenter(fbinC))?1:0) ;
-
-     fptype xarr[20];
-     fptype yarr[20];
-
-     printf("Bin histo pdf 1 = %.3f %d %.3f %d %.3f %.3f %.3f %d \n",xval,localBin,binCenter,fbinLo,lowerBound,step,upperBound,intOrder);
-
-     for (int index=fbinLo ; index<=intOrder+fbinLo ; ++index)
-     {
-       int ibin ;
-       if (index>=0 && index<localNumBins) {
-         ibin = index;
-         xarr[index-fbinLo] = lowerBound+ibin*step-step*0.5;
-         yarr[index-fbinLo] = histogram[ibin];
-         printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
-       } else if (index>=localNumBins) {
-        //  ibin = 2*localNumBins-index-1 ;
-         printf("Over binning 2 \n");
-         xarr[index-fbinLo] = upperBound+(1e-10)*(index-localNumBins+1);
-         yarr[index-fbinLo] = 0.0 ;
-       } else {
-         printf("Under binning 2 \n");
-         ibin = -index - 1 ;
-         xarr[index-fbinLo] = lowerBound-ibin*(1e-10);
-         yarr[index-fbinLo] = 0.0 ;
-       }
-     }
-
-     fptype ret = interpolateArrays(xarr,yarr,intOrder+1,xval);
-
-     return ret;
-
-   }
+  //  EXEC_TARGET fptype interSingleDimension (int localNumBins, fptype step, fptype lowerBound, fptype xval, int intOrder,fptype* histogram)
+  //  {
+   //
+  //    int localBin    = (int) FLOOR((xval-lowerBound)/step); // Int_t fbinC = dim.getBin(*binning) ;
+   //
+  //    fptype binCenter = (fptype)localBin*step+lowerBound-0.5*step;
+  //    fptype upperBound   = lowerBound + step*localNumBins;
+   //
+  //    int binOffset = (xval<binCenter)? 1 : 0;
+  //    int fbinLo  = localBin - intOrder/2 - binOffset;//Int_t fbinLo = fbinC-intOrder/2 - ((xval<binning->binCenter(fbinC))?1:0) ;
+   //
+  //    fptype xarr[20];
+  //    fptype yarr[20];
+   //
+  //    printf("Bin histo pdf 1 = %.3f %d %.3f %d %.3f %.3f %.3f %d \n",xval,localBin,binCenter,fbinLo,lowerBound,step,upperBound,intOrder);
+   //
+  //    for (int index=fbinLo ; index<=intOrder+fbinLo ; ++index)
+  //    {
+  //      int ibin ;
+  //      if (index>=0 && index<localNumBins) {
+  //        ibin = index;
+  //        xarr[index-fbinLo] = lowerBound+ibin*step-step*0.5;
+  //        yarr[index-fbinLo] = histogram[ibin];
+  //        printf("Bin histo pdf 2 = %.3f %d %d %d %d %.3f %.3f \n",xval,localBin,index,ibin,localNumBins,xarr[index-fbinLo],histogram[ibin]);
+  //      } else if (index>=localNumBins) {
+  //       //  ibin = 2*localNumBins-index-1 ;
+  //        printf("Over binning 2 \n");
+  //        xarr[index-fbinLo] = upperBound+(1e-10)*(index-localNumBins+1);
+  //        yarr[index-fbinLo] = 0.0 ;
+  //      } else {
+  //        printf("Under binning 2 \n");
+  //        ibin = -index - 1 ;
+  //        xarr[index-fbinLo] = lowerBound-ibin*(1e-10);
+  //        yarr[index-fbinLo] = 0.0 ;
+  //      }
+  //    }
+   //
+  //    fptype ret = interpolateArrays(xarr,yarr,intOrder+1,xval);
+   //
+  //    return ret;
+   //
+  //  }
 
    EXEC_TARGET fptype interSingleDimensionMulti (int otherBin, int localNumBins,int otherNumBins, fptype step, fptype lowerBound, fptype xval, int intOrder,fptype* histogram)
    {
