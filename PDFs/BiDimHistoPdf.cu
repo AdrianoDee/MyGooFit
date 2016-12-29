@@ -212,10 +212,15 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
          {
            iBin = 2*bins[1]-yIndex-1;
            xarr[yIndex-ybinLo] = upperBound[1];
-         }else
+           printf("iBin Over : %d %d %d %.3f \n",iBin,yIndex,ybinLo,xarr[yIndex-ybinLo]);
+
+         }
+         else if(yIndex<0)
          {
            iBin = -yIndex-1;
            xarr[yIndex-ybinLo] = lowerBound[1];
+           printf("iBin Under : %d %d %d %.3f \n",iBin,yIndex,ybinLo,xarr[yIndex-ybinLo]);
+
          }
 
          //EXEC_TARGET fptype interSingleDimensionMulti (int otherBin, int localNumBins,int otherNumBins, fptype step, fptype lowerBound, fptype xval, int intOrder,fptype* histogram)
