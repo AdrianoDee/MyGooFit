@@ -1,6 +1,6 @@
 #include "BiDimHistoPdf.hh"
 
-MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the case of multiple PDFs
+MEM_CONSTANT fptype* dev_base_sidimhisto[100]; // Multiple histograms for the case of multiple PDFs
 
 
 
@@ -152,7 +152,7 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
    }
 
-   EXEC_TARGET fptype device_BiDimHistoPdf (fptype* evt, fptype* p, unsigned int* indices) {
+   EXEC_TARGET fptype device_SiDimHistoPdf (fptype* evt, fptype* p, unsigned int* indices) {
      // Structure is
      // nP totalHistograms interPolationOrder (limit1 step1 bins1) (limit2 step2 bins2) nO o1 o2
      // where limit and step are indices into functorConstants.
@@ -166,58 +166,27 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
      int myHistogramIndex = indices[1];
      int interpolationOrder = indices[2];
 
-     fptype* myHistogram = dev_base_bidimhisto[myHistogramIndex];
+     fptype* myHistogram = dev_base_sidimhisto[myHistogramIndex];
 
-     if(numVars==2)
+     if(numVars==1)
      {
-       printf("NumVars = 2\n");
-       fptype var[2],lowerBound[2],step[2],upperBound[2],binCenter[2];
-       int bins[2],localBin[2],binOffset[2];
+       printf("NumVars = 1\n");
 
-       for (int i = 0; i < numVars; ++i) {
+       int i = 0;
 
-         var[i] = evt[indices[indices[0] + 2] + i];
-         bins[i] = indices[3*(i+1) + 1 + 1];
-         int lowerBoundIdx   = 2 + 3*i + 1;
-         lowerBound[i]   = functorConstants[indices[lowerBoundIdx + 0]];
-         step[i]         = functorConstants[indices[lowerBoundIdx + 1]];
-         upperBound[i]   = lowerBound[i] + step[i]*bins[i];
-         localBin[i]     = (int) FLOOR((var[i]-lowerBound[i])/step[i]);
-         binCenter[i]    = (fptype)localBin[i]*step[i]+lowerBound[i]-0.5*step[i];
-         binOffset[i]    = (var[i]<binCenter[i])? 1 : 0;
+       int localNumBins = indices[3*(i+1) + 1 + 1];
+       int lowerBoundIdx   = 2 + 3*i + 1;
+       fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
+       fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
+       fptype upperBound   = lowerBound + step*localNumBins;
 
-       }
+       fptype currVariable = evt[indices[indices[0] + 2]];
 
-       int ybinLo = localBin[1]-interpolationOrder/2 - binOffset[1];
+       if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
 
-       int yIndex;
-       fptype yarr[20];
-       fptype xarr[20];
+       fptype ret = interSingleDimension(localNumBins, step, lowerBound, currVariable, interpolationOrder, myHistogram);
 
-       for (yIndex=ybinLo ; yIndex<=interpolationOrder+ybinLo ; ++yIndex)
-       {
-         int iBin;
-
-         if (yIndex>=0 && yIndex<bins[1])
-         {
-           iBin = yIndex;
-           xarr[yIndex-ybinLo] = lowerBound[1] + iBin*step[1]-step[1]*0.5;
-         }
-         else if(yIndex>bins[1])
-         {
-           iBin = 2*bins[1]-yIndex-1;
-           xarr[yIndex-ybinLo] = upperBound[1];
-         }else
-         {
-           iBin = -yIndex-1;
-           xarr[yIndex-ybinLo] = lowerBound[1];
-         }
-       }
-
-        fptype ret = interpolateArrays(xarr,yarr,interpolationOrder+1,var[1]);
-
-        return ret;
-
+       return ret;
 
      }
      else
@@ -225,9 +194,9 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[100]; // Multiple histograms for the ca
 
      }
 
-MEM_DEVICE device_function_ptr ptr_to_BiDimHistogram = device_BiDimHistoPdf;
+MEM_DEVICE device_function_ptr ptr_to_SiDimHistogram = device_SiDimHistoPdf;
 
-__host__ BiDimHistoPdf::BiDimHistoPdf (std::string n,
+__host__ SingleDimHistoPdf::SingleDimHistoPdf (std::string n,
 							 BinnedDataSet* x,
 							 std::vector<Variable*> obses, unsigned int interOrder)
   : GooPdf(0, n)
@@ -282,8 +251,8 @@ __host__ BiDimHistoPdf::BiDimHistoPdf (std::string n,
   dev_base_histogram = new thrust::device_vector<fptype>(host_histogram);
   static fptype* dev_address[1];
   dev_address[0] = (&((*dev_base_histogram)[0])).get();
-  MEMCPY_TO_SYMBOL(dev_base_bidimhisto, dev_address, sizeof(fptype*), totalHistograms*sizeof(fptype*), cudaMemcpyHostToDevice);
-  GET_FUNCTION_ADDR(ptr_to_BiDimHistogram);
+  MEMCPY_TO_SYMBOL(dev_base_sidimhisto, dev_address, sizeof(fptype*), totalHistograms*sizeof(fptype*), cudaMemcpyHostToDevice);
+  GET_FUNCTION_ADDR(ptr_to_SiDimHistogram);
   initialise(pindices);
 
   totalHistograms++;
