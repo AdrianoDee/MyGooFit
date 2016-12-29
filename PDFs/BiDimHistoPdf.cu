@@ -188,6 +188,9 @@ MEM_CONSTANT fptype* dev_base_bidimhisto[20]; // Multiple histograms for the cas
 
        }
 
+       printf("Bin histo Multi pdf var0 = %.3f %d %.3f %.3f %.3f %d %.3f %.3f \n",var[0],bins[0],lowerBound[0],step[0],upperBound[0],localBin[0],binCenter[0],binOffset[0]);
+       printf("Bin histo Multi pdf var1 = %.3f %d %.3f %.3f %.3f %d %.3f %.3f \n",var[1],bins[1],lowerBound[1],step[1],upperBound[1],localBin[1],binCenter[1],binOffset[1]);
+
        int ybinLo = localBin[1]-interpolationOrder/2 - binOffset[1];
 
        int yIndex;
