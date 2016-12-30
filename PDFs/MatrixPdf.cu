@@ -22,9 +22,8 @@ MEM_CONSTANT fptype* dev_lowerlimits_ext;
 MEM_CONSTANT fptype* dev_upperlimits_ext;
 MEM_CONSTANT int* dev_bins_ext;
 MEM_CONSTANT fptype* dev_steps_ext;
+MEM_CONSTANT int* numberOfHistos;
 
-
-extern int numberOfHistos = 0;
 
 EXEC_TARGET fptype efficiencyHisto(fptype mkp,fptype mPsiPi,fptype cosMuMu,fptype phi)
 {
@@ -42,11 +41,12 @@ EXEC_TARGET fptype efficiencyHisto(fptype mkp,fptype mPsiPi,fptype cosMuMu,fptyp
   fptype* thisUpperlimits = dev_upperlimits_ext;
   int* thisSteps = dev_bins_ext;
   fptype* thisBins = dev_steps_ext;
+  //int* nOfHistos = numberOfHistos;
 
   int numVars = 4;
   int globalBin = 0;
   int previousNofBins = 1;
-  int myHistogramIndex = numberOfHistos;
+  //int myHistogramIndex = nOfHistos[0];
   //fptype binDistances[10]; // Ten dimensions should be more than enough!
   // Distance from bin center in units of bin width in each dimension.
   //int holdObs;
@@ -84,7 +84,7 @@ EXEC_TARGET fptype efficiencyHisto(fptype mkp,fptype mPsiPi,fptype cosMuMu,fptyp
   }
 
 
-  fptype* myHistogram = dev_base_matrixeff[myHistogramIndex];
+  fptype* myHistogram = dev_base_matrixeff[0];
 
   fptype ret =  myHistogram[globalBin];
 
