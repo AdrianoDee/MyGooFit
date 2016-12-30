@@ -40,7 +40,7 @@ EXEC_TARGET fptype efficiencyHisto(fptype mkp,fptype mPsiPi,fptype cosMuMu,fptyp
 
   fptype* thisLowerlimits = dev_lowerlimits_ext;
   fptype* thisUpperlimits = dev_upperlimits_ext;
-  fptype* thisSteps = dev_bins_ext;
+  int* thisSteps = dev_bins_ext;
   fptype* thisBins = dev_steps_ext;
 
   int numVars = 4;
@@ -83,79 +83,10 @@ EXEC_TARGET fptype efficiencyHisto(fptype mkp,fptype mPsiPi,fptype cosMuMu,fptyp
 
   }
 
-  //printf("Bin =  %d at $.3f %.3f %.3f \n", globalBin,variable[0], variable[1], variable[2],variable[3]);
-
 
   fptype* myHistogram = dev_base_matrixeff[myHistogramIndex];
-  fptype ret = 0;
 
-  //------------------
-  //     |     |     |
-  //  3  |  4  |  5  |
-  //     |     |     |
-  //------------------
-  //    x|     |     |
-  //  0  |  1  |  2  |
-  //     |     |     |
-  //------------------
-  //
-  //
-  // //int totalBins = dev_powi(3, numVars);
-  // //for (int i = 0; i < totalBins; ++i) {
-  //   int currBin = globalBin; //
-  //   int localPrevious = 1; //
-  //   int trackingBin = globalBin; //
-  //   bool offSomeAxis = false; //
-  //   // fptype currentWeight = 0;
-  //   // Loop over vars to get offset for each one.
-  //   for (int v = 0; v < numVars; ++v) {
-  //     int localNumBins = indices[4*(v+1) + 1]; //
-  //     int offset = ((1 / dev_powi(3, v)) % 3) - 1; //
-  //
-  //     currBin += offset * localPrevious; //
-  //     localPrevious *= localNumBins; //
-  //
-  //     int currVarBin = trackingBin % localNumBins; //
-  //     trackingBin /= localNumBins; //
-  //     if (currVarBin + offset < 0) offSomeAxis = true;
-  //     if (currVarBin + offset >= localNumBins) offSomeAxis = true;
-  //
-  //     // fptype currDist = binDistances[v];//
-  //     // currDist -= offset;//
-  //     // currentWeight += currDist*currDist;
-  //     // printf("index = %i v = %i : localPrevious = %d localNumBins = %d \n", i, v, localPrevious, localNumBins);
-  //     // printf("index = %i v = %i : currVarBin = %d currBin = %d trackingBin = %d \n", i, v, currVarBin,currBin,trackingBin);
-  //     // printf("index = %i v = %i : currDist = %.4f binDistances[v] = %.4f currentWeight = %.4f offset = %i offSomeAxis = %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
-  //     //if (0 == THREADIDX + BLOCKIDX)
-  //     //printf("%i, %i: %f %f %f %i %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
-  //   }
-
-    // Only interpolate the four closest boxes (in two dimensions; more in three dimensions).
-    //currentWeight = currentWeight > 0 ? (currentWeight <= SQRT((fptype) numVars) ? 1 / SQRT(currentWeight) : 0) : 0;
-    //fptype currentEntry = offSomeAxis ? 0 : myHistogram[globalBin];
-    fptype currentEntry = myHistogram[globalBin];
-    ret = currentEntry;
-    //printf("Pdf = %.3f at %d bin %d \n", ret,currBin,globalBin);
-
-
-
-    // totalWeight += currentWeight;
-
-    //if (0 == THREADIDX + BLOCKIDX)
-      // printf("Adding bin content %i %f with weight %f for total %f.\n", currBin, currentEntry, currentWeight, ret);
-  //}
-
-  //if (0 == THREADIDX + BLOCKIDX)
-    observablesSeen = 0;
-    fptype variable[4];
-    //printf("Qui : %.3f %.3f %.3f %i %.3f\n", ret,holdcurrVariable,totalWeight, evt[0], indices[6], p[indices[6]]);
-    for (int i = 0; i < 4; ++i) {
-
-      variable[i] = evt[indices[indices[0] + 2 + observablesSeen++]];
-
-    }
-
-    //printf("Pdf = %.3f at %.3f %.3f %.3f %.3f bin : %d \n", ret,variable[0], variable[1], variable[2],variable[3],globalBin);//,currBin);
+  fptype ret =  myHistogram[globalBin];
 
   return ret;
 
