@@ -853,5 +853,5 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   //GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
   initialise(pindices);
 
-  ++numberOfHistos;
+  //++numberOfHistos;
 }
