@@ -542,6 +542,63 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
 
 }
 
+
+EXEC_TARGET fptype device_Matrix_Eff (fptype* evt, fptype* p, unsigned int* indices) {
+
+  #ifdef MDEBUGGING
+  printf("Zero paramater set %d %d %d %d %.2f %.2f %.2f %.2f  %.2f \n",indices[0],indices[1],indices[2],indices[3],p[indices[0]],p[indices[1]],p[indices[2]],p[indices[3]],p[indices[4]]);
+  printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
+  printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
+  printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
+  #endif
+
+  fptype mkp = evt[indices[2 + indices[0]]];
+  fptype mPsiP = evt[indices[2 + indices[0]]+2];
+  fptype cJ = evt[indices[2 + indices[0]]+1];
+  //fptype cKs = evt[indices[2 + indices[0]]+2];
+  fptype phi = evt[indices[2 + indices[0]]+3];
+
+  fptype psi_nS = p[indices[2]];
+
+  // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
+  fptype MPsi_nS = 0.;
+  if (psi_nS==1.0)
+    MPsi_nS = MJpsi;
+  else if (psi_nS==2.0)
+    MPsi_nS = MPsi2S;
+  else {
+    printf("\nMatrix P.d.f not configured for psi_nS = %.0f",psi_nS);
+    //printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
+  }
+
+  fptype mKP2 = mkp*mkp;
+  fptype mPsiP2 = mPsiP*mPsiP;
+  fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
+
+  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
+    //printf("Returning 0: point out of the Dalitz borders!\n");
+    return 0.; }
+
+  fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
+
+  //fptype dRadB0 = p[indices[3]];
+  //fptype dRadKs = p[indices[4]];
+  //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,mPsiP);
+
+  if (FABS(cKs) > 1) {
+    //printf("\nReturning 0 : ckS > 1 or < -1 ");
+    return 0.; }
+  else {
+    fptype coefficient = efficiencyHisto(mkp,mPsiP,cKs,phi);
+    fptype MEME = ME2(mkp,cJ,cKs,phi,p,indices);
+    fptype phiPhase = PhiPHSP(mkp,psi_nS);
+    fptype result = MEME * phiPhase * coefficient;
+    //printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f mPSIP = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi,mPsiP);
+    return result;
+  }
+
+}
+
 /*
 EXEC_TARGET fptype device_Matrix_Point (fptype* point, fptype* p, unsigned int* indices) {
 
