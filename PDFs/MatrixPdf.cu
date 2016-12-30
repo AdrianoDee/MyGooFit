@@ -720,6 +720,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 
   thrust::host_vector<fptype> host_lowerlimits;
   thrust::host_vector<fptype> host_upperlimits;
+  thrust::host_vector<fptype> host_numbins;
   thrust::host_vector<fptype> host_steps;
 
   std::vector<Variable* > obses;

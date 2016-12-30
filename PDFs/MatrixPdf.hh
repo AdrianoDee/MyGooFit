@@ -91,9 +91,9 @@ private:
 
   thrust::device_vector<fptype>* dev_base_matrix_histo;
   thrust::device_vector<fptype>* dev_lowerlimits;
-  thrust::device_vector<fptype>* upperlimits;
-  thrust::device_vector<fptype>* steps;
-  thrust::device_vector<fptype>* bins;
+  thrust::device_vector<fptype>* dev_upperlimits;
+  thrust::device_vector<fptype>* dev_steps;
+  thrust::device_vector<fptype>* dev_bins;
 
   fptype totalEvents;
 
