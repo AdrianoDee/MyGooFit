@@ -24,7 +24,7 @@ MEM_CONSTANT int* dev_bins_ext;
 MEM_CONSTANT fptype* dev_steps_ext;
 
 
-static const int numberOfHistos = 0;
+static int numberOfHistos = 0;
 
 EXEC_TARGET fptype efficiencyHisto(fptype mkp,fptype mPsiPi,fptype cosMuMu,fptype phi)
 {
