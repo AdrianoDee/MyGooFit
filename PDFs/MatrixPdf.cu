@@ -84,7 +84,7 @@ EXEC_TARGET fptype efficiencyHisto(fptype mkp,fptype mPsiPi,fptype cosMuMu,fptyp
   }
 
 
-  fptype* myHistogram = dev_base_matrixeff[0];
+  fptype* myHistogram = dev_base_matrixeff;
 
   fptype ret =  myHistogram[globalBin];
 
