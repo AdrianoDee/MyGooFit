@@ -16,7 +16,7 @@
 
 //#define MDEBUGGING 1
 
-MEM_CONSTANT fptype* dev_base_matrixeff[20];
+MEM_CONSTANT fptype* dev_base_matrixeff;
 
 MEM_CONSTANT fptype* dev_lowerlimits_ext;
 MEM_CONSTANT fptype* dev_upperlimits_ext;
@@ -773,7 +773,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 
   dev_base_matrix_histo = new thrust::device_vector<fptype>(host_histogram);
   dev_address[0] = (&((*dev_base_matrix_histo)[0])).get();
-  MEMCPY_TO_SYMBOL(dev_base_matrixeff, dev_address, sizeof(fptype*), numberOfHistos*sizeof(fptype*), cudaMemcpyHostToDevice);
+  MEMCPY_TO_SYMBOL(dev_base_matrixeff, dev_address, sizeof(fptype*), numbins*sizeof(fptype*), cudaMemcpyHostToDevice);
 
 
   unsigned int noOfKStars = 0;
