@@ -11,9 +11,156 @@
 #include "TMath.h"
 
 #include "MatrixPdf.hh"
+#include "BinnedDataSet.hh"
 #include "devcomplex.hh"
 
 //#define MDEBUGGING 1
+
+MEM_CONSTANT fptype* dev_base_matrixeff[20];
+
+MEM_CONSTANT fptype* dev_lowerlimits_ext;
+MEM_CONSTANT fptype* dev_upperlimits_ext;
+MEM_CONSTANT int* dev_bins_ext;
+MEM_CONSTANT fptype* dev_steps_ext;
+
+
+static const int numberOfHistos = 0;
+
+EXEC_TARGET fptype efficiencyHisto(fptype mkp,fptype mPsiPi,fptype cosMuMu,fptype phi)
+{
+  // Structure is
+  // nP totalHistograms (limit1 step1 bins1) (limit2 step2 bins2) nO o1 o2
+  // where limit and step are indices into functorConstants.
+  fptype obserVables[4];
+
+  obserVables[0] = mkp;
+  obserVables[1] = mPsiPi;
+  obserVables[2] = cosMuMu;
+  obserVables[3] = phi;
+
+  fptype* thisLowerlimits = dev_lowerlimits_ext;
+  fptype* thisUpperlimits = dev_upperlimits_ext;
+  fptype* thisSteps = dev_bins_ext;
+  fptype* thisBins = dev_steps_ext;
+
+  int numVars = 4;
+  int globalBin = 0;
+  int previousNofBins = 1;
+  int myHistogramIndex = numberOfHistos;
+  //fptype binDistances[10]; // Ten dimensions should be more than enough!
+  // Distance from bin center in units of bin width in each dimension.
+  //int holdObs;
+
+  fptype currVariable = 0.0;
+
+  //fptype one,two;
+  unsigned int observablesSeen = 0;
+  unsigned int obsindex = 0;
+  for (int i = 0; i < numVars; ++i) {
+
+    currVariable = obserVables[i];
+
+    int localNumBins = thisBins[i];
+    fptype lowerBound   = thisLowerlimits[i];
+    fptype step         = thisSteps[i];
+    fptype upperBound   = thisUpperlimits[i];
+    //fptype holdcurrent = evt[indices[indices[0] + 2 + obsindex++]];
+
+    //Check for boundaries
+    if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
+
+    //Find the local bin number
+    currVariable   -= lowerBound;
+    currVariable   /= step;
+
+    int localBin    = (int) FLOOR(currVariable);
+
+    globalBin      += previousNofBins * localBin;
+    previousNofBins       *= localNumBins;
+
+    //printf("Curr Variable %d = %.2f Hold var = %.2f [m = %.2f s = %.2f n = %d ] (%.2f %.2f %.2f %.2f)numVars %d globalBin %d localBin %d previous %d\n",i,currVariable,holdcurrent,lowerBound,step,localNumBins,evt[indices[indices[0] + 2]],evt[indices[indices[0] + 2 + 1]],evt[indices[indices[0] + 2 + 2]],evt[indices[indices[0] + 2 + 3]],numVars,globalBin,localBin,previousNofBins);
+
+
+  }
+
+  //printf("Bin =  %d at $.3f %.3f %.3f \n", globalBin,variable[0], variable[1], variable[2],variable[3]);
+
+
+  fptype* myHistogram = dev_base_matrixeff[myHistogramIndex];
+  fptype ret = 0;
+
+  //------------------
+  //     |     |     |
+  //  3  |  4  |  5  |
+  //     |     |     |
+  //------------------
+  //    x|     |     |
+  //  0  |  1  |  2  |
+  //     |     |     |
+  //------------------
+  //
+  //
+  // //int totalBins = dev_powi(3, numVars);
+  // //for (int i = 0; i < totalBins; ++i) {
+  //   int currBin = globalBin; //
+  //   int localPrevious = 1; //
+  //   int trackingBin = globalBin; //
+  //   bool offSomeAxis = false; //
+  //   // fptype currentWeight = 0;
+  //   // Loop over vars to get offset for each one.
+  //   for (int v = 0; v < numVars; ++v) {
+  //     int localNumBins = indices[4*(v+1) + 1]; //
+  //     int offset = ((1 / dev_powi(3, v)) % 3) - 1; //
+  //
+  //     currBin += offset * localPrevious; //
+  //     localPrevious *= localNumBins; //
+  //
+  //     int currVarBin = trackingBin % localNumBins; //
+  //     trackingBin /= localNumBins; //
+  //     if (currVarBin + offset < 0) offSomeAxis = true;
+  //     if (currVarBin + offset >= localNumBins) offSomeAxis = true;
+  //
+  //     // fptype currDist = binDistances[v];//
+  //     // currDist -= offset;//
+  //     // currentWeight += currDist*currDist;
+  //     // printf("index = %i v = %i : localPrevious = %d localNumBins = %d \n", i, v, localPrevious, localNumBins);
+  //     // printf("index = %i v = %i : currVarBin = %d currBin = %d trackingBin = %d \n", i, v, currVarBin,currBin,trackingBin);
+  //     // printf("index = %i v = %i : currDist = %.4f binDistances[v] = %.4f currentWeight = %.4f offset = %i offSomeAxis = %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
+  //     //if (0 == THREADIDX + BLOCKIDX)
+  //     //printf("%i, %i: %f %f %f %i %s\n", i, v, currDist, binDistances[v], currentWeight, offset, offSomeAxis ? "off" : "on");
+  //   }
+
+    // Only interpolate the four closest boxes (in two dimensions; more in three dimensions).
+    //currentWeight = currentWeight > 0 ? (currentWeight <= SQRT((fptype) numVars) ? 1 / SQRT(currentWeight) : 0) : 0;
+    //fptype currentEntry = offSomeAxis ? 0 : myHistogram[globalBin];
+    fptype currentEntry = myHistogram[globalBin];
+    ret = currentEntry;
+    //printf("Pdf = %.3f at %d bin %d \n", ret,currBin,globalBin);
+
+
+
+    // totalWeight += currentWeight;
+
+    //if (0 == THREADIDX + BLOCKIDX)
+      // printf("Adding bin content %i %f with weight %f for total %f.\n", currBin, currentEntry, currentWeight, ret);
+  //}
+
+  //if (0 == THREADIDX + BLOCKIDX)
+    observablesSeen = 0;
+    fptype variable[4];
+    //printf("Qui : %.3f %.3f %.3f %i %.3f\n", ret,holdcurrVariable,totalWeight, evt[0], indices[6], p[indices[6]]);
+    for (int i = 0; i < 4; ++i) {
+
+      variable[i] = evt[indices[indices[0] + 2 + observablesSeen++]];
+
+    }
+
+    //printf("Pdf = %.3f at %.3f %.3f %.3f %.3f bin : %d \n", ret,variable[0], variable[1], variable[2],variable[3],globalBin);//,currBin);
+
+  return ret;
+
+
+}
 
 EXEC_TARGET fptype cosTheta_FromMasses(const fptype sameSideM2, const fptype oppositeSideM2, const fptype psi_nSM2, const fptype motherM2, const fptype refM2, const fptype otherM2) {
 
@@ -479,6 +626,7 @@ EXEC_TARGET fptype device_Matrix_Bin (fptype* point, fptype* p, unsigned int* in
 
 
 MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
+MEM_DEVICE device_function_ptr ptr_to_Matrix_Eff = device_Matrix_Eff;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
@@ -568,4 +716,153 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   //GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
   //GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
   initialise(pindices);
+}
+
+__host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Variable* _cJ, Variable* _phi,
+        std::vector<Variable*> _Masses,std::vector<Variable*> _Gammas,std::vector<Variable*> _Spins,std::vector<Variable*> _a,std::vector<Variable*> _b,
+        Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs,BinnedDataSet* x)
+/*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+    Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b,
+    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)*/
+  : GooPdf(0, n),
+  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
+{
+
+  totalEvents = 0;
+
+  thrust::host_vector<fptype> host_lowerlimits;
+  thrust::host_vector<fptype> host_upperlimits;
+  thrust::host_vector<fptype> host_steps;
+
+  std::vector<Variable* > obses;
+  obses.push_back(_mkp);
+  obses.push_back(_mJP);
+  obses.push_back(_cJ);
+  obses.push_back(_phi);
+
+  for (varConstIt var = x->varsBegin(); var != x->varsEnd(); ++var)
+  {
+    if (std::find(obses.begin(), obses.end(), *var) != obses.end())
+    {
+      host_lowerlimits.push_back((*var)->lowerlimit);
+      host_upperlimits.push_back((*var)->upperlimit);
+      host_numbins.push_back((*var)->numbins);
+      host_steps.push_back(((*var)->upperlimit - (*var)->lowerlimit) / (*var)->numbins);
+
+    }
+    else
+      abortWithCudaPrintFlush(__FILE__, __LINE__, "The BinnedDataSet provided variables are different from p.d.f. observables \n");
+  }
+
+  static fptype* dev_address[1];
+
+  dev_lowerlimits = new thrust::device_vector<fptype>(host_lowerlimits);
+  dev_upperlimits = new thrust::device_vector<fptype>(host_upperlimits);
+  dev_steps = new thrust::device_vector<fptype>(host_numbins);
+  dev_bins = new thrust::device_vector<fptype>(host_steps);
+
+  dev_address[0] = (&((*dev_lowerlimits)[0])).get();
+  MEMCPY_TO_SYMBOL(dev_lowerlimits_ext, dev_address, sizeof(fptype*), 4*sizeof(fptype*), cudaMemcpyHostToDevice);
+
+  dev_address[0] = (&((*dev_upperlimits)[0])).get();
+  MEMCPY_TO_SYMBOL(dev_upperlimits, dev_address, sizeof(fptype*), 4*sizeof(fptype*), cudaMemcpyHostToDevice);
+
+  dev_address[0] = (&((*dev_steps)[0])).get();
+  MEMCPY_TO_SYMBOL(dev_steps_ext, dev_address, sizeof(fptype*), 4*sizeof(fptype*), cudaMemcpyHostToDevice);
+
+  dev_address[0] = (&((*dev_bins)[0])).get();
+  MEMCPY_TO_SYMBOL(dev_bins_ext, dev_address, sizeof(fptype*), 4*sizeof(int*), cudaMemcpyHostToDevice);
+
+
+  unsigned int numbins = x->getNumBins();
+  thrust::host_vector<fptype> host_histogram;
+  for (unsigned int i = 0; i < numbins; ++i) {
+    fptype curr = x->getBinContent(i);
+    host_histogram.push_back(curr);
+    totalEvents += curr;
+  }
+
+  dev_base_matrix_histo = new thrust::device_vector<fptype>(host_histogram);
+  dev_address[0] = (&((*dev_base_matrix_histo)[0])).get();
+  MEMCPY_TO_SYMBOL(dev_base_matrixeff, dev_address, sizeof(fptype*), numberOfHistos*sizeof(fptype*), cudaMemcpyHostToDevice);
+
+
+  unsigned int noOfKStars = 0;
+  unsigned int noOfMasses = (int) _Masses.size();
+
+  for (int j = 0 ; j < _Masses.size(); j++) {
+
+    if(_Spins[j]->value>0.0)
+      noOfKStars += 3;
+    else
+      ++noOfKStars;
+  }
+
+  printf("Number of K* \t\t\t = %d\n", noOfKStars);
+  printf("Number of masses \t\t = %d\n", noOfMasses);
+  printf("Amplitudes vector size \t\t = %d \n",_a.size());
+
+  if(noOfKStars != (int) _a.size()) abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
+
+  registerObservable(_mkp);
+  registerObservable(_mJP);
+  registerObservable(_cJ);
+  registerObservable(_phi);
+
+  std::vector<unsigned int> pindices;
+
+  pindices.push_back(noOfMasses);
+  pindices.push_back(registerParameter(_psi_nS));  // p[indices[2]]
+  pindices.push_back(registerParameter(_dRadB0));  // p[indices[3]]
+  pindices.push_back(registerParameter(_dRadKs));  // p[indices[4]]
+
+  //Parameter vector
+  // psi_ns dRadB0 dRadKs m1 g1 s1 m2 g2 s2 . . . mn  gn  sn   a1          b1             a2 b2 . . . an                  bn                    //
+  //Indeces
+  // 2      3      4      5  6  7  8  9  10        4+n 5+n 6+n  4+nKstars*3 4+nKstars*3+1              4+nKstars*3+(n-1)*2 4+nKstars*3+(n-1)*2+1
+  for (int j = 0 ; j < _Masses.size(); j++) {
+
+    pindices.push_back(registerParameter(_Masses[j]));  // p[indices[5]]
+    pindices.push_back(registerParameter(_Gammas[j]));  // p[indices[6]]
+    pindices.push_back(registerParameter(_Spins[j]));
+  }
+
+  for (int j = 0 ; j < (int)_a.size(); j++) {
+    //pindices.push_back(registerParameter(_helj[j]));
+    pindices.push_back(registerParameter(_a[j]));
+    pindices.push_back(registerParameter(_b[j]));
+
+  }
+
+
+
+  /*for (int j = 0 ; j < (int)_KParameters.size(); j++) {
+    pindices.push_back(registerParameter(_KParameters[j]));
+  }*/
+
+  /*
+  for (int j = 0 ; j < (int)_amplitudeGooVars.size(); j++) {
+    pindices.push_back(registerParameter(_amplitudeGooVars[j]));
+  }*/
+  /*
+  gooMalloc((void**) d_psi_nS,sizeof(fptype));
+  gooMalloc((void**) d_dRadB0,sizeof(fptype));
+  gooMalloc((void**) d_dRadKs,sizeof(fptype));
+
+  MEMCPY(d_psi_nS,psi_nS,sizeof(fptype),cudaMemcpyHostToDevice);
+  MEMCPY(d_dRadB0,dRadB0,sizeof(fptype),cudaMemcpyHostToDevice);
+  MEMCPY(d_dRadKs,dRadKs,sizeof(fptype),cudaMemcpyHostToDevice);
+
+  gooMalloc((void**) d_numberOfKStar,sizeof(int));
+  MEMCPY(d_numberOfKStar,&numberOfKStar,sizeof(int),cudaMemcpyHostToDevice);
+
+  gooMalloc((void**) d_KStarVector,sizeof(fptype)*(int)KStarVector.size());
+  MEMCPY(d_KStarVector,&KStarVector[0],sizeof(int)*KStarVector.size(),cudaMemcpyHostToDevice);
+  */
+  GET_FUNCTION_ADDR(ptr_to_Matrix_Eff);
+  //GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
+  //GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
+  initialise(pindices);
+
+  ++numberOfHistos;
 }

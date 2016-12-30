@@ -2,6 +2,7 @@
 #define MATRIX_PDF_HH
 
 #include "GooPdf.hh"
+#include "BinnedDataSet.hh"
 
 //const fptype MBd = 5.27962;      // from PDG: http://pdglive.lbl.gov/Particle.action?node=S042&init=
 const fptype MBd = 5.2794;         // from EvtGen: https://github.com/cms-sw/cmssw/blob/86088d61d757bad0e55addda14859c5ea6108d84/GeneratorInterface/ExternalDecays/data/evt.pdl#L79
@@ -57,6 +58,9 @@ public:
   MatrixPdf(std::string n, Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi,
            std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
            Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
+  MatrixPdf(std::string n, Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi,
+                    std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
+                    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs,BinnedDataSet* x);
   __host__ virtual bool hasAnalyticIntegral () const {return false;}
 
   //__host__ fptype integrate (fptype lo, fptype hi) const;
@@ -84,6 +88,15 @@ private:
   Variable* psi_nS;
   Variable* dRadB0;
   Variable* dRadKs;
+
+  thrust::device_vector<fptype>* dev_base_matrix_histo;
+  thrust::device_vector<fptype>* dev_lowerlimits;
+  thrust::device_vector<fptype>* upperlimits;
+  thrust::device_vector<fptype>* steps;
+  thrust::device_vector<fptype>* bins;
+
+  fptype totalEvents;
+
 
 };
 
