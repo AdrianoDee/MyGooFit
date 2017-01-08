@@ -4,6 +4,8 @@
 #include "GooPdf.hh"
 #include "BinnedDataSet.hh"
 
+#include "/lustrehome/cristella/work/Z_analysis/AA_fit/constants.h"
+/*
 //const fptype MBd = 5.27962;      // from PDG: http://pdglive.lbl.gov/Particle.action?node=S042&init=
 const fptype MBd = 5.2794;         // from EvtGen: https://github.com/cms-sw/cmssw/blob/86088d61d757bad0e55addda14859c5ea6108d84/GeneratorInterface/ExternalDecays/data/evt.pdl#L79
 //const fptype MPsi2S = 3.686097; // from PDG: http://pdglive.lbl.gov/Particle.action?node=M071&init=
@@ -21,16 +23,17 @@ const fptype MPsi2S2 = MPsi2S*MPsi2S;
 const fptype MPsi2S4 = MPsi2S2*MPsi2S2;
 const fptype MJpsi2 = MJpsi*MJpsi;
 const fptype MJpsi4 = MJpsi2*MJpsi2;
+const fptype MKaon2 = MKaon*MKaon;
+const fptype MKaon4 = MKaon2*MKaon2;
+const fptype MPion2 = MPion*MPion;
+const fptype MPion4 = MPion2*MPion2;
+*/
 const fptype MPsi2S4mTwoMPsi2S2MBd2pMBd4 = MPsi2S4 - 2.*MPsi2S2*MBd2 + MBd4;
 const fptype MJpsi4mTwoMJpsi2MBd2pMBd4 = MJpsi4 - 2.*MJpsi2*MBd2 + MBd4;
 const fptype TwoMPsi2S2pTwoMBd2 = 2.*(MPsi2S2 + MBd2);
 const fptype TwoMJpsi2pTwoMBd2 = 2.*(MJpsi2 + MBd2);
 const fptype InvTwoMBd = 1./(2.*MBd);
 
-const fptype MKaon2 = MKaon*MKaon;
-const fptype MKaon4 = MKaon2*MKaon2;
-const fptype MPion2 = MPion*MPion;
-const fptype MPion4 = MPion2*MPion2;
 const fptype MKaon4mTwoMKaon2MPion2pMPion4 = MKaon4 - 2.*MKaon2*MPion2 + MPion4;
 const fptype TwoMKaon2pTwoMPion2 = 2.*(MKaon2 + MPion2);
 

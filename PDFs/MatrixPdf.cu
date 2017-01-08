@@ -54,8 +54,8 @@ EXEC_TARGET fptype efficiencyHisto(fptype mkp,fptype mPsiPi,fptype cosMuMu,fptyp
   fptype currVariable = 0.0;
 
   //fptype one,two;
-  unsigned int observablesSeen = 0;
-  unsigned int obsindex = 0;
+  //unsigned int observablesSeen = 0;
+  //unsigned int obsindex = 0;
   for (int i = 0; i < numVars; ++i) {
 
     currVariable = obserVables[i];

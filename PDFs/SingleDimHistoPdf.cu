@@ -161,8 +161,8 @@ MEM_CONSTANT fptype* dev_base_sidimhisto[20]; // Multiple histograms for the cas
 
      printf("NumVars = %d \n",numVars);
 
-     int globalBin = 0;
-     int previousNofBins = 1;
+     //int globalBin = 0;
+     //int previousNofBins = 1;
      int myHistogramIndex = indices[1];
      int interpolationOrder = indices[2];
 
