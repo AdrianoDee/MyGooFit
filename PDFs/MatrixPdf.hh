@@ -58,7 +58,7 @@ public:
     std::vector<Variable*>& _KParameters,
     Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);*/
   //MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi, Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b, Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
-  MatrixPdf(std::string n, Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi, const Int_t B0beauty,
+  MatrixPdf(std::string n, Variable* _x, Variable* _mJP, Variable* _cJ, Variable* _phi, Variable* _B0beauty,
 	    std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
 	    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
   MatrixPdf(std::string n, Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi,

@@ -70,13 +70,13 @@ EXEC_TARGET fptype efficiencyHisto(fptype mkp,fptype mPsiPi,fptype cosMuMu,fptyp
     if(currVariable<lowerBound || currVariable >upperBound) return 0.0;
 
     //Find the local bin number
-    currVariable   -= lowerBound;
-    currVariable   /= step;
+    currVariable -= lowerBound;
+    currVariable /= step;
 
-    int localBin    = (int) FLOOR(currVariable);
+    int localBin = (int) FLOOR(currVariable);
 
-    globalBin      += previousNofBins * localBin;
-    previousNofBins       *= localNumBins;
+    globalBin += previousNofBins * localBin;
+    previousNofBins *= localNumBins;
 
     //printf("Curr Variable %d = %.2f Hold var = %.2f [m = %.2f s = %.2f n = %d ] (%.2f %.2f %.2f %.2f)numVars %d globalBin %d localBin %d previous %d\n",i,currVariable,holdcurrent,lowerBound,step,localNumBins,evt[indices[indices[0] + 2]],evt[indices[indices[0] + 2 + 1]],evt[indices[indices[0] + 2 + 2]],evt[indices[indices[0] + 2 + 3]],numVars,globalBin,localBin,previousNofBins);
 
@@ -357,7 +357,7 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
 }
 
 
-EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fptype* p,unsigned int* indices,fptype spinR, fptype helJ, fptype helDmu,int iKStar)
+EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fptype* p, unsigned int* indices,fptype spinR, fptype helJ, fptype helDmu,int iKStar)
 {
   devcomplex<fptype> result;
 
@@ -498,7 +498,7 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype cJ = evt[indices[2 + indices[0]]+1];
   //fptype cKs = evt[indices[2 + indices[0]]+2];
   fptype phi = evt[indices[2 + indices[0]]+3];
-  if (B0beauty < 0)
+  if (p[indices[20]] < 0)
     phi *= -1;
 
   fptype psi_nS = p[indices[2]];
@@ -617,7 +617,7 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix_Eff = device_Matrix_Eff;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
-__host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Variable* _cJ, Variable* _phi, const Int_t B0beauty,
+__host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Variable* _cJ, Variable* _phi, Variable* _B0beauty,
         std::vector<Variable*> _Masses,std::vector<Variable*> _Gammas,std::vector<Variable*> _Spins,std::vector<Variable*> _a,std::vector<Variable*> _b,
         Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
 /*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
@@ -632,7 +632,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 
   for (int j = 0 ; j < _Masses.size(); j++) {
 
-    if(_Spins[j]->value>0.0)
+    if(_Spins[j]->value > 0.0)
       noOfKStars += 3;
     else
       ++noOfKStars;
@@ -642,7 +642,8 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   printf("Number of masses \t\t = %d\n", noOfMasses);
   printf("Amplitudes vector size \t\t = %d \n",_a.size());
 
-  if(noOfKStars != (int) _a.size()) abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
+  if (noOfKStars != (int) _a.size())
+    abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
 
   registerObservable(_mkp);
   registerObservable(_mJP);
@@ -675,7 +676,6 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   }
 
 
-
   /*for (int j = 0 ; j < (int)_KParameters.size(); j++) {
     pindices.push_back(registerParameter(_KParameters[j]));
   }*/
@@ -699,6 +699,9 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   gooMalloc((void**) d_KStarVector,sizeof(fptype)*(int)KStarVector.size());
   MEMCPY(d_KStarVector,&KStarVector[0],sizeof(int)*KStarVector.size(),cudaMemcpyHostToDevice);
   */
+
+  pindices.push_back(registerParameter(_B0beauty));
+
   GET_FUNCTION_ADDR(ptr_to_Matrix);
   //GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
   //GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
