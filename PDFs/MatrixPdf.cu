@@ -187,7 +187,7 @@ EXEC_TARGET fptype BWGamma(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fpt
 
 }
 
-EXEC_TARGET devcomplex<fptype> BW(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
+EXEC_TARGET devcomplex<fptype> BW(fptype mkp, fptype RMass, fptype RGamma, int Lmin, fptype D)
 {
 
     fptype num1term = RMass*RMass - mkp*mkp ;
@@ -200,7 +200,7 @@ EXEC_TARGET devcomplex<fptype> BW(fptype mkp,fptype RMass, fptype RGamma, int Lm
 
 }
 
-EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,int lA)
+EXEC_TARGET devcomplex<fptype> H(fptype* p, unsigned int* indices, fptype helJ, int lA)
 {
 
   devcomplex<fptype> result(0.0,0.0);
@@ -229,10 +229,7 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   //fptype a = p[indices[7]];
   //fptype b = p[indices[8]];
 
-
-
   result = exp(imUnit*b);
-
   result *= a;
 
   #ifdef MDEBUGGING
@@ -406,7 +403,7 @@ EXEC_TARGET devcomplex<fptype> RFunction(fptype mkp,fptype RMass, fptype RGamma,
   return RFunc ;
 }
 
-EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,unsigned int* indices,fptype helDmu)
+EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p, unsigned int* indices, fptype helDmu)
 {
   unsigned int nOfKstar = indices[1];
   //int numberOfKStar = indices[0]/6;
@@ -474,7 +471,7 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
   return finalDevice1 + finalDevice2 ;
 }
 
-EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
+EXEC_TARGET fptype PhiPHSP(fptype mkp, fptype psiN)
 {
     //printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
     const fptype psin = psiN;
@@ -501,6 +498,8 @@ EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices)
   fptype cJ = evt[indices[2 + indices[0]]+1];
   //fptype cKs = evt[indices[2 + indices[0]]+2];
   fptype phi = evt[indices[2 + indices[0]]+3];
+  if (B0beauty < 0)
+    phi *= -1;
 
   fptype psi_nS = p[indices[2]];
 
@@ -618,7 +617,7 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix_Eff = device_Matrix_Eff;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Point = device_Matrix_Point;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
-__host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Variable* _cJ, Variable* _phi,
+__host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Variable* _cJ, Variable* _phi, const Int_t B0beauty,
         std::vector<Variable*> _Masses,std::vector<Variable*> _Gammas,std::vector<Variable*> _Spins,std::vector<Variable*> _a,std::vector<Variable*> _b,
         Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
 /*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
@@ -708,7 +707,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 
 __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Variable* _cJ, Variable* _phi,
         std::vector<Variable*> _Masses,std::vector<Variable*> _Gammas,std::vector<Variable*> _Spins,std::vector<Variable*> _a,std::vector<Variable*> _b,
-        Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs,BinnedDataSet* x)
+        Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs, BinnedDataSet* x)
 /*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
     Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b,
     Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)*/
