@@ -8,48 +8,6 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
   // nP totalHistograms (limit1 step1 bins1) (limit2 step2 bins2) nO o1 o2
   // where limit and step are indices into functorConstants.
 
-  Double_t RooMath::interpolate(Double_t xa[], Double_t ya[], Int_t n, Double_t x)
- 646 {
- 647   // Interpolate array 'ya' with 'n' elements for 'xa'
- 648
- 649   // Int to Double conversion is faster via array lookup than type conversion!
- 650 //   static Double_t itod[20] = { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0,
- 651 //                10.0,11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0} ;
- 652   int i,m,ns=1 ;
- 653   Double_t den,dif,dift,ho,hp,w,y,dy ;
- 654   Double_t c[20], d[20] ;
- 655
- 656   dif = fabs(x-xa[0]) ;
- 657   for(i=1 ; i<=n ; i++) {
- 658     if ((dift=fabs(x-xa[i-1]))<dif) {
- 659       ns=i ;
- 660       dif=dift ;
- 661     }
- 662     c[i] = ya[i-1] ;
- 663     d[i] = ya[i-1] ;
- 664   }
- 665
- 666   y=ya[--ns] ;
- 667   for(m=1 ; m<n; m++) {
- 668     for(i=1 ; i<=n-m ; i++) {
- 669       ho=xa[i-1]-x ;
- 670       hp=xa[i-1+m]-x ;
- 671       w=c[i+1]-d[i] ;
- 672       den=ho-hp ;
- 673       if (den==0.) {
- 674    oocoutE((TObject*)0,Eval) << "RooMath::interpolate ERROR: zero distance between points not allowed" << endl ;
- 675    return 0 ;
- 676       }
- 677       den = w/den ;
- 678       d[i]=hp*den ;
- 679       c[i]=ho*den;
- 680     }
- 681     dy = (2*ns)<(n-m) ? c[ns+1] : d[ns--] ;
- 682     y += dy ;
- 683   }
- 684   return y ;
- 685 }
-
   int numVars = (indices[0] - 1) / 3;
   int globalBin = 0;
   int previousNofBins = 1;
@@ -172,7 +130,7 @@ MEM_DEVICE device_function_ptr ptr_to_FlatHistogram = device_FlatHistogram;
 
 __host__ FlatHistoPdf::FlatHistoPdf (std::string n,
 							 BinnedDataSet* x,
-							 std::vector<Variable*> obses,int interDegree = 1)
+							 std::vector<Variable*> obses)
   : GooPdf(0, n)
   , numVars(x->numVariables())
 {
