@@ -379,7 +379,7 @@ __host__ BiDimHistoPdf::BiDimHistoPdf (std::string n,
   : GooPdf(0, n)
   , numVars(x->numVariables())
 {
-  if(numVars>2) abortWithCudaPrintFlush(__FILE__, __LINE__, "Only the first two variables will be taken into account !\n");
+  // if(numVars>2) abortWithCudaPrintFlush(__FILE__, __LINE__, "Only the first two variables will be taken into account !\n");
 
   int numConstants = 2*numVars;
   registerConstants(numConstants);
