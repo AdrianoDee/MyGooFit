@@ -427,6 +427,10 @@ EXEC_TARGET fptype device_Matrix_B0 (fptype* evt, fptype* p, unsigned int* indic
   //fptype cKs = evt[indices[2 + indices[0]]+2];
   fptype phi = evt[indices[2 + indices[0]]+3];
   fptype b0Flag = evt[indices[2 + indices[0]]+4];
+
+  if (b0Flag<0.0)
+    phi *= -1.0;
+
   fptype psi_nS = p[indices[2]];
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
@@ -464,9 +468,11 @@ EXEC_TARGET fptype device_Matrix_B0 (fptype* evt, fptype* p, unsigned int* indic
     //printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f mPSIP = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi,mPsiP);
     return result;
   }
+}
 
 
-EXEC_TARGET fptype device_Matrix (fptype* evt, fptype* p, unsigned int* indices) {
+
+EXEC_TARGET fptype device_Matrix(fptype* evt, fptype* p, unsigned int* indices) {
 
   #ifdef MDEBUGGING
   printf("Zero paramater set %d %d %d %d %.2f %.2f %.2f %.2f  %.2f \n",indices[0],indices[1],indices[2],indices[3],p[indices[0]],p[indices[1]],p[indices[2]],p[indices[3]],p[indices[4]]);
