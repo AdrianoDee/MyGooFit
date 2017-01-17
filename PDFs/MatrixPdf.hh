@@ -2,7 +2,10 @@
 #define MATRIX_PDF_HH
 
 #include "GooPdf.hh"
+#include "BinnedDataSet.hh"
+#include "../extras/constants.h"
 
+/*
 //const fptype MBd = 5.27962;      // from PDG: http://pdglive.lbl.gov/Particle.action?node=S042&init=
 const fptype MBd = 5.2794;         // from EvtGen: https://github.com/cms-sw/cmssw/blob/86088d61d757bad0e55addda14859c5ea6108d84/GeneratorInterface/ExternalDecays/data/evt.pdl#L79
 //const fptype MPsi2S = 3.686097; // from PDG: http://pdglive.lbl.gov/Particle.action?node=M071&init=
@@ -20,18 +23,22 @@ const fptype MPsi2S2 = MPsi2S*MPsi2S;
 const fptype MPsi2S4 = MPsi2S2*MPsi2S2;
 const fptype MJpsi2 = MJpsi*MJpsi;
 const fptype MJpsi4 = MJpsi2*MJpsi2;
+
+const fptype MKaon2 = MKaon*MKaon;
+const fptype MKaon4 = MKaon2*MKaon2;
+const fptype MPion2 = MPion*MPion;
+const fptype MPion4 = MPion2*MPion2;
+*/
+
 const fptype MPsi2S4mTwoMPsi2S2MBd2pMBd4 = MPsi2S4 - 2.*MPsi2S2*MBd2 + MBd4;
 const fptype MJpsi4mTwoMJpsi2MBd2pMBd4 = MJpsi4 - 2.*MJpsi2*MBd2 + MBd4;
 const fptype TwoMPsi2S2pTwoMBd2 = 2.*(MPsi2S2 + MBd2);
 const fptype TwoMJpsi2pTwoMBd2 = 2.*(MJpsi2 + MBd2);
 const fptype InvTwoMBd = 1./(2.*MBd);
 
-const fptype MKaon2 = MKaon*MKaon;
-const fptype MKaon4 = MKaon2*MKaon2;
-const fptype MPion2 = MPion*MPion;
-const fptype MPion4 = MPion2*MPion2;
 const fptype MKaon4mTwoMKaon2MPion2pMPion4 = MKaon4 - 2.*MKaon2*MPion2 + MPion4;
 const fptype TwoMKaon2pTwoMPion2 = 2.*(MKaon2 + MPion2);
+
 
 #define KSTARSIZE 7
 #define SKIP -12
@@ -57,6 +64,10 @@ public:
   MatrixPdf(std::string n, Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi,
            std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
            Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
+           //MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi, Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b, Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
+  MatrixPdf(std::string n, Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi, Variable* _B0beauty,
+            std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
+            Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
   __host__ virtual bool hasAnalyticIntegral () const {return false;}
 
   //__host__ fptype integrate (fptype lo, fptype hi) const;
@@ -84,6 +95,15 @@ private:
   Variable* psi_nS;
   Variable* dRadB0;
   Variable* dRadKs;
+
+  thrust::device_vector<fptype>* dev_base_matrix_histo;
+  thrust::device_vector<fptype>* dev_lowerlimits;
+  thrust::device_vector<fptype>* dev_upperlimits;
+  thrust::device_vector<fptype>* dev_steps;
+  thrust::device_vector<fptype>* dev_bins;
+
+  fptype totalEvents;
+
 
 };
 
