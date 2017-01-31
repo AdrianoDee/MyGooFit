@@ -527,6 +527,61 @@ EXEC_TARGET fptype device_Matrix(fptype* evt, fptype* p, unsigned int* indices) 
 
 }
 
+EXEC_TARGET fptype device_Matrix_Bar(fptype* evt, fptype* p, unsigned int* indices) {
+
+  #ifdef MDEBUGGING
+  printf("Zero paramater set %d %d %d %d %.2f %.2f %.2f %.2f  %.2f \n",indices[0],indices[1],indices[2],indices[3],p[indices[0]],p[indices[1]],p[indices[2]],p[indices[3]],p[indices[4]]);
+  printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
+  printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
+  printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
+  #endif
+
+  fptype mkp = evt[indices[2 + indices[0]]];
+  fptype mPsiP = evt[indices[2 + indices[0]]+2];
+  fptype cJ = evt[indices[2 + indices[0]]+1];
+  //fptype cKs = evt[indices[2 + indices[0]]+2];
+  fptype phi = -evt[indices[2 + indices[0]]+3];
+
+  fptype psi_nS = p[indices[2]];
+
+  // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
+  fptype MPsi_nS = 0.;
+  if (psi_nS==1.0)
+    MPsi_nS = MJpsi;
+  else if (psi_nS==2.0)
+    MPsi_nS = MPsi2S;
+  else {
+    printf("\nMatrix P.d.f not configured for psi_nS = %.0f",psi_nS);
+    //printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
+  }
+
+  fptype mKP2 = mkp*mkp;
+  fptype mPsiP2 = mPsiP*mPsiP;
+  fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
+
+  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
+    //printf("Returning 0: point out of the Dalitz borders!\n");
+    return 0.; }
+
+  fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
+
+  //fptype dRadB0 = p[indices[3]];
+  //fptype dRadKs = p[indices[4]];
+  //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,mPsiP);
+
+  if (FABS(cKs) > 1) {
+    //printf("\nReturning 0 : ckS > 1 or < -1 ");
+    return 0.; }
+  else {
+    fptype MEME = ME2(mkp,cJ,cKs,phi,p,indices);
+    fptype phiPhase = PhiPHSP(mkp,psi_nS);
+    fptype result = MEME * phiPhase;
+    //printf("Device Matrix = %.3f MEME = %.3f phiPhase = %.3f with mkp = %.2f cJ = %.2f cKs = %.2f phi = %.2f mPSIP = %.2f \n",result,MEME,phiPhase,mkp,cJ,cKs,phi,mPsiP);
+    return result;
+  }
+
+}
+
 /*
 EXEC_TARGET fptype device_Matrix_Point (fptype* point, fptype* p, unsigned int* indices) {
 
@@ -540,6 +595,7 @@ EXEC_TARGET fptype device_Matrix_Bin (fptype* point, fptype* p, unsigned int* in
 
 }*/
 
+MEM_DEVICE device_function_ptr ptr_to_Matrix_Bar = ptr_to_Matrix_Bar;
 MEM_DEVICE device_function_ptr ptr_to_Matrix_B0 = device_Matrix_B0;
 MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 
@@ -605,6 +661,69 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   }
 
   GET_FUNCTION_ADDR(ptr_to_Matrix);
+  //GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
+  //GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
+  initialise(pindices);
+}
+
+__host__ MatrixPdf(std::string n, std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
+                  Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs,Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi);
+/*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+    Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b,
+    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)*/
+  : GooPdf(0, n),
+  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
+{
+
+  unsigned int noOfKStars = 0;
+  unsigned int noOfMasses = (int) _Masses.size();
+
+  for (int j = 0 ; j < _Masses.size(); j++) {
+
+    if(_Spins[j]->value > 0.0)
+      noOfKStars += 3;
+    else
+      ++noOfKStars;
+  }
+
+  printf("Number of K* \t\t\t = %d\n", noOfKStars);
+  printf("Number of masses \t\t = %d\n", noOfMasses);
+  printf("Amplitudes vector size \t\t = %d \n",_a.size());
+
+  if(noOfKStars != (int) _a.size())
+      abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
+
+  registerObservable(_mkp);
+  registerObservable(_mJP);
+  registerObservable(_cJ);
+  registerObservable(_phi);
+
+  std::vector<unsigned int> pindices;
+
+  pindices.push_back(noOfMasses);
+  pindices.push_back(registerParameter(_psi_nS));  // p[indices[2]]
+  pindices.push_back(registerParameter(_dRadB0));  // p[indices[3]]
+  pindices.push_back(registerParameter(_dRadKs));  // p[indices[4]]
+
+  //Parameter vector
+  // psi_ns dRadB0 dRadKs m1 g1 s1 m2 g2 s2 . . . mn  gn  sn   a1          b1             a2 b2 . . . an                  bn                    //
+  //Indeces
+  // 2      3      4      5  6  7  8  9  10        4+n 5+n 6+n  4+nKstars*3 4+nKstars*3+1              4+nKstars*3+(n-1)*2 4+nKstars*3+(n-1)*2+1
+  for (int j = 0 ; j < _Masses.size(); j++) {
+
+    pindices.push_back(registerParameter(_Masses[j]));  // p[indices[5]]
+    pindices.push_back(registerParameter(_Gammas[j]));  // p[indices[6]]
+    pindices.push_back(registerParameter(_Spins[j]));
+  }
+
+  for (int j = 0 ; j < (int)_a.size(); j++) {
+    //pindices.push_back(registerParameter(_helj[j]));
+    pindices.push_back(registerParameter(_a[j]));
+    pindices.push_back(registerParameter(_b[j]));
+
+  }
+
+  GET_FUNCTION_ADDR(ptr_to_Matrix_Bar);
   //GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
   //GET_ATPOINTS_ADDR(ptr_to_Matrix_Point);
   initialise(pindices);
