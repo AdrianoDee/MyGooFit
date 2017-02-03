@@ -27,58 +27,58 @@ EXEC_TARGET fptype cosTheta_FromMasses(const fptype sameSideM2, const fptype opp
 
 EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
 {
-    fptype Dq = D*q;
-    fptype Dq0 = D*q0;
-    fptype Dq2 = Dq*Dq;
-    fptype Dq02 = Dq0*Dq0;
-    fptype Dq4 = Dq2*Dq2;
-    fptype Dq04 = Dq02*Dq02;
-    fptype Dq6 = Dq4*Dq2;
-    fptype Dq06 = Dq04*Dq02;
-    fptype rootterm = -1;
+  fptype Dq = D*q;
+  fptype Dq0 = D*q0;
+  fptype Dq2 = Dq*Dq;
+  fptype Dq02 = Dq0*Dq0;
+  fptype Dq4 = Dq2*Dq2;
+  fptype Dq04 = Dq02*Dq02;
+  fptype Dq6 = Dq4*Dq2;
+  fptype Dq06 = Dq04*Dq02;
+  fptype rootterm = -1;
 
-    if (Lmin==0)
-      return 1.;
-    else if (Lmin==1)
-      rootterm = (1. + Dq02) / (1. + Dq2) ;
-    else if (Lmin==2)
-      rootterm = (9. + 3*Dq02 +Dq04) / (9. + 3*Dq2 +Dq4) ;
-    else if (Lmin==3)
-      rootterm = (225. + 45*Dq02 + 6*Dq04 + Dq06) / (225. + 45*Dq2 + 6*Dq4 + Dq6) ;
-    else { printf("WARNING! Lmin = %d is not implemented for BlattWeisskopf functions at the moment. Returning 1 -> \"AngularTerm\" = 0\n",Lmin);
-      return 1.;
-    }
+  if (Lmin==0)
+    return 1.;
+  else if (Lmin==1)
+    rootterm = (1. + Dq02) / (1. + Dq2) ;
+  else if (Lmin==2)
+    rootterm = (9. + 3*Dq02 +Dq04) / (9. + 3*Dq2 +Dq4) ;
+  else if (Lmin==3)
+    rootterm = (225. + 45*Dq02 + 6*Dq04 + Dq06) / (225. + 45*Dq2 + 6*Dq4 + Dq6) ;
+  else { printf("WARNING! Lmin = %d is not implemented for BlattWeisskopf functions at the moment. Returning 1 -> \"AngularTerm\" = 0\n",Lmin);
+    return 1.;
+  }
 
-    if (rootterm > 0)
-        return SQRT( rootterm );
-    else { printf("WARNING! In \"BlattWeisskopf\" function: rootterm <= 0 -> returning 1\n");
-        return 1.;
-    }
+  if (rootterm > 0)
+    return SQRT( rootterm );
+  else { printf("WARNING! In \"BlattWeisskopf\" function: rootterm <= 0 -> returning 1\n");
+    return 1.;
+  }
 }
 
 
 EXEC_TARGET fptype Pmom(fptype mkp,const fptype psiN)
 {
 
-    fptype mkp2 = mkp*mkp;
-    fptype rootterm = 0;
+  fptype mkp2 = mkp*mkp;
+  fptype rootterm = 0;
 
-    //printf("=======Pmom mpk = %.2f psiN = %.2f \n",mkp,psiN);
+  //printf("=======Pmom mpk = %.2f psiN = %.2f \n",mkp,psiN);
 
-    //if (psiN==1.0)
-    if (true)
-      rootterm = MJpsi4mTwoMJpsi2MBd2pMBd4 + mkp2*(mkp2 - TwoMJpsi2pTwoMBd2);
-    else if (psiN==2.0)
-      rootterm = MPsi2S4mTwoMPsi2S2MBd2pMBd4 + mkp2*(mkp2 - TwoMPsi2S2pTwoMBd2);
-    else
-      {printf("psi_nS = %.2f not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0\n",psiN);}
+  //if (psiN==1.0)
+  if (true)
+    rootterm = MJpsi4mTwoMJpsi2MBd2pMBd4 + mkp2*(mkp2 - TwoMJpsi2pTwoMBd2);
+  else if (psiN==2.0)
+    rootterm = MPsi2S4mTwoMPsi2S2MBd2pMBd4 + mkp2*(mkp2 - TwoMPsi2S2pTwoMBd2);
+  else
+    {printf("psi_nS = %.2f not allowed in \"Pmom\" function at the moment. Keeping rootterm at 0\n",psiN);}
 
-    if (rootterm > 0){
-        return InvTwoMBd * SQRT(rootterm);}
-    else { //cout <<"WARNING! In \"Pmom\" function: rootterm (" <<rootterm <<") <= 0 for mkp = " <<mkp <<" and psi_nS = " <<psi_nS <<" -> returning 0" <<endl;
-           printf("WARNING! In \"Pmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f and psi_nS = %.2f  -> returning 0 \n",rootterm,mkp,psiN);
-           return 0.;
-    }
+  if (rootterm > 0){
+    return InvTwoMBd * SQRT(rootterm);}
+  else { //cout <<"WARNING! In \"Pmom\" function: rootterm (" <<rootterm <<") <= 0 for mkp = " <<mkp <<" and psi_nS = " <<psi_nS <<" -> returning 0" <<endl;
+    printf("WARNING! In \"Pmom\" function: rootterm (%.2f) <= 0 for mkp = %.2f and psi_nS = %.2f  -> returning 0 \n",rootterm,mkp,psiN);
+    return 0.;
+  }
 
 }
 
@@ -100,26 +100,26 @@ EXEC_TARGET fptype Qmom(fptype mkp)
 
 EXEC_TARGET fptype BWGamma(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
 {
-    fptype QmKP = Qmom(mkp);
-    fptype QRMass = Qmom(RMass);
-    int expoterm = 2*Lmin + 1 ;
+  fptype QmKP = Qmom(mkp);
+  fptype QRMass = Qmom(RMass);
+  int expoterm = 2*Lmin + 1 ;
 
-    fptype BWG = ( RGamma * RMass * POW(QmKP/QRMass,expoterm) * POW(BlattWeisskopf(Lmin, QmKP, QRMass, D),2) ) / mkp;
-    //cout <<"BWGamma for RMass = " <<RMass <<": " <<BWG <<endl;
-    return BWG ;
+  fptype BWG = ( RGamma * RMass * POW(QmKP/QRMass,expoterm) * POW(BlattWeisskopf(Lmin, QmKP, QRMass, D),2) ) / mkp;
+  //cout <<"BWGamma for RMass = " <<RMass <<": " <<BWG <<endl;
+  return BWG ;
 
 }
 
 EXEC_TARGET devcomplex<fptype> BW(fptype mkp,fptype RMass, fptype RGamma, int Lmin, fptype D)
 {
 
-    fptype num1term = RMass*RMass - mkp*mkp ;
-    fptype num2term = RMass * BWGamma(mkp,RMass, RGamma, Lmin, D) ;
-    fptype denoterm = num1term*num1term + num2term*num2term ;
+  fptype num1term = RMass*RMass - mkp*mkp ;
+  fptype num2term = RMass * BWGamma(mkp,RMass, RGamma, Lmin, D) ;
+  fptype denoterm = num1term*num1term + num2term*num2term ;
 
-    devcomplex<fptype> bw (num1term / denoterm, num2term / denoterm);
-    //cout <<"BW for RMass = " <<RMass <<": " <<bw <<endl;
-    return bw ;
+  devcomplex<fptype> bw (num1term / denoterm, num2term / denoterm);
+  //cout <<"BW for RMass = " <<RMass <<": " <<bw <<endl;
+  return bw ;
 
 }
 
@@ -143,11 +143,11 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
   fptype a = p[indices[5+noOfMasses*3+lA*2+whichOfThree*2]];
   fptype b = p[indices[5+noOfMasses*3+lA*2+whichOfThree*2+1]];
 
-  #ifdef MDEBUGGING
+#ifdef MDEBUGGING
   if(helJ==ZEROHEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = 0 (%.2f) noOfMasses = %d lA = %d \n ",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses,lA);
   if(helJ==M1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = M1 (%.2f) noOfMasses = %d lA = %d \n",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses,lA);
   if(helJ==P1HEL) printf("Which of Three : %d Index : %d  a = %.3f  b = %.3f for helJ = P1 (%.2f) noOfMasses = %d lA = %d \n",whichOfThree,5+noOfMasses*3+lA+whichOfThree*2,a,b,helJ,noOfMasses,lA);
-  #endif
+#endif
 
   //fptype a = p[indices[7]];
   //fptype b = p[indices[8]];
@@ -158,11 +158,11 @@ EXEC_TARGET devcomplex<fptype> H(fptype* p,unsigned int* indices, fptype helJ,in
 
   result *= a;
 
-  #ifdef MDEBUGGING
+#ifdef MDEBUGGING
   // if(helJ==ZEROHEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = 0 (%.2f) \n",result.real,result.imag,a,b,helJ);
   // if(helJ==M1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = M1 (%.2f) \n",result.real,result.imag,a,b,helJ);
   // if(helJ==P1HEL) printf("H = (%.3f,%.3f)  a = %.3f  b = %.3f for helJ = P1(%.2f) \n",result.real,result.imag,a,b,helJ);
-  #endif
+#endif
 
   return result ;
 
@@ -178,7 +178,7 @@ EXEC_TARGET fptype Wignerd_R(fptype spinR, fptype helJ, fptype cKs)
       fptype result = +(SIN(ACOS(cKs)) / root2);
       //printf("helj = m1 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,result);
       return result;
-      }
+    }
     else if (helJ==ZEROHEL){
       //printf("helj = 0 cKs = %.3f -> Wignerd_R = %.3f \n",cKs,cKs);
       return cKs ;}
@@ -257,7 +257,7 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
     else {
       printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = 0 returning 0\n",helDmu);
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
-      }
+    }
   }
   else if(helJ==P1HEL) {
     if (helDmu==M1HEL)
@@ -273,7 +273,7 @@ EXEC_TARGET devcomplex<fptype> WignerD_J(fptype helJ, fptype helDmu, fptype angl
     else {
       printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = P1 returning 0\n",helDmu);
       //cout <<"helDmu = " <<helDmu <<" not allowed in \"WignerD_J\" functions for helJ = " <<helJ <<" at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
-      }
+    }
   } else {
     printf("WignerD_J :Not Allowed helDmu = %.2f with helJ = %.2f returning 0\n",helDmu,helJ);
     //cout <<"helJ = " <<helJ <<" not allowed in \"WignerD_J\" functions at the moment. Returning 0 -> \"AngularTerm\" = 0" <<endl ;
@@ -294,9 +294,9 @@ EXEC_TARGET devcomplex<fptype> AngularTerm(fptype cJ, fptype cKs, fptype phi, fp
 
   result = HH * WR * cWR ;
 
-  #ifdef MDEBUGGING
+#ifdef MDEBUGGING
   //printf("====== AngularTerm = (%.3f , %.3f) cJ = %.3f cKs = %.3f phi = %.3f \n ====== HH = (%.3f , %.3f) \n ====== WR = %.3f \n -- cKs = %.3f \n ====== cWR = (%.3f , %.3f) -- phi = %.3f  --- cJ = %.3f \n spin = %.3f \n",result.real,result.imag,cJ,cKs,phi,HH.real,HH.imag,WR,cKs,cWR.real,cWR.imag,phi,cJ,spinR);
-  #endif
+#endif
 
   return result;
 }
@@ -357,21 +357,20 @@ EXEC_TARGET devcomplex<fptype> matrixElement(fptype mkp, fptype cJ, fptype cKs, 
     // 2) psi_ns 3) DB0 4) DBK 5) M1 6) G1 7) S1 8) A1 9)B1 10)M2
     devcomplex<fptype> matrixElement_R(0.0,0.0);
 
-    #ifdef MDEBUGGING
+#ifdef MDEBUGGING
     printf("Mass = %f Gamma = %f Spin = %f psi_nS = %f dRadB0 = %f dRadKs = %f \n",Mass,Gamma,Spin,psi_nS,dRadB0,dRadKs);
-    #endif
+#endif
 
     if (Spin==0.0) { // for spin0 K*, third last argument = spin(psi_nS) = spin.Atoi() + 1 = 1
       matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin+1, Spin, dRadB0, dRadKs,psi_nS) *
-      AngularTerm(cJ,cKs,phi,p,indices,Spin, ZEROHEL, helDmu,lastAmplitude) ;
+	AngularTerm(cJ,cKs,phi,p,indices,Spin, ZEROHEL, helDmu,lastAmplitude) ;
       ++lastAmplitude;
     }
-       else
-              {
-                matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin-1, Spin,dRadB0,dRadKs,psi_nS) *
-	               ( AngularTerm(cJ,cKs,phi,p,indices,Spin, M1HEL, helDmu,lastAmplitude) + AngularTerm(cJ,cKs,phi,p,indices, Spin, ZEROHEL, helDmu,lastAmplitude) + AngularTerm(cJ,cKs,phi,p,indices,Spin, P1HEL, helDmu,lastAmplitude) ) ;
-                   lastAmplitude +=3;
-               }
+    else {
+      matrixElement_R = RFunction(mkp,Mass,Gamma, MBd, Spin-1, Spin,dRadB0,dRadKs,psi_nS) *
+	( AngularTerm(cJ,cKs,phi,p,indices,Spin, M1HEL, helDmu,lastAmplitude) + AngularTerm(cJ,cKs,phi,p,indices, Spin, ZEROHEL, helDmu,lastAmplitude) + AngularTerm(cJ,cKs,phi,p,indices,Spin, P1HEL, helDmu,lastAmplitude) ) ;
+      lastAmplitude +=3;
+    }
     //cout <<"\nAngularTerm.Rho() for " <<R <<" = " <<(AngularTerm(R, spin, "0", helDmu)).Rho() <<endl;
     //cout <<"matrixElement for (R,helDmu) = (" <<R <<"," <<helDmu <<") = H(R,helJ) * RFunction * AngularTerm = " <<matrixElement_R <<endl;
     matrixElement += matrixElement_R;
@@ -399,27 +398,27 @@ EXEC_TARGET fptype ME2(fptype mkp, fptype cJ, fptype cKs, fptype phi, fptype* p,
 
 EXEC_TARGET fptype PhiPHSP(fptype mkp,fptype psiN)
 {
-    //printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
-    const fptype psin = psiN;
-    fptype p = Pmom(mkp,psin);
-    fptype q = Qmom(mkp);
-    //fptype phsp = p*q;
-    //printf(" Mass KPi = %.3f Phase space = %.3f\n",mkp,phsp);
-    //printf("==================");
+  //printf("=======Phase Space mpk = %.2f psiN = %.2f \n",mkp,psiN);
+  const fptype psin = psiN;
+  fptype p = Pmom(mkp,psin);
+  fptype q = Qmom(mkp);
+  //fptype phsp = p*q;
+  //printf(" Mass KPi = %.3f Phase space = %.3f\n",mkp,phsp);
+  //printf("==================");
 
-    return Pmom(mkp,psiN) * Qmom(mkp);
+  return Pmom(mkp,psiN) * Qmom(mkp);
 }
 
 
 
-EXEC_TARGET fptype device_Matrix_B0 (fptype* evt, fptype* p, unsigned int* indices) {
+EXEC_TARGET fptype device_Matrix_B0(fptype* evt, fptype* p, unsigned int* indices) {
 
-  #ifdef MDEBUGGING
+#ifdef MDEBUGGING
   printf("Zero paramater set %d %d %d %d %.2f %.2f %.2f %.2f  %.2f \n",indices[0],indices[1],indices[2],indices[3],p[indices[0]],p[indices[1]],p[indices[2]],p[indices[3]],p[indices[4]]);
   printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
   printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
   printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
-  #endif
+#endif
 
   fptype mkp = evt[indices[2 + indices[0]]];
   fptype mPsiP = evt[indices[2 + indices[0]]+2];
@@ -474,12 +473,12 @@ EXEC_TARGET fptype device_Matrix_B0 (fptype* evt, fptype* p, unsigned int* indic
 
 EXEC_TARGET fptype device_Matrix(fptype* evt, fptype* p, unsigned int* indices) {
 
-  #ifdef MDEBUGGING
+#ifdef MDEBUGGING
   printf("Zero paramater set %d %d %d %d %.2f %.2f %.2f %.2f  %.2f \n",indices[0],indices[1],indices[2],indices[3],p[indices[0]],p[indices[1]],p[indices[2]],p[indices[3]],p[indices[4]]);
   printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
   printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
   printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
-  #endif
+#endif
 
   fptype mkp = evt[indices[2 + indices[0]]];
   fptype mPsiP = evt[indices[2 + indices[0]]+2];
@@ -529,12 +528,12 @@ EXEC_TARGET fptype device_Matrix(fptype* evt, fptype* p, unsigned int* indices) 
 
 EXEC_TARGET fptype device_Matrix_Bar(fptype* evt, fptype* p, unsigned int* indices) {
 
-  #ifdef MDEBUGGING
+#ifdef MDEBUGGING
   printf("Zero paramater set %d %d %d %d %.2f %.2f %.2f %.2f  %.2f \n",indices[0],indices[1],indices[2],indices[3],p[indices[0]],p[indices[1]],p[indices[2]],p[indices[3]],p[indices[4]]);
   printf("First K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[5]],p[indices[6]],p[indices[7]],p[indices[8]],p[indices[9]]);
   printf("Second K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[10]],p[indices[11]],p[indices[12]],p[indices[13]],p[indices[14]]);
   printf("Third K paramater set  %.2f %.2f  %.2f  %.2f  %.2f \n",p[indices[15]],p[indices[16]],p[indices[17]],p[indices[18]],p[indices[19]]);
-  #endif
+#endif
 
   fptype mkp = evt[indices[2 + indices[0]]];
   fptype mPsiP = evt[indices[2 + indices[0]]+2];
@@ -583,19 +582,19 @@ EXEC_TARGET fptype device_Matrix_Bar(fptype* evt, fptype* p, unsigned int* indic
 }
 
 /*
-EXEC_TARGET fptype device_Matrix_Point (fptype* point, fptype* p, unsigned int* indices) {
+  EXEC_TARGET fptype device_Matrix_Point (fptype* point, fptype* p, unsigned int* indices) {
 
   return 0;
 
-}
+  }
 
-EXEC_TARGET fptype device_Matrix_Bin (fptype* point, fptype* p, unsigned int* indices) {
+  EXEC_TARGET fptype device_Matrix_Bin (fptype* point, fptype* p, unsigned int* indices) {
 
   return 0;
 
-}*/
+  }*/
 
-MEM_DEVICE device_function_ptr ptr_to_Matrix_Bar = ptr_to_Matrix_Bar;
+MEM_DEVICE device_function_ptr ptr_to_Matrix_Bar = device_Matrix_Bar;
 MEM_DEVICE device_function_ptr ptr_to_Matrix_B0 = device_Matrix_B0;
 MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 
@@ -603,21 +602,20 @@ MEM_DEVICE device_function_ptr ptr_to_Matrix = device_Matrix;
 //MEM_DEVICE device_function_ptr ptr_to_Matrix_Bin = device_Matrix_Bin;
 
 __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Variable* _cJ, Variable* _phi,
-        std::vector<Variable*> _Masses,std::vector<Variable*> _Gammas,std::vector<Variable*> _Spins,std::vector<Variable*> _a,std::vector<Variable*> _b,
-        Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
-/*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+			      std::vector<Variable*> _Masses, std::vector<Variable*> _Gammas, std::vector<Variable*> _Spins, std::vector<Variable*> _a, std::vector<Variable*> _b,
+			      Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
+  /*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
     Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b,
     Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)*/
   : GooPdf(0, n),
-  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
+    psi_nS(_psi_nS), dRadB0(_dRadB0), dRadKs(_dRadKs)
 {
 
   unsigned int noOfKStars = 0;
   unsigned int noOfMasses = (int) _Masses.size();
 
   for (int j = 0 ; j < _Masses.size(); j++) {
-
-    if(_Spins[j]->value > 0.0)
+    if (_Spins[j]->value > 0.0)
       noOfKStars += 3;
     else
       ++noOfKStars;
@@ -626,9 +624,9 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   printf("Number of K* \t\t\t = %d\n", noOfKStars);
   printf("Number of masses \t\t = %d\n", noOfMasses);
   printf("Amplitudes vector size \t\t = %d \n",_a.size());
-
-  if(noOfKStars != (int) _a.size())
-      abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
+  
+  if (noOfKStars != (int) _a.size())
+    abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
 
   registerObservable(_mkp);
   registerObservable(_mJP);
@@ -647,7 +645,6 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   //Indeces
   // 2      3      4      5  6  7  8  9  10        4+n 5+n 6+n  4+nKstars*3 4+nKstars*3+1              4+nKstars*3+(n-1)*2 4+nKstars*3+(n-1)*2+1
   for (int j = 0 ; j < _Masses.size(); j++) {
-
     pindices.push_back(registerParameter(_Masses[j]));  // p[indices[5]]
     pindices.push_back(registerParameter(_Gammas[j]));  // p[indices[6]]
     pindices.push_back(registerParameter(_Spins[j]));
@@ -657,7 +654,6 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
     //pindices.push_back(registerParameter(_helj[j]));
     pindices.push_back(registerParameter(_a[j]));
     pindices.push_back(registerParameter(_b[j]));
-
   }
 
   GET_FUNCTION_ADDR(ptr_to_Matrix);
@@ -666,13 +662,13 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   initialise(pindices);
 }
 
-__host__ MatrixPdf(std::string n, std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
-                  Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs,Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi);
-/*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
+__host__ MatrixPdf::MatrixPdf(std::string n, std::vector<Variable*> _Masses, std::vector<Variable*> _Gammas, std::vector<Variable*> _Spins,std::vector<Variable*> _a, std::vector<Variable*> _b,
+		   Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs, Variable* _mKP, Variable* _mJP, Variable* _cJ, Variable* _phi)
+  /*__host__ MatrixPdf::MatrixPdf (std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi,
     Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b,
     Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)*/
   : GooPdf(0, n),
-  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
+    psi_nS(_psi_nS), dRadB0(_dRadB0), dRadKs(_dRadKs)
 {
 
   unsigned int noOfKStars = 0;
@@ -691,9 +687,9 @@ __host__ MatrixPdf(std::string n, std::vector<Variable*> _Masses,std::vector<Var
   printf("Amplitudes vector size \t\t = %d \n",_a.size());
 
   if(noOfKStars != (int) _a.size())
-      abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
+    abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
 
-  registerObservable(_mkp);
+  registerObservable(_mKP);
   registerObservable(_mJP);
   registerObservable(_cJ);
   registerObservable(_phi);
@@ -730,10 +726,10 @@ __host__ MatrixPdf(std::string n, std::vector<Variable*> _Masses,std::vector<Var
 }
 
 __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Variable* _cJ, Variable* _phi,Variable* _B0beauty,
-        std::vector<Variable*> _Masses,std::vector<Variable*> _Gammas,std::vector<Variable*> _Spins,std::vector<Variable*> _a,std::vector<Variable*> _b,
-        Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
+			      std::vector<Variable*> _Masses,std::vector<Variable*> _Gammas,std::vector<Variable*> _Spins,std::vector<Variable*> _a,std::vector<Variable*> _b,
+			      Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs)
   : GooPdf(0, n),
-  psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
+    psi_nS(_psi_nS),dRadB0(_dRadB0),dRadKs(_dRadKs)
 {
 
   unsigned int noOfKStars = 0;
@@ -788,26 +784,26 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
 
   /*for (int j = 0 ; j < (int)_KParameters.size(); j++) {
     pindices.push_back(registerParameter(_KParameters[j]));
-  }*/
+    }*/
 
   /*
-  for (int j = 0 ; j < (int)_amplitudeGooVars.size(); j++) {
+    for (int j = 0 ; j < (int)_amplitudeGooVars.size(); j++) {
     pindices.push_back(registerParameter(_amplitudeGooVars[j]));
-  }*/
+    }*/
   /*
-  gooMalloc((void**) d_psi_nS,sizeof(fptype));
-  gooMalloc((void**) d_dRadB0,sizeof(fptype));
-  gooMalloc((void**) d_dRadKs,sizeof(fptype));
+    gooMalloc((void**) d_psi_nS,sizeof(fptype));
+    gooMalloc((void**) d_dRadB0,sizeof(fptype));
+    gooMalloc((void**) d_dRadKs,sizeof(fptype));
 
-  MEMCPY(d_psi_nS,psi_nS,sizeof(fptype),cudaMemcpyHostToDevice);
-  MEMCPY(d_dRadB0,dRadB0,sizeof(fptype),cudaMemcpyHostToDevice);
-  MEMCPY(d_dRadKs,dRadKs,sizeof(fptype),cudaMemcpyHostToDevice);
+    MEMCPY(d_psi_nS,psi_nS,sizeof(fptype),cudaMemcpyHostToDevice);
+    MEMCPY(d_dRadB0,dRadB0,sizeof(fptype),cudaMemcpyHostToDevice);
+    MEMCPY(d_dRadKs,dRadKs,sizeof(fptype),cudaMemcpyHostToDevice);
 
-  gooMalloc((void**) d_numberOfKStar,sizeof(int));
-  MEMCPY(d_numberOfKStar,&numberOfKStar,sizeof(int),cudaMemcpyHostToDevice);
+    gooMalloc((void**) d_numberOfKStar,sizeof(int));
+    MEMCPY(d_numberOfKStar,&numberOfKStar,sizeof(int),cudaMemcpyHostToDevice);
 
-  gooMalloc((void**) d_KStarVector,sizeof(fptype)*(int)KStarVector.size());
-  MEMCPY(d_KStarVector,&KStarVector[0],sizeof(int)*KStarVector.size(),cudaMemcpyHostToDevice);
+    gooMalloc((void**) d_KStarVector,sizeof(fptype)*(int)KStarVector.size());
+    MEMCPY(d_KStarVector,&KStarVector[0],sizeof(int)*KStarVector.size(),cudaMemcpyHostToDevice);
   */
   GET_FUNCTION_ADDR(ptr_to_Matrix_B0);
   //GET_INTEGRAL_ADDR(ptr_to_Matrix_Bin);
