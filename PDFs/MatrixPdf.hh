@@ -5,30 +5,6 @@
 #include "BinnedDataSet.hh"
 #include "../extras/constants.h"
 
-/*
-//const fptype MBd = 5.27962;      // from PDG: http://pdglive.lbl.gov/Particle.action?node=S042&init=
-const fptype MBd = 5.2794;         // from EvtGen: https://github.com/cms-sw/cmssw/blob/86088d61d757bad0e55addda14859c5ea6108d84/GeneratorInterface/ExternalDecays/data/evt.pdl#L79
-//const fptype MPsi2S = 3.686097; // from PDG: http://pdglive.lbl.gov/Particle.action?node=M071&init=
-const fptype MPsi2S = 3.68596; // from EvtGen https://github.com/cms-sw/cmssw/blob/86088d61d757bad0e55addda14859c5ea6108d84/GeneratorInterface/ExternalDecays/data/evt.pdl#L123
-//const fptype MJpsi = 3.0969; // from PDG: http://pdglive.lbl.gov/Particle.action?node=M070&init=
-const fptype MJpsi = 3.09687; // from EvtGen: https://github.com/cms-sw/cmssw/blob/CMSSW_8_1_X/GeneratorInterface/ExternalDecays/data/evt.pdl#L37
-//const fptype MKaon = 0.493677;   // from PDG: http://pdglive.lbl.gov/Particle.action?node=S010&init=
-const fptype MKaon = 0.493677;     // from EvtGen: https://github.com/cms-sw/cmssw/blob/CMSSW_8_1_X/GeneratorInterface/ExternalDecays/data/evt.pdl#L13
-//const fptype MPion = 0.13957018; // from PDG: http://pdglive.lbl.gov/Particle.action?node=S008&init=
-const fptype MPion = 0.13957;      // from EvtGen: https://github.com/cms-sw/cmssw/blob/CMSSW_8_1_X/GeneratorInterface/ExternalDecays/data/evt.pdl#L9
-
-const fptype MBd2 = MBd*MBd;
-const fptype MBd4 = MBd2*MBd2;
-const fptype MPsi2S2 = MPsi2S*MPsi2S;
-const fptype MPsi2S4 = MPsi2S2*MPsi2S2;
-const fptype MJpsi2 = MJpsi*MJpsi;
-const fptype MJpsi4 = MJpsi2*MJpsi2;
-
-const fptype MKaon2 = MKaon*MKaon;
-const fptype MKaon4 = MKaon2*MKaon2;
-const fptype MPion2 = MPion*MPion;
-const fptype MPion4 = MPion2*MPion2;
-*/
 
 const fptype MPsi2S4mTwoMPsi2S2MBd2pMBd4 = MPsi2S4 - 2.*MPsi2S2*MBd2 + MBd4;
 const fptype MJpsi4mTwoMJpsi2MBd2pMBd4 = MJpsi4 - 2.*MJpsi2*MBd2 + MBd4;
@@ -64,8 +40,9 @@ public:
   MatrixPdf(std::string n, Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi,
            std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
            Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
-  MatrixPdf(std::string n, std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
-                    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs,Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi);
+  MatrixPdf(std::string n, std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma, std::vector<Variable*> _Spin, std::vector<Variable*> _a, std::vector<Variable*> _b,
+	    Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs,Variable* _x, Variable* _mJP, Variable* _cJ, Variable* _phi);
+           //MatrixPdf(std::string n, Variable* _x, Variable* _cJ, Variable* _cKs, Variable* _phi, Variable* _Mass,Variable* _Gamma,Variable* _Spin,Variable* _a,Variable* _b, Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
   MatrixPdf(std::string n, Variable* _x, Variable* _mJP,Variable* _cJ, Variable* _phi, Variable* _B0beauty,
             std::vector<Variable*> _Masses,std::vector<Variable*> _Gamma,std::vector<Variable*> _Spin,std::vector<Variable*> _a,std::vector<Variable*> _b,
             Variable* _psi_nS, Variable* _dRadB0, Variable* _dRadKs);
