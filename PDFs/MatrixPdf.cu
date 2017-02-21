@@ -14,6 +14,8 @@
 #include "BinnedDataSet.hh"
 #include "devcomplex.hh"
 
+MEM_DEVICE fptype devPi = TMath::Pi();
+
 //#define MDEBUGGING 1
 
 EXEC_TARGET fptype cosTheta_FromMasses(const fptype sameSideM2, const fptype oppositeSideM2, const fptype psi_nSM2, const fptype motherM2, const fptype refM2, const fptype otherM2) {
@@ -431,6 +433,7 @@ EXEC_TARGET fptype device_Matrix_B0(fptype* evt, fptype* p, unsigned int* indice
     phi *= -1.0;
 
   fptype psi_nS = p[indices[2]];
+  fptype devPi = 3.14159265358979323846;
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
   fptype MPsi_nS = 0.;
@@ -457,7 +460,7 @@ EXEC_TARGET fptype device_Matrix_B0(fptype* evt, fptype* p, unsigned int* indice
   //fptype dRadKs = p[indices[4]];
   //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,mPsiP);
 
-  if (FABS(cKs) > 1) {
+  if (FABS(cKs) > 1.0 || FABS(phi) > devPi || FABS(cJ) > 1.0) {
     //printf("\nReturning 0 : ckS > 1 or < -1 ");
     return 0.; }
   else {
@@ -487,6 +490,7 @@ EXEC_TARGET fptype device_Matrix(fptype* evt, fptype* p, unsigned int* indices) 
   fptype phi = evt[indices[2 + indices[0]]+3];
 
   fptype psi_nS = p[indices[2]];
+  fptype devPi = 3.14159265358979323846;
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
   fptype MPsi_nS = 0.;
@@ -513,7 +517,7 @@ EXEC_TARGET fptype device_Matrix(fptype* evt, fptype* p, unsigned int* indices) 
   //fptype dRadKs = p[indices[4]];
   //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,mPsiP);
 
-  if (FABS(cKs) > 1) {
+  if (FABS(cKs) > 1.0 || FABS(phi) > devPi || FABS(cJ) > 1.0) {
     //printf("\nReturning 0 : ckS > 1 or < -1 ");
     return 0.; }
   else {
@@ -542,6 +546,7 @@ EXEC_TARGET fptype device_Matrix_Bar(fptype* evt, fptype* p, unsigned int* indic
   fptype phi = -evt[indices[2 + indices[0]]+3];
 
   fptype psi_nS = p[indices[2]];
+  fptype devPi = 3.14159265358979323846;
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
   fptype MPsi_nS = 0.;
@@ -562,13 +567,14 @@ EXEC_TARGET fptype device_Matrix_Bar(fptype* evt, fptype* p, unsigned int* indic
     //printf("Returning 0: point out of the Dalitz borders!\n");
     return 0.; }
 
+
   fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
 
   //fptype dRadB0 = p[indices[3]];
   //fptype dRadKs = p[indices[4]];
   //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,mPsiP);
 
-  if (FABS(cKs) > 1) {
+  if (FABS(cKs) > 1.0 || FABS(phi) > devPi || FABS(cJ) > 1.0) {
     //printf("\nReturning 0 : ckS > 1 or < -1 ");
     return 0.; }
   else {
@@ -624,7 +630,7 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
   printf("Number of K* \t\t\t = %d\n", noOfKStars);
   printf("Number of masses \t\t = %d\n", noOfMasses);
   printf("Amplitudes vector size \t\t = %d \n",_a.size());
-  
+
   if (noOfKStars != (int) _a.size())
     abortWithCudaPrintFlush(__FILE__, __LINE__, "No. of kStars different from no. of amplitudes and phases provided \n");
 
