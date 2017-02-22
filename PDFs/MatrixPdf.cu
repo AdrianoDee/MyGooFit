@@ -23,10 +23,9 @@ EXEC_TARGET bool dalitz_contour_dev(const fptype mKP, const fptype mPsiP, const 
     MPsi_nS = MJpsi;
   else if (psi_nS == 2)
     MPsi_nS = MPsi2S;
-  else {
-    cout <<"psi_nS = " <<psi_nS <<" not allowed at the moment." <<endl;
+  else
     return kFALSE;
-  }
+
 
   fptype mKP_1 = mKP;
   fptype mPsiP_1 = mPsiP;
