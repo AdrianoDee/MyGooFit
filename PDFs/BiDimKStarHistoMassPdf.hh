@@ -1,12 +1,12 @@
-#ifndef BIDIMHIST_PDF_HH
-#define BIDIMHIST_PDF_HH
+#ifndef BIDIMKSTARMASS_PDF_HH
+#define BIDIMKSTARMASS_PDF_HH
 
 #include "GooPdf.hh"
 #include "BinnedDataSet.hh"
 
-class BiDimHistoPdf : public GooPdf {
+class BiDIm : public GooPdf {
 public:
-  BiDimHistoPdf (std::string n,
+  BiDimKStarHistoMassPdf (std::string n,
 			  BinnedDataSet* x,
 			  std::vector<Variable*> obses);
   //__host__ virtual fptype normalise () const;

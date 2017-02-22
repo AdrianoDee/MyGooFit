@@ -2,7 +2,6 @@
 #define MATRIX_PDF_HH
 
 #include "GooPdf.hh"
-#include "BinnedDataSet.hh"
 #include "../extras/constants.h"
 
 

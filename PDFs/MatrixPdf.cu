@@ -16,6 +16,45 @@
 
 //#define MDEBUGGING 1
 
+EXEC_TARGET bool dalitz_contour_dev(const fptype mKP, const fptype mPsiP, const bool massSquared, const int psi_nS) {
+
+  fptype MPsi_nS = 0;
+  if (psi_nS == 1)
+    MPsi_nS = MJpsi;
+  else if (psi_nS == 2)
+    MPsi_nS = MPsi2S;
+  else {
+    cout <<"psi_nS = " <<psi_nS <<" not allowed at the moment." <<endl;
+    return kFALSE;
+  }
+
+  fptype mKP_1 = mKP;
+  fptype mPsiP_1 = mPsiP;
+
+  if (massSquared) {
+    mKP_1 = SQRT( mKP );
+    mPsiP_1 = SQRT( mPsiP );
+  }
+
+  if ((mKP_1 < MKaon + MPion) || (mKP_1 > MBd - MPsi_nS) || (mPsiP_1 < MPsi_nS + MPion) || (mPsiP_1 > MBd - MKaon))
+    return false;
+  else { // Dalitz border from PDG KINEMATICS 43.4.3.1.
+    fptype E_P = (mPsiP_1*mPsiP_1 - MJpsi2 + MPion2)/(2*mPsiP_1) ;
+    fptype E_K = (MBd2 - mPsiP_1*mPsiP_1 - MKaon2)/(2*mPsiP_1) ;
+    fptype E_PpE_K_2 = POW((E_P + E_K),2.);
+    fptype sqrt_E_P2mMP2 = SQRT(E_P*E_P - MPion2);
+    fptype sqrt_E_K2mMK2 = SQRT(E_K*E_K - MKaon2);
+    fptype mKP2_min = E_PpE_K_2 - POW(sqrt_E_P2mMP2 + sqrt_E_K2mMK2,2.);
+    fptype mKP2_max = E_PpE_K_2 - POW(sqrt_E_P2mMP2 - sqrt_E_K2mMK2,2.);
+    if ((mKP_1*mKP_1 < mKP2_min) || (mKP_1*mKP_1 > mKP2_max))
+      return true;
+  }
+
+  return false ;
+
+}
+
+
 EXEC_TARGET fptype cosTheta_FromMasses(const fptype sameSideM2, const fptype oppositeSideM2, const fptype psi_nSM2, const fptype motherM2, const fptype refM2, const fptype otherM2) {
 
   fptype num = (sameSideM2/2)*(motherM2 + refM2 - oppositeSideM2) - (1./4.)*(motherM2 - psi_nSM2 + sameSideM2)*(sameSideM2 - otherM2 + refM2) ;
@@ -447,9 +486,11 @@ EXEC_TARGET fptype device_Matrix_B0(fptype* evt, fptype* p, unsigned int* indice
   fptype mPsiP2 = mPsiP*mPsiP;
   fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
 
-  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
-    //printf("Returning 0: point out of the Dalitz borders!\n");
-    return 0.; }
+  if (!(dalitz_contour_dev(mkp,mPsiP,false,psi_nS))) return 0.;
+  //
+  // if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
+  //   //printf("Returning 0: point out of the Dalitz borders!\n");
+  //   return 0.; }
 
   fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
 
@@ -503,9 +544,11 @@ EXEC_TARGET fptype device_Matrix(fptype* evt, fptype* p, unsigned int* indices) 
   fptype mPsiP2 = mPsiP*mPsiP;
   fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
 
-  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
-    //printf("Returning 0: point out of the Dalitz borders!\n");
-    return 0.; }
+  if (!(dalitz_contour_dev(mkp,mPsiP,false,psi_nS))) return 0.;
+  //
+  // if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
+  //   //printf("Returning 0: point out of the Dalitz borders!\n");
+  //   return 0.; }
 
   fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
 
@@ -558,10 +601,12 @@ EXEC_TARGET fptype device_Matrix_Bar(fptype* evt, fptype* p, unsigned int* indic
   fptype mPsiP2 = mPsiP*mPsiP;
   fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
 
-  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
-    //printf("Returning 0: point out of the Dalitz borders!\n");
-    return 0.; }
+  if (!(dalitz_contour_dev(mkp,mPsiP,false,psi_nS))) return 0.;
 
+  // if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
+  //   //printf("Returning 0: point out of the Dalitz borders!\n");
+  //   return 0.; }
+  //
 
   fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
 
