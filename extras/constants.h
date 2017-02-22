@@ -1,6 +1,9 @@
 #ifndef Z4430_CONSTANTS_H
 #define Z4430_CONSTANTS_H
 
+//const Double_t TMATH_PI = TMath::Pi(); // error: identifier "TMATH_PI" is undefined in device code (because GPU does not know about TMath)
+const Double_t TMATH_PI = 3.14159265358979323846;
+
 const Double_t MLb = 5.61951;
 const Double_t MBd = 5.27961;
 const Double_t MPsi2S = 3.686109;

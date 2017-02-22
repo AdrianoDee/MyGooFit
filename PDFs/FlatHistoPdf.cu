@@ -109,9 +109,10 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
 
     //if (0 == THREADIDX + BLOCKIDX)
       // printf("Adding bin content %i %f with weight %f for total %f.\n", currBin, currentEntry, currentWeight, ret);
-  //}
+    //}
 
-  //if (0 == THREADIDX + BLOCKIDX)
+    //if (0 == THREADIDX + BLOCKIDX)
+    /*
     observablesSeen = 0;
     fptype variable[4];
     //printf("Qui : %.3f %.3f %.3f %i %.3f\n", ret,holdcurrVariable,totalWeight, evt[0], indices[6], p[indices[6]]);
@@ -119,7 +120,7 @@ EXEC_TARGET fptype device_FlatHistogram (fptype* evt, fptype* p, unsigned int* i
       variable[i] = evt[indices[indices[0] + 2 + observablesSeen++]];
 
     //printf("Pdf = %.3f at %.3f %.3f %.3f %.3f bin : %d \n", ret,variable[0], variable[1], variable[2],variable[3],globalBin);//,currBin);
-
+    */
   return ret;
 }
 

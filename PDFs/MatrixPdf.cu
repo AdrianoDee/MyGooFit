@@ -431,7 +431,6 @@ EXEC_TARGET fptype device_Matrix_B0(fptype* evt, fptype* p, unsigned int* indice
     phi *= -1.0;
 
   fptype psi_nS = p[indices[2]];
-  fptype devPi = 3.14159265358979323846;
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
   fptype MPsi_nS = 0.;
@@ -458,7 +457,7 @@ EXEC_TARGET fptype device_Matrix_B0(fptype* evt, fptype* p, unsigned int* indice
   //fptype dRadKs = p[indices[4]];
   //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,mPsiP);
 
-  if (FABS(cKs) > 1.0 || FABS(phi) > devPi || FABS(cJ) > 1.0) {
+  if (FABS(cKs) > 1.0 || FABS(phi) > TMATH_PI || FABS(cJ) > 1.0) {
     //printf("\nReturning 0 : ckS > 1 or < -1 ");
     return 0.; }
   else {
@@ -488,7 +487,6 @@ EXEC_TARGET fptype device_Matrix(fptype* evt, fptype* p, unsigned int* indices) 
   fptype phi = evt[indices[2 + indices[0]]+3];
 
   fptype psi_nS = p[indices[2]];
-  fptype devPi = 3.14159265358979323846;
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
   fptype MPsi_nS = 0.;
@@ -515,7 +513,7 @@ EXEC_TARGET fptype device_Matrix(fptype* evt, fptype* p, unsigned int* indices) 
   //fptype dRadKs = p[indices[4]];
   //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,mPsiP);
 
-  if (FABS(cKs) > 1.0 || FABS(phi) > devPi || FABS(cJ) > 1.0) {
+  if (FABS(cKs) > 1.0 || FABS(phi) > TMATH_PI || FABS(cJ) > 1.0) {
     //printf("\nReturning 0 : ckS > 1 or < -1 ");
     return 0.; }
   else {
@@ -544,7 +542,6 @@ EXEC_TARGET fptype device_Matrix_Bar(fptype* evt, fptype* p, unsigned int* indic
   fptype phi = -evt[indices[2 + indices[0]]+3];
 
   fptype psi_nS = p[indices[2]];
-  fptype devPi = 3.14159265358979323846;
 
   // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE
   fptype MPsi_nS = 0.;
@@ -572,7 +569,7 @@ EXEC_TARGET fptype device_Matrix_Bar(fptype* evt, fptype* p, unsigned int* indic
   //fptype dRadKs = p[indices[4]];
   //printf("Hei mpk = %.2f cJ = %.2f cKs = %.2f phi = %.2f psi_nS = %.2f mPSi = %.2f \n",mkp,cJ,cKs,phi,psi_nS,mPsiP);
 
-  if (FABS(cKs) > 1.0 || FABS(phi) > devPi || FABS(cJ) > 1.0) {
+  if (FABS(cKs) > 1.0 || FABS(phi) > TMATH_PI || FABS(cJ) > 1.0) {
     //printf("\nReturning 0 : ckS > 1 or < -1 ");
     return 0.; }
   else {
@@ -781,7 +778,6 @@ __host__ MatrixPdf::MatrixPdf(std::string n, Variable* _mkp, Variable* _mJP,Vari
     //pindices.push_back(registerParameter(_helj[j]));
     pindices.push_back(registerParameter(_a[j]));
     pindices.push_back(registerParameter(_b[j]));
-
   }
 
 
