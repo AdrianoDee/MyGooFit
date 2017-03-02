@@ -2,8 +2,6 @@
 #define MATRIX_PDF_HH
 
 #include "GooPdf.hh"
-#include "../extras/constants.h"
-
 
 const fptype MPsi2S4mTwoMPsi2S2MBd2pMBd4 = MPsi2S4 - 2.*MPsi2S2*MBd2 + MBd4;
 const fptype MJpsi4mTwoMJpsi2MBd2pMBd4 = MJpsi4 - 2.*MJpsi2*MBd2 + MBd4;
