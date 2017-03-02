@@ -1,14 +1,61 @@
 #include "QuadDimHistoKStarPdf.hh"
-#define JUMP 22222222
+#include "MatrixPdf.hh"
+#define JUMPH 22222222
 
-MEM_CONSTANT fptype* dev_base_quadkstarhisto[100]; // Multiple histograms for the case of multiple PDFs
+MEM_CONSTANT fptype* dev_base_quadkstarhisto[5]; // Multiple histograms for the case of multiple PDFs
+
+// EXEC_TARGET fptype cosTheta_FromMasses(const fptype sameSideM2, const fptype oppositeSideM2, const fptype psi_nSM2, const fptype motherM2, const fptype refM2, const fptype otherM2) {
+//
+//   fptype num = (sameSideM2/2)*(motherM2 + refM2 - oppositeSideM2) - (1./4.)*(motherM2 - psi_nSM2 + sameSideM2)*(sameSideM2 - otherM2 + refM2) ;
+//   fptype denom2 = ((1./4.)*POW(motherM2 - psi_nSM2 + sameSideM2,2) - sameSideM2*motherM2) * ((1./4.)*POW(sameSideM2 - otherM2 + refM2,2) - sameSideM2*refM2) ;
+//
+//   return (num / SQRT(denom2)) ;
+//
+// }
+
+EXEC_TARGET bool dalitz_contour_devq(const fptype mKP, const fptype mPsiP, const bool massSquared, const int psi_nS) {
+
+  fptype MPsi_nS = 0;
+
+  if (psi_nS == 1)
+    MPsi_nS = MJpsi;
+  else if (psi_nS == 2)
+    MPsi_nS = MPsi2S;
+  else
+    return false;
+
+  fptype mKP_1 = mKP;
+  fptype mPsiP_1 = mPsiP;
+
+  if (massSquared) {
+    mKP_1 = SQRT( mKP );
+    mPsiP_1 = SQRT( mPsiP );
+  }
+
+  if ((mKP_1 < MKaon + MPion) || (mKP_1 > MBd - MPsi_nS) || (mPsiP_1 < MPsi_nS + MPion) || (mPsiP_1 > MBd - MKaon))
+    return false;
+  else { // Dalitz border from PDG KINEMATICS 43.4.3.1.
+    fptype E_P = (mPsiP_1*mPsiP_1 - MJpsi2 + MPion2)/(2*mPsiP_1) ;
+    fptype E_K = (MBd2 - mPsiP_1*mPsiP_1 - MKaon2)/(2*mPsiP_1) ;
+    fptype E_PpE_K_2 = POW((E_P + E_K),2.);
+    fptype sqrt_E_P2mMP2 = SQRT(E_P*E_P - MPion2);
+    fptype sqrt_E_K2mMK2 = SQRT(E_K*E_K - MKaon2);
+    fptype mKP2_min = E_PpE_K_2 - POW(sqrt_E_P2mMP2 + sqrt_E_K2mMK2,2.);
+    fptype mKP2_max = E_PpE_K_2 - POW(sqrt_E_P2mMP2 - sqrt_E_K2mMK2,2.);
+    if ((mKP_1*mKP_1 < mKP2_min) || (mKP_1*mKP_1 > mKP2_max))
+      return true;
+  }
+
+  return false ;
+
+}
 
 EXEC_TARGET fptype device_QuadDimHistoKStarPdf (fptype* evt, fptype* p, unsigned int* indices) {
   // Structure is
   // nP totalHis./tograms (idx1 limit1 step1 bins1) (idx2 limit2 step2 bins2) nO o1 o2
   // where limit and step are indices into functorConstants.
 
-  int numVars = (indices[0] - 1) / 4;
+  int numVars = 4;//(indices[0] - 1) / 4;
   int globalBin = 0;
   int previous = 1;
   int myHistogramIndex = indices[1];
@@ -16,31 +63,40 @@ EXEC_TARGET fptype device_QuadDimHistoKStarPdf (fptype* evt, fptype* p, unsigned
   // Distance from bin center in units of bin width in each dimension.
   //int holdObs;
 
+  int psi_nS = 1;
+
   fptype MPsi_nS = MJpsi;
   fptype mkp = evt[indices[2 + indices[0]]];
-  fptype mPsiP = evt[indices[2 + indices[0]]+2];
-
-  if (!(dalitz_contour_dev(mkp,mPsiP,false,psi_nS))
-    return 0.;
-
-  fptype cJ = evt[indices[2 + indices[0]]+1];
+  fptype cJ = evt[indices[2 + indices[0]]+2];
+  fptype mPsiP = evt[indices[2 + indices[0]]+1];
   fptype phi = evt[indices[2 + indices[0]]+3];
+//  if ((dalitz_contour_devq(mkp,mPsiP,false,psi_nS)))
+//  {
+//    printf("mpk = %.2f (%.2f - %.2f) cJ = %.2f cKs = %.2f phi = %.2f \n",mkp,MBd - MPsi_nS,MKaon + MPion,cJ,cKs,phi);
+//    return 0.;
+//  }
 
   fptype mKP2 = mkp*mkp;
   fptype mPsiP2 = mPsiP*mPsiP;
   fptype MPsi_nS2 = MPsi_nS*MPsi_nS;
 
-
   fptype cKs = cosTheta_FromMasses(mKP2, mPsiP2, MPsi_nS2, MBd2, MKaon2, MPion2);
 
-  if (FABS(cKs) > 1.0 || FABS(phi) > TMATH_PI || FABS(cJ) > 1.0)
-    return 0.;
+  //printf("Quad : %.2f %.2f  %.2f  %.2f  %.2f  %.2f \n - mpk = %.2f (%.2f - %.2f) mPsi = %.2f cJ = %.2f cKs = %.2f phi = %.2f \n",evt[indices[2 + indices[0]]],evt[indices[2 + indices[0]]+1],evt[indices[2 + indices[0]]+2],evt[indices[2 + indices[0]]+3],evt[indices[2 + indices[0]]+4],evt[indices[2 + indices[0]]+5],mkp,MBd - MPsi_nS,MKaon + MPion,mPsiP,cJ,cKs,phi);
 
-  fptype holdcurrVariable;
+  if ((mkp < MKaon + MPion) || (mkp > MBd - MPsi_nS) || (mPsiP < MPsi_nS + MPion) || (mPsiP > MBd - MKaon)) {
+//    printf("Returning 0: point out of the Dalitz borders!\n");
+    return 0.; }
+  if (FABS(cKs) > 1.0 || FABS(phi) > devPi || FABS(cJ) > 1.0)
+    {
+//	printf("Returning 0: point out of the angles borders!\n");
+	return 0.;
+	}
 
   //fptype one,two;
   unsigned int observablesSeen = 0;
   for (int i = 0; i < numVars; ++i) {
+
     fptype currVariable = 0;
     //unsigned int varIndex = indices[2 + 4*i];
     currVariable = evt[indices[indices[0] + 2 + observablesSeen++]];
@@ -48,8 +104,6 @@ EXEC_TARGET fptype device_QuadDimHistoKStarPdf (fptype* evt, fptype* p, unsigned
     int lowerBoundIdx   = 3 + 4*i;
     fptype lowerBound   = functorConstants[indices[lowerBoundIdx + 0]];
     fptype step         = functorConstants[indices[lowerBoundIdx + 1]];
-
-    holdcurrVariable = currVariable;
 
     currVariable   -= lowerBound;
     currVariable   /= step;
@@ -100,10 +154,11 @@ EXEC_TARGET fptype device_QuadDimHistoKStarPdf (fptype* evt, fptype* p, unsigned
   }
 
   ret /= totalWeight;
+
   return ret;
 }
 
-MEM_DEVICE device_function_ptr ptr_to_ptr_to_QuadDimHistoKStar = device_QuadDimHistoKStarPdf;
+MEM_DEVICE device_function_ptr ptr_to_QuadDimHistoKStar = device_QuadDimHistoKStarPdf;
 
 __host__ QuadDimHistoKStarPdf::QuadDimHistoKStarPdf (std::string n,
 				       BinnedDataSet* x,
@@ -126,7 +181,7 @@ __host__ QuadDimHistoKStarPdf::QuadDimHistoKStarPdf (std::string n,
   for (varConstIt var = x->varsBegin(); var != x->varsEnd(); ++var) {
     if (std::find(obses.begin(), obses.end(), *var) != obses.end()) {
       registerObservable(*var);
-      pindices.push_back(JUMP);
+      pindices.push_back(JUMPH);
     }
     else {
       abortWithCudaPrintFlush(__FILE__, __LINE__, "The BinnedDataSet provided variables are different from p.d.f. observables \n");
