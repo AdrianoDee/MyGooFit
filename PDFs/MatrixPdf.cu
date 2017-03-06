@@ -25,6 +25,54 @@ EXEC_TARGET fptype cosTheta_FromMasses(const fptype sameSideM2, const fptype opp
 
 }
 
+EXEC_TARGET bool dalitz_contour_dev(const fptype mKP, const fptype mPsiP, const bool massSquared, const fptype psi_nS) {
+
+  fptype MPsi_nS = 0;
+
+  printf("Npsi problems? %.2f %d\n",psi_nS,psi_nS);
+
+  if (psi_nS == 1.0)
+  {
+    printf("One? %.2f %d\n",psi_nS,psi_nS);
+    MPsi_nS = MJpsi;
+  }
+  else if (psi_nS == 2.0)
+    {
+      printf("Two? %.2f %d\n",psi_nS,psi_nS);
+      MPsi_nS = MPsi2S;
+    }
+  else
+  {
+    printf("Mmm nspsi problem %.2f %d\n",psi_nS,psi_nS);
+    return false;
+  }
+  printf("No mpsipi problems \n");
+  fptype mKP_1 = mKP;
+  fptype mPsiP_1 = mPsiP;
+
+  if (massSquared) {
+    mKP_1 = SQRT( mKP );
+    mPsiP_1 = SQRT( mPsiP );
+  }
+
+  if ((mKP_1 < MKaon + MPion) || (mKP_1 > MBd - MPsi_nS) || (mPsiP_1 < MPsi_nS + MPion) || (mPsiP_1 > MBd - MKaon))
+    return false;
+  else { // Dalitz border from PDG KINEMATICS 43.4.3.1.
+    fptype E_P = (mPsiP_1*mPsiP_1 - MJpsi2 + MPion2)/(2*mPsiP_1) ;
+    fptype E_K = (MBd2 - mPsiP_1*mPsiP_1 - MKaon2)/(2*mPsiP_1) ;
+    fptype E_PpE_K_2 = POW((E_P + E_K),2.);
+    fptype sqrt_E_P2mMP2 = SQRT(E_P*E_P - MPion2);
+    fptype sqrt_E_K2mMK2 = SQRT(E_K*E_K - MKaon2);
+    fptype mKP2_min = E_PpE_K_2 - POW(sqrt_E_P2mMP2 + sqrt_E_K2mMK2,2.);
+    fptype mKP2_max = E_PpE_K_2 - POW(sqrt_E_P2mMP2 - sqrt_E_K2mMK2,2.);
+    if ((mKP_1*mKP_1 < mKP2_min) || (mKP_1*mKP_1 > mKP2_max))
+      return true;
+  }
+
+  return false ;
+
+}
+
 EXEC_TARGET fptype BlattWeisskopf(int Lmin, fptype q, fptype q0, fptype D)
 {
     fptype Dq = D*q;
@@ -422,8 +470,8 @@ EXEC_TARGET fptype device_Matrix_B0 (fptype* evt, fptype* p, unsigned int* indic
   #endif
 
   fptype mkp = evt[indices[2 + indices[0]]];
-  fptype mPsiP = evt[indices[2 + indices[0]]+2];
-  fptype cJ = evt[indices[2 + indices[0]]+1];
+  fptype mPsiP = evt[indices[2 + indices[0]]+1];
+  fptype cJ = evt[indices[2 + indices[0]]+2];
   //fptype cKs = evt[indices[2 + indices[0]]+2];
   fptype phi = evt[indices[2 + indices[0]]+3];
   fptype b0Flag = evt[indices[2 + indices[0]]+4];
@@ -480,8 +528,8 @@ EXEC_TARGET fptype device_Matrix(fptype* evt, fptype* p, unsigned int* indices) 
   #endif
 
   fptype mkp = evt[indices[2 + indices[0]]];
-  fptype mPsiP = evt[indices[2 + indices[0]]+2];
-  fptype cJ = evt[indices[2 + indices[0]]+1];
+  fptype mPsiP = evt[indices[2 + indices[0]]+1];
+  fptype cJ = evt[indices[2 + indices[0]]+2];
   //fptype cKs = evt[indices[2 + indices[0]]+2];
   fptype phi = evt[indices[2 + indices[0]]+3];
 
@@ -535,8 +583,8 @@ EXEC_TARGET fptype device_Matrix_Bar(fptype* evt, fptype* p, unsigned int* indic
   #endif
 
   fptype mkp = evt[indices[2 + indices[0]]];
-  fptype mPsiP = evt[indices[2 + indices[0]]+2];
-  fptype cJ = evt[indices[2 + indices[0]]+1];
+  fptype mPsiP = evt[indices[2 + indices[0]]+1];
+  fptype cJ = evt[indices[2 + indices[0]]+2];
   //fptype cKs = evt[indices[2 + indices[0]]+2];
   fptype phi = -evt[indices[2 + indices[0]]+3];
 
