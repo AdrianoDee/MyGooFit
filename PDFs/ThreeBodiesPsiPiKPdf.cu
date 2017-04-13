@@ -1,5 +1,5 @@
 #include "ThreeBodiesPsiPiKPdf.hh"
-#include "TRandom.h"
+//#include "TRandom.h"
 
 EXEC_TARGET fptype device_ThreeBodiesPsiPiK (fptype* evt, fptype* p, unsigned int* indices) {
 

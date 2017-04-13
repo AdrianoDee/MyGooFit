@@ -2,7 +2,7 @@
 #define THREE_PDF_PSIPIK_HH
 
 #include "GooPdf.hh"
-#include "TH1F.h"
+//#include "TH1F.h"
 #include "DataSet.hh"
 #include "BinnedDataSet.hh"
 #include "UnbinnedDataSet.hh"
